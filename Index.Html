@@ -1,0 +1,807 @@
+<div id="tonguebox">
+
+<style>
+#tonguebox {
+    font-family: Arial, sans-serif;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 15px;
+    text-align: center;
+}
+
+#tonguebox * {
+    box-sizing: border-box;
+}
+
+#tonguebox h1 {
+    font-size: 36px;
+    margin-bottom: 5px;
+}
+
+#tonguebox h2 {
+    font-size: 30px;
+}
+
+#tonguebox p {
+    font-size: 20px;
+}
+
+#tonguebox button {
+    width: 100%;
+    min-height: 95px;
+    margin: 10px 0;
+    padding: 18px;
+    font-size: 26px;
+    font-weight: bold;
+    border: 3px solid #222;
+    border-radius: 18px;
+    cursor: pointer;
+}
+
+#tonguebox button:focus,
+#tonguebox textarea:focus,
+#tonguebox input:focus,
+#tonguebox select:focus {
+    outline: 6px solid #000;
+    outline-offset: 3px;
+}
+
+#tonguebox textarea,
+#tonguebox input,
+#tonguebox select {
+    width: 100%;
+    margin: 8px 0 15px;
+    padding: 17px;
+    font-size: 24px;
+    border: 3px solid #222;
+    border-radius: 15px;
+    background: white;
+}
+
+#tonguebox textarea {
+    min-height: 170px;
+}
+
+.tb-page {
+    display: none;
+}
+
+.tb-page.active {
+    display: block;
+}
+
+.tb-menu {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.tb-menu button {
+    min-height: 125px !important;
+}
+
+.tb-green {
+    background: #198754;
+    color: white;
+}
+
+.tb-blue {
+    background: #1976d2;
+    color: white;
+}
+
+.tb-red {
+    background: #c00000;
+    color: white;
+}
+
+.tb-yellow {
+    background: #ffc107;
+    color: black;
+}
+
+.tb-orange {
+    background: #e87500;
+    color: white;
+}
+
+.tb-gray {
+    background: #555;
+    color: white;
+}
+
+.tb-yesno {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.tb-yesno button {
+    min-height: 230px !important;
+    font-size: 48px !important;
+}
+
+.tb-info {
+    padding: 15px;
+    border: 2px solid #333;
+    border-radius: 12px;
+    background: #fff;
+    font-size: 19px;
+    margin: 10px 0;
+}
+
+.tb-small-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+@media (max-width: 600px) {
+
+    .tb-menu {
+        grid-template-columns: 1fr;
+    }
+
+    .tb-yesno {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .tb-small-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #tonguebox button {
+        font-size: 23px;
+    }
+}
+</style>
+
+
+<!-- START -->
+
+<section id="tb-start" class="tb-page active">
+
+<h1>🗣️ Tonguebox</h1>
+
+<p>Kommunikation mit Blickerfassung</p>
+
+<div class="tb-menu">
+
+<button
+class="tb-blue"
+aria-label="Text schreiben und vorlesen"
+onclick="tbShow('tb-speak')">
+📝<br>SPRECHEN
+</button>
+
+<button
+class="tb-green"
+aria-label="Ja oder Nein Kommunikation"
+onclick="tbShow('tb-yesno')">
+👍<br>JA / NEIN
+</button>
+
+<button
+class="tb-blue"
+aria-label="Telefonieren"
+onclick="tbShow('tb-phone')">
+📞<br>TELEFON
+</button>
+
+<button
+class="tb-yellow"
+aria-label="Nachricht senden"
+onclick="tbShow('tb-message')">
+💬<br>NACHRICHT
+</button>
+
+<button
+class="tb-red"
+aria-label="Notfall"
+onclick="tbShow('tb-emergency')">
+🚨<br>NOTFALL
+</button>
+
+</div>
+
+</section>
+
+
+<!-- SPRECHEN -->
+
+<section id="tb-speak" class="tb-page">
+
+<h2>📝 Sprechen</h2>
+
+<label for="tb-text">
+<strong>Was möchtest du sagen?</strong>
+</label>
+
+<textarea
+id="tb-text"
+placeholder="Hier Text eingeben..."
+aria-label="Text zum Vorlesen">
+</textarea>
+
+
+<label for="tb-voice">
+<strong>Stimme auswählen</strong>
+</label>
+
+<select
+id="tb-voice"
+aria-label="Stimme auswählen">
+
+<option value="">
+Automatische deutsche Stimme
+</option>
+
+</select>
+
+
+<div
+id="tb-voice-info"
+class="tb-info"
+aria-live="polite">
+Verfügbare Stimmen werden geladen.
+</div>
+
+
+<button
+class="tb-green"
+onclick="tbSpeak()"
+aria-label="Text vorlesen">
+🔊 VORLESEN
+</button>
+
+
+<div class="tb-small-grid">
+
+<button
+class="tb-orange"
+onclick="tbStop()"
+aria-label="Vorlesen stoppen">
+⏹ STOP
+</button>
+
+<button
+class="tb-gray"
+onclick="tbClearText()"
+aria-label="Textfeld leeren">
+🗑 TEXT LÖSCHEN
+</button>
+
+</div>
+
+
+<button
+class="tb-gray"
+onclick="tbShow('tb-start')">
+← ZURÜCK
+</button>
+
+</section>
+
+
+<!-- JA NEIN -->
+
+<section id="tb-yesno" class="tb-page">
+
+<h2>JA oder NEIN?</h2>
+
+<div class="tb-yesno">
+
+<button
+class="tb-green"
+onclick="tbSay('JA')"
+aria-label="Ja">
+JA
+</button>
+
+<button
+class="tb-red"
+onclick="tbSay('NEIN')"
+aria-label="Nein">
+NEIN
+</button>
+
+</div>
+
+<button
+class="tb-gray"
+onclick="tbShow('tb-start')">
+← ZURÜCK
+</button>
+
+</section>
+
+
+<!-- TELEFON -->
+
+<section id="tb-phone" class="tb-page">
+
+<h2>📞 Telefon</h2>
+
+<label for="tb-phone-number">
+<strong>Telefonnummer</strong>
+</label>
+
+<input
+id="tb-phone-number"
+type="tel"
+inputmode="tel"
+placeholder="+43 ..."
+aria-label="Telefonnummer">
+
+
+<button
+class="tb-green"
+onclick="tbCall()"
+aria-label="Telefonnummer anrufen">
+📞 ANRUFEN
+</button>
+
+
+<button
+class="tb-gray"
+onclick="tbShow('tb-start')">
+← ZURÜCK
+</button>
+
+</section>
+
+
+<!-- NACHRICHT -->
+
+<section id="tb-message" class="tb-page">
+
+<h2>💬 Nachricht</h2>
+
+<label for="tb-message-number">
+<strong>Telefonnummer</strong>
+</label>
+
+<input
+id="tb-message-number"
+type="tel"
+inputmode="tel"
+placeholder="+43 ..."
+aria-label="Telefonnummer">
+
+
+<label for="tb-message-text">
+<strong>Nachricht</strong>
+</label>
+
+<textarea
+id="tb-message-text"
+placeholder="Nachricht schreiben..."
+aria-label="Nachricht">
+</textarea>
+
+
+<button
+class="tb-yellow"
+onclick="tbSendMessage()"
+aria-label="Nachricht senden">
+💬 NACHRICHT SENDEN
+</button>
+
+
+<button
+class="tb-gray"
+onclick="tbShow('tb-start')">
+← ZURÜCK
+</button>
+
+</section>
+
+
+<!-- NOTFALL -->
+
+<section id="tb-emergency" class="tb-page">
+
+<h2>🚨 Notfall</h2>
+
+<p>
+Bitte nur im tatsächlichen Notfall verwenden.
+</p>
+
+
+<button
+class="tb-red"
+onclick="tbEmergency('144')"
+aria-label="Rettung 144 anrufen">
+🚑 RETTUNG 144
+</button>
+
+
+<button
+class="tb-red"
+onclick="tbEmergency('112')"
+aria-label="Euro Notruf 112 anrufen">
+🚨 NOTRUF 112
+</button>
+
+
+<div class="tb-small-grid">
+
+<button
+class="tb-blue"
+onclick="tbEmergency('133')"
+aria-label="Polizei 133 anrufen">
+👮 POLIZEI 133
+</button>
+
+<button
+class="tb-orange"
+onclick="tbEmergency('122')"
+aria-label="Feuerwehr 122 anrufen">
+🚒 FEUERWEHR 122
+</button>
+
+</div>
+
+
+<button
+class="tb-gray"
+onclick="tbShow('tb-start')">
+← ZURÜCK
+</button>
+
+</section>
+
+
+<script>
+
+(function() {
+
+var tbVoices = [];
+
+var tbVoiceSelect =
+document.getElementById('tb-voice');
+
+
+/* SEITEN */
+
+window.tbShow = function(id) {
+
+    var pages =
+    document.querySelectorAll(
+        '#tonguebox .tb-page'
+    );
+
+    for (var i = 0; i < pages.length; i++) {
+        pages[i].classList.remove('active');
+    }
+
+    var page =
+    document.getElementById(id);
+
+    if (page) {
+        page.classList.add('active');
+
+        var heading =
+        page.querySelector('h1, h2');
+
+        if (heading) {
+            heading.setAttribute(
+                'tabindex',
+                '-1'
+            );
+            heading.focus();
+        }
+    }
+};
+
+
+/* STIMMEN */
+
+function tbLoadVoices() {
+
+    tbVoices =
+    window.speechSynthesis.getVoices();
+
+    tbVoiceSelect.innerHTML = '';
+
+    var autoOption =
+    document.createElement('option');
+
+    autoOption.value = '';
+
+    autoOption.textContent =
+    'Automatische deutsche Stimme';
+
+    tbVoiceSelect.appendChild(
+        autoOption
+    );
+
+
+    var count = 0;
+
+
+    for (
+        var i = 0;
+        i < tbVoices.length;
+        i++
+    ) {
+
+        var voice =
+        tbVoices[i];
+
+        /*
+        Deutsche Stimmen zuerst anzeigen.
+        Andere Stimmen werden ebenfalls angezeigt.
+        */
+
+        var option =
+        document.createElement(
+            'option'
+        );
+
+        option.value = i;
+
+        var language =
+        voice.lang || '';
+
+        var label =
+        voice.name +
+        ' – ' +
+        language;
+
+        if (
+            language
+            .toLowerCase()
+            .indexOf('de') === 0
+        ) {
+
+            label =
+            '🇩🇪 ' + label;
+        }
+
+        option.textContent =
+        label;
+
+        tbVoiceSelect.appendChild(
+            option
+        );
+
+        count++;
+    }
+
+
+    document
+    .getElementById(
+        'tb-voice-info'
+    )
+    .textContent =
+    count +
+    ' Stimmen auf diesem Gerät gefunden.';
+
+
+    var savedVoice =
+    localStorage.getItem(
+        'tb-selected-voice'
+    );
+
+    if (savedVoice !== null) {
+
+        tbVoiceSelect.value =
+        savedVoice;
+    }
+}
+
+
+tbVoiceSelect.addEventListener(
+'change',
+function() {
+
+    localStorage.setItem(
+        'tb-selected-voice',
+        this.value
+    );
+
+});
+
+
+window.speechSynthesis
+.onvoiceschanged =
+tbLoadVoices;
+
+
+tbLoadVoices();
+
+setTimeout(
+    tbLoadVoices,
+    500
+);
+
+setTimeout(
+    tbLoadVoices,
+    1500
+);
+
+
+/* SPRECHEN */
+
+function tbCreateSpeech(text) {
+
+    var speech =
+    new SpeechSynthesisUtterance(text);
+
+    var selected =
+    tbVoiceSelect.value;
+
+
+    if (
+        selected !== '' &&
+        tbVoices[selected]
+    ) {
+
+        speech.voice =
+        tbVoices[selected];
+
+        speech.lang =
+        tbVoices[selected].lang;
+
+    } else {
+
+        speech.lang =
+        'de-DE';
+    }
+
+
+    speech.rate = 0.9;
+    speech.volume = 1;
+    speech.pitch = 1;
+
+    return speech;
+}
+
+
+window.tbSpeak = function() {
+
+    var text =
+    document
+    .getElementById(
+        'tb-text'
+    )
+    .value
+    .trim();
+
+
+    if (!text) {
+
+        alert(
+            'Bitte zuerst einen Text eingeben.'
+        );
+
+        return;
+    }
+
+
+    speechSynthesis.cancel();
+
+    speechSynthesis.speak(
+        tbCreateSpeech(text)
+    );
+};
+
+
+window.tbSay = function(text) {
+
+    speechSynthesis.cancel();
+
+    speechSynthesis.speak(
+        tbCreateSpeech(text)
+    );
+};
+
+
+window.tbStop = function() {
+
+    speechSynthesis.cancel();
+};
+
+
+window.tbClearText = function() {
+
+    document
+    .getElementById(
+        'tb-text'
+    )
+    .value = '';
+
+};
+
+
+/* TELEFON */
+
+window.tbCall = function() {
+
+    var number =
+    document
+    .getElementById(
+        'tb-phone-number'
+    )
+    .value
+    .trim();
+
+
+    if (!number) {
+
+        alert(
+            'Bitte Telefonnummer eingeben.'
+        );
+
+        return;
+    }
+
+
+    window.location.href =
+    'tel:' + number;
+};
+
+
+/* NACHRICHT */
+
+window.tbSendMessage = function() {
+
+    var number =
+    document
+    .getElementById(
+        'tb-message-number'
+    )
+    .value
+    .trim();
+
+
+    var text =
+    document
+    .getElementById(
+        'tb-message-text'
+    )
+    .value
+    .trim();
+
+
+    if (!number || !text) {
+
+        alert(
+            'Bitte Telefonnummer und Nachricht eingeben.'
+        );
+
+        return;
+    }
+
+
+    window.location.href =
+    'sms:' +
+    number +
+    '?body=' +
+    encodeURIComponent(text);
+};
+
+
+/* NOTFALL */
+
+window.tbEmergency = function(number) {
+
+    if (
+        confirm(
+            'Soll jetzt ' +
+            number +
+            ' angerufen werden?'
+        )
+    ) {
+
+        window.location.href =
+        'tel:' + number;
+    }
+};
+
+})();
+
+</script>
+
+</div>
