@@ -1,109 +1,873 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+<title>Tonguebox – Sprich mit deinen Augen</title>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #eef3f8;
+  color: #111;
+}
+
+.app {
+  max-width: 1000px;
+  margin: auto;
+}
+
+h1 {
+  text-align: center;
+  font-size: 42px;
+  margin: 15px 0 5px;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.box {
+  background: white;
+  border-radius: 22px;
+  padding: 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+}
+
+h2 {
+  font-size: 29px;
+}
+
+/* TEXTEINGABE */
+
+textarea {
+  width: 100%;
+  min-height: 220px;
+  font-size: 30px;
+  padding: 20px;
+  border-radius: 18px;
+  border: 4px solid #333;
+  resize: vertical;
+}
+
+textarea:focus,
+button:focus,
+select:focus {
+  outline: 7px solid orange;
+  outline-offset: 4px;
+}
+
+/* GROSSE BUTTONS */
+
+.mainButtons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+button {
+  min-height: 105px;
+  border: none;
+  border-radius: 20px;
+  font-size: 26px;
+  font-weight: bold;
+  padding: 15px;
+  cursor: pointer;
+}
+
+.speak {
+  background: #1565c0;
+  color: white;
+}
+
+.save {
+  background: #2e7d32;
+  color: white;
+}
+
+.ai {
+  background: #673ab7;
+  color: white;
+}
+
+.clear {
+  background: #555;
+  color: white;
+}
+
+/* JA NEIN */
+
+.yesNo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.yes {
+  background: #1b8f3a;
+  color: white;
+  min-height: 135px;
+  font-size: 38px;
+}
+
+.no {
+  background: #c62828;
+  color: white;
+  min-height: 135px;
+  font-size: 38px;
+}
+
+/* SCHNELLAKTIONEN */
+
+.quickGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.quick {
+  background: #e3f2fd;
+  border: 4px solid #1976d2;
+  min-height: 115px;
+  font-size: 24px;
+}
+
+.help {
+  background: #fff3cd;
+  border-color: #ff9800;
+}
+
+.emergency {
+  background: #b71c1c;
+  color: white;
+  border: 4px solid #7f0000;
+}
+
+/* KI VORSCHLÄGE */
+
+#aiSuggestions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-top: 15px;
+}
+
+.aiSuggestion {
+  width: 100%;
+  background: #ede7f6;
+  border: 4px solid #673ab7;
+  color: #111;
+  text-align: left;
+  min-height: 100px;
+}
+
+/* STIMME */
+
+select {
+  width: 100%;
+  min-height: 75px;
+  font-size: 24px;
+  padding: 10px;
+  border-radius: 14px;
+}
+
+label {
+  display: block;
+  font-size: 23px;
+  font-weight: bold;
+  margin: 12px 0;
+}
+
+/* GESPEICHERTE SÄTZE */
+
+.savedItem {
+  margin-bottom: 16px;
+  padding: 12px;
+  background: #f5f5f5;
+  border-radius: 18px;
+}
+
+.savedSpeak {
+  width: 100%;
+  background: #673ab7;
+  color: white;
+  text-align: left;
+}
+
+.savedActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.edit {
+  background: #0277bd;
+  color: white;
+  min-height: 80px;
+}
+
+.delete {
+  background: #c62828;
+  color: white;
+  min-height: 80px;
+}
+
+#status {
+  font-size: 21px;
+  font-weight: bold;
+  padding: 10px;
+}
+
+/* IPHONE */
+
+@media(max-width:600px) {
+
+  body {
+    padding: 7px;
+  }
+
+  h1 {
+    font-size: 35px;
+  }
+
+  textarea {
+    min-height: 250px;
+    font-size: 29px;
+  }
+
+  button {
+    font-size: 23px;
+    min-height: 115px;
+  }
+
+  .yes,
+  .no {
+    min-height: 145px;
+    font-size: 36px;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<main class="app">
+
+<h1>👅 Tonguebox</h1>
+
+<div class="subtitle">
+  Sprich mit deinen Augen
+</div>
+
+
+<!-- TEXTEINGABE -->
+
 <section class="box">
 
-  <h2>⚡ Schnelle Kommunikation</h2>
+<h2>💬 Was möchtest du sagen?</h2>
 
-  <div class="quick-grid">
+<textarea
+ id="text"
+ aria-label="Text eingeben"
+ placeholder="Hier schreiben...">
+</textarea>
 
-    <button class="quick ja"
-      onclick="direktSprechen('Ja')">
-      ✅ JA
-    </button>
+<div class="mainButtons">
 
-    <button class="quick nein"
-      onclick="direktSprechen('Nein')">
-      ❌ NEIN
-    </button>
+<button class="speak"
+ onclick="sprechen()">
+ 🔊 VORLESEN
+</button>
 
-    <button class="quick"
-      onclick="direktSprechen('Hallo')">
-      👋 Hallo
-    </button>
+<button class="save"
+ onclick="textSpeichern()">
+ 💾 SPEICHERN
+</button>
 
-    <button class="quick"
-      onclick="direktSprechen('Danke')">
-      🙏 Danke
-    </button>
+<button class="ai"
+ onclick="kiHilfe()">
+ ✨ KI-HILFE
+</button>
 
-    <button class="quick"
-      onclick="direktSprechen('Bitte')">
-      🙂 Bitte
-    </button>
+<button class="clear"
+ onclick="textLeeren()">
+ 🗑 LEEREN
+</button>
 
-    <button class="quick"
-      onclick="direktSprechen('Bitte warten Sie kurz')">
-      ⏳ Bitte warten
-    </button>
+</div>
 
-    <button class="quick"
-      onclick="direktSprechen('Bitte noch einmal')">
-      🔁 Noch einmal
-    </button>
-
-    <button class="quick"
-      onclick="direktSprechen('Bitte sprechen Sie langsamer')">
-      🐢 Langsamer
-    </button>
-
-    <button class="quick important"
-      onclick="direktSprechen('Ich kann nicht sprechen. Ich kommuniziere mit einer Augensteuerung.')">
-      👁️ Ich kann nicht sprechen
-    </button>
-
-    <button class="quick important"
-      onclick="direktSprechen('Bitte stellen Sie mir Fragen, die ich mit Ja oder Nein beantworten kann.')">
-      ❓ Ja/Nein-Fragen
-    </button>
-
-    <button class="quick help"
-      onclick="direktSprechen('Ich brauche Hilfe')">
-      🆘 Hilfe
-    </button>
-
-    <button class="quick"
-      onclick="direktSprechen('Ich möchte etwas trinken')">
-      🥤 Trinken
-    </button>
-
-    <button class="quick"
-      onclick="direktSprechen('Ich möchte etwas essen')">
-      🍽️ Essen
-    </button>
-
-    <button class="quick"
-      onclick="direktSprechen('Ich muss auf die Toilette')">
-      🚻 WC
-    </button>
-
-    <button class="quick"
-      onclick="direktSprechen('Mir geht es gut')">
-      👍 Mir geht es gut
-    </button>
-
-    <button class="quick help"
-      onclick="direktSprechen('Ich habe Schmerzen')">
-      🤕 Schmerzen
-    </button>
-
-    <button class="quick"
-      onclick="direktSprechen('Bitte geben Sie mir etwas Zeit zum Antworten')">
-      ⏱️ Zeit zum Antworten
-    </button>
-
-    <button class="quick"
-      onclick="direktSprechen('Ich habe Sie verstanden')">
-      ✅ Verstanden
-    </button>
-
-    <button class="quick"
-      onclick="direktSprechen('Ich habe Sie nicht verstanden')">
-      ❔ Nicht verstanden
-    </button>
-
-    <button class="quick emergency"
-      onclick="direktSprechen('Das ist ein Notfall. Bitte holen Sie sofort Hilfe.')">
-      🚨 NOTFALL
-    </button>
-
-  </div>
+<div id="status"
+     role="status"
+     aria-live="polite">
+</div>
 
 </section>
+
+
+<!-- JA / NEIN -->
+
+<section class="box">
+
+<h2>⚡ Sofort antworten</h2>
+
+<div class="yesNo">
+
+<button class="yes"
+ onclick="direktSprechen('Ja')">
+ ✅ JA
+</button>
+
+<button class="no"
+ onclick="direktSprechen('Nein')">
+ ❌ NEIN
+</button>
+
+</div>
+
+</section>
+
+
+<!-- SCHNELLE KOMMUNIKATION -->
+
+<section class="box">
+
+<h2>⚡ Schnell sagen</h2>
+
+<div class="quickGrid">
+
+<button class="quick"
+ onclick="direktSprechen('Hallo')">
+ 👋 Hallo
+</button>
+
+<button class="quick"
+ onclick="direktSprechen('Danke')">
+ 🙏 Danke
+</button>
+
+<button class="quick"
+ onclick="direktSprechen('Bitte warten Sie kurz. Ich brauche etwas Zeit zum Antworten.')">
+ ⏳ Bitte warten
+</button>
+
+<button class="quick"
+ onclick="direktSprechen('Bitte noch einmal.')">
+ 🔁 Noch einmal
+</button>
+
+<button class="quick"
+ onclick="direktSprechen('Bitte sprechen Sie langsamer.')">
+ 🐢 Langsamer
+</button>
+
+<button class="quick"
+ onclick="direktSprechen('Ich habe Sie nicht verstanden.')">
+ ❓ Nicht verstanden
+</button>
+
+<button class="quick"
+ onclick="direktSprechen('Ich kann nicht sprechen. Ich kommuniziere mit einer Augensteuerung.')">
+ 👁️ Augensteuerung
+</button>
+
+<button class="quick"
+ onclick="direktSprechen('Bitte stellen Sie mir Fragen, die ich mit Ja oder Nein beantworten kann.')">
+ ✅❌ Ja/Nein Fragen
+</button>
+
+<button class="quick help"
+ onclick="direktSprechen('Ich brauche Hilfe.')">
+ 🆘 Hilfe
+</button>
+
+<button class="quick"
+ onclick="direktSprechen('Ich möchte etwas trinken.')">
+ 🥤 Trinken
+</button>
+
+<button class="quick"
+ onclick="direktSprechen('Ich möchte etwas essen.')">
+ 🍽️ Essen
+</button>
+
+<button class="quick"
+ onclick="direktSprechen('Ich muss auf die Toilette.')">
+ 🚻 WC
+</button>
+
+<button class="quick"
+ onclick="direktSprechen('Mir geht es gut.')">
+ 👍 Alles gut
+</button>
+
+<button class="quick help"
+ onclick="direktSprechen('Ich habe Schmerzen.')">
+ 🤕 Schmerzen
+</button>
+
+<button class="quick"
+ onclick="direktSprechen('Ich möchte meine Position verändern.')">
+ ♿ Position ändern
+</button>
+
+<button class="quick emergency"
+ onclick="direktSprechen('Das ist ein Notfall. Bitte holen Sie sofort Hilfe.')">
+ 🚨 NOTFALL
+</button>
+
+</div>
+
+</section>
+
+
+<!-- KI -->
+
+<section class="box">
+
+<h2>✨ KI-Kommunikationshilfe</h2>
+
+<p style="font-size:21px;">
+Schreibe wenige Wörter in das Textfeld und wähle
+<strong>KI-Hilfe</strong>.
+</p>
+
+<p style="font-size:19px;">
+Beispiel:
+<strong>„durst wasser“</strong>
+</p>
+
+<p style="font-size:19px;">
+Die KI könnte daraus machen:
+<strong>„Ich habe Durst. Könnten Sie mir bitte etwas Wasser geben?“</strong>
+</p>
+
+<div id="aiSuggestions"></div>
+
+</section>
+
+
+<!-- STIMMEN -->
+
+<section class="box">
+
+<h2>🗣️ Stimme</h2>
+
+<label for="voice">
+Stimme auswählen
+</label>
+
+<select id="voice"></select>
+
+</section>
+
+
+<!-- GESPEICHERTE TEXTE -->
+
+<section class="box">
+
+<h2>⭐ Meine Sätze</h2>
+
+<div id="savedTexts"></div>
+
+</section>
+
+</main>
+
+
+<script>
+
+let stimmen = [];
+let texte = JSON.parse(
+ localStorage.getItem("tongueboxTexte") || "[]"
+);
+
+const textfeld =
+ document.getElementById("text");
+
+const voiceSelect =
+ document.getElementById("voice");
+
+const status =
+ document.getElementById("status");
+
+
+/* STIMMEN */
+
+function stimmenLaden() {
+
+ stimmen =
+   speechSynthesis.getVoices();
+
+ voiceSelect.innerHTML = "";
+
+ stimmen.forEach((voice,index)=>{
+
+   const option =
+     document.createElement("option");
+
+   option.value = index;
+
+   option.textContent =
+     voice.name + " – " + voice.lang;
+
+   voiceSelect.appendChild(option);
+
+ });
+
+ const gespeichert =
+   localStorage.getItem("tongueboxVoice");
+
+ if(gespeichert &&
+    stimmen[gespeichert]) {
+
+   voiceSelect.value =
+     gespeichert;
+
+ }
+
+}
+
+
+speechSynthesis.onvoiceschanged =
+ stimmenLaden;
+
+stimmenLaden();
+
+
+voiceSelect.addEventListener(
+ "change",
+ ()=>{
+
+ localStorage.setItem(
+   "tongueboxVoice",
+   voiceSelect.value
+ );
+
+});
+
+
+/* SPRECHEN */
+
+function textVorlesen(text) {
+
+ speechSynthesis.cancel();
+
+ const utterance =
+   new SpeechSynthesisUtterance(text);
+
+ const voice =
+   stimmen[voiceSelect.value];
+
+ if(voice) {
+   utterance.voice = voice;
+ }
+
+ utterance.rate = 0.95;
+ utterance.volume = 1;
+
+ speechSynthesis.speak(utterance);
+
+}
+
+
+function sprechen() {
+
+ const text =
+   textfeld.value.trim();
+
+ if(!text) {
+
+   status.textContent =
+     "Bitte zuerst etwas schreiben.";
+
+   return;
+ }
+
+ textVorlesen(text);
+
+}
+
+
+function direktSprechen(text) {
+
+ textVorlesen(text);
+
+}
+
+
+function textLeeren() {
+
+ textfeld.value = "";
+
+ status.textContent = "";
+
+}
+
+
+/* SPEICHERN */
+
+function textSpeichern() {
+
+ const text =
+   textfeld.value.trim();
+
+ if(!text) return;
+
+ if(!texte.includes(text)) {
+
+   texte.push(text);
+
+   localStorage.setItem(
+     "tongueboxTexte",
+     JSON.stringify(texte)
+   );
+
+ }
+
+ gespeicherteAnzeigen();
+
+}
+
+
+function gespeicherteAnzeigen() {
+
+ const bereich =
+   document.getElementById(
+     "savedTexts"
+   );
+
+ bereich.innerHTML = "";
+
+ texte.forEach((text,index)=>{
+
+   const item =
+     document.createElement("div");
+
+   item.className =
+     "savedItem";
+
+
+   const sprechenButton =
+     document.createElement("button");
+
+   sprechenButton.className =
+     "savedSpeak";
+
+   sprechenButton.textContent =
+     "🔊 " + text;
+
+   sprechenButton.onclick =
+     ()=> textVorlesen(text);
+
+
+   const actions =
+     document.createElement("div");
+
+   actions.className =
+     "savedActions";
+
+
+   const edit =
+     document.createElement("button");
+
+   edit.className = "edit";
+
+   edit.textContent =
+     "✏️ Bearbeiten";
+
+   edit.onclick =
+     ()=> bearbeiten(index);
+
+
+   const del =
+     document.createElement("button");
+
+   del.className = "delete";
+
+   del.textContent =
+     "🗑 Löschen";
+
+   del.onclick =
+     ()=> loeschen(index);
+
+
+   actions.appendChild(edit);
+   actions.appendChild(del);
+
+   item.appendChild(
+     sprechenButton
+   );
+
+   item.appendChild(
+     actions
+   );
+
+   bereich.appendChild(item);
+
+ });
+
+}
+
+
+function bearbeiten(index) {
+
+ const neu =
+   prompt(
+     "Text bearbeiten:",
+     texte[index]
+   );
+
+ if(neu && neu.trim()) {
+
+   texte[index] =
+     neu.trim();
+
+   localStorage.setItem(
+     "tongueboxTexte",
+     JSON.stringify(texte)
+   );
+
+   gespeicherteAnzeigen();
+
+ }
+
+}
+
+
+function loeschen(index) {
+
+ texte.splice(index,1);
+
+ localStorage.setItem(
+   "tongueboxTexte",
+   JSON.stringify(texte)
+ );
+
+ gespeicherteAnzeigen();
+
+}
+
+
+/* KI-HILFE */
+
+async function kiHilfe() {
+
+ const eingabe =
+   textfeld.value.trim();
+
+ if(!eingabe) {
+
+   status.textContent =
+     "Schreibe zuerst ein paar Wörter.";
+
+   return;
+ }
+
+ status.textContent =
+   "✨ KI erstellt Vorschläge...";
+
+
+ /*
+   ECHTE KI:
+
+   Später kann hier eine Verbindung
+   zu einem eigenen KI-Server hergestellt
+   werden.
+
+   Beispiel:
+
+   const antwort = await fetch("/api/ki", {
+     method: "POST",
+     headers: {
+       "Content-Type": "application/json"
+     },
+     body: JSON.stringify({
+       text: eingabe
+     })
+   });
+
+   const daten = await antwort.json();
+
+ */
+
+
+ /* Demo-Vorschläge */
+
+ const vorschlaege = [
+   eingabe,
+   "Bitte " + eingabe + ".",
+   "Ich möchte " + eingabe + "."
+ ];
+
+ kiVorschlaegeAnzeigen(
+   vorschlaege
+ );
+
+ status.textContent =
+   "Wähle einen Vorschlag.";
+
+}
+
+
+function kiVorschlaegeAnzeigen(
+ vorschlaege
+) {
+
+ const bereich =
+   document.getElementById(
+     "aiSuggestions"
+   );
+
+ bereich.innerHTML = "";
+
+ vorschlaege.forEach(text=>{
+
+   const button =
+     document.createElement("button");
+
+   button.className =
+     "aiSuggestion";
+
+   button.textContent =
+     "✨ " + text;
+
+   button.onclick = ()=>{
+
+     textfeld.value =
+       text;
+
+     textVorlesen(text);
+
+   };
+
+   bereich.appendChild(
+     button
+   );
+
+ });
+
+}
+
+
+gespeicherteAnzeigen();
+
+</script>
+
+</body>
+</html>
