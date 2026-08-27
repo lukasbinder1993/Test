@@ -1,913 +1,109 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<section class="box">
 
-  <title>Tonguebox – Sprich mit deinen Augen</title>
+  <h2>⚡ Schnelle Kommunikation</h2>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+  <div class="quick-grid">
 
-    body {
-      margin: 0;
-      padding: 20px;
-      font-family: Arial, sans-serif;
-      background: #f4f7fb;
-      color: #222;
-    }
+    <button class="quick ja"
+      onclick="direktSprechen('Ja')">
+      ✅ JA
+    </button>
 
-    .app {
-      max-width: 900px;
-      margin: auto;
-    }
+    <button class="quick nein"
+      onclick="direktSprechen('Nein')">
+      ❌ NEIN
+    </button>
 
-    h1 {
-      text-align: center;
-      font-size: 38px;
-      margin-bottom: 5px;
-    }
+    <button class="quick"
+      onclick="direktSprechen('Hallo')">
+      👋 Hallo
+    </button>
 
-    .untertitel {
-      text-align: center;
-      font-size: 20px;
-      margin-bottom: 30px;
-    }
+    <button class="quick"
+      onclick="direktSprechen('Danke')">
+      🙏 Danke
+    </button>
 
-    .box {
-      background: white;
-      padding: 20px;
-      margin-bottom: 25px;
-      border-radius: 18px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.12);
-    }
+    <button class="quick"
+      onclick="direktSprechen('Bitte')">
+      🙂 Bitte
+    </button>
 
-    label {
-      display: block;
-      font-size: 22px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
+    <button class="quick"
+      onclick="direktSprechen('Bitte warten Sie kurz')">
+      ⏳ Bitte warten
+    </button>
 
-    textarea {
-      width: 100%;
-      min-height: 160px;
-      padding: 18px;
-      font-size: 26px;
-      border: 3px solid #555;
-      border-radius: 14px;
-      resize: vertical;
-    }
+    <button class="quick"
+      onclick="direktSprechen('Bitte noch einmal')">
+      🔁 Noch einmal
+    </button>
 
-    select,
-    input[type="range"] {
-      width: 100%;
-      min-height: 60px;
-      font-size: 20px;
-      margin-bottom: 15px;
-    }
+    <button class="quick"
+      onclick="direktSprechen('Bitte sprechen Sie langsamer')">
+      🐢 Langsamer
+    </button>
 
-    button {
-      min-height: 75px;
-      padding: 15px 20px;
-      font-size: 24px;
-      font-weight: bold;
-      border: none;
-      border-radius: 16px;
-      cursor: pointer;
-      margin: 5px;
-    }
+    <button class="quick important"
+      onclick="direktSprechen('Ich kann nicht sprechen. Ich kommuniziere mit einer Augensteuerung.')">
+      👁️ Ich kann nicht sprechen
+    </button>
 
-    button:focus,
-    textarea:focus,
-    select:focus {
-      outline: 5px solid #ff9800;
-      outline-offset: 3px;
-    }
+    <button class="quick important"
+      onclick="direktSprechen('Bitte stellen Sie mir Fragen, die ich mit Ja oder Nein beantworten kann.')">
+      ❓ Ja/Nein-Fragen
+    </button>
 
-    .buttons {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-top: 15px;
-    }
+    <button class="quick help"
+      onclick="direktSprechen('Ich brauche Hilfe')">
+      🆘 Hilfe
+    </button>
 
-    .sprechen {
-      background: #1565c0;
-      color: white;
-    }
+    <button class="quick"
+      onclick="direktSprechen('Ich möchte etwas trinken')">
+      🥤 Trinken
+    </button>
 
-    .speichern {
-      background: #2e7d32;
-      color: white;
-    }
+    <button class="quick"
+      onclick="direktSprechen('Ich möchte etwas essen')">
+      🍽️ Essen
+    </button>
 
-    .stop {
-      background: #ef6c00;
-      color: white;
-    }
+    <button class="quick"
+      onclick="direktSprechen('Ich muss auf die Toilette')">
+      🚻 WC
+    </button>
 
-    .leeren {
-      background: #616161;
-      color: white;
-    }
+    <button class="quick"
+      onclick="direktSprechen('Mir geht es gut')">
+      👍 Mir geht es gut
+    </button>
 
-    .ja-nein {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-    }
+    <button class="quick help"
+      onclick="direktSprechen('Ich habe Schmerzen')">
+      🤕 Schmerzen
+    </button>
 
-    .ja {
-      background: #2e7d32;
-      color: white;
-      min-height: 100px;
-      font-size: 32px;
-    }
+    <button class="quick"
+      onclick="direktSprechen('Bitte geben Sie mir etwas Zeit zum Antworten')">
+      ⏱️ Zeit zum Antworten
+    </button>
 
-    .nein {
-      background: #c62828;
-      color: white;
-      min-height: 100px;
-      font-size: 32px;
-    }
+    <button class="quick"
+      onclick="direktSprechen('Ich habe Sie verstanden')">
+      ✅ Verstanden
+    </button>
 
-    #gespeicherteTexte {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
+    <button class="quick"
+      onclick="direktSprechen('Ich habe Sie nicht verstanden')">
+      ❔ Nicht verstanden
+    </button>
 
-    .satz {
-      border: 2px solid #ccc;
-      padding: 12px;
-      border-radius: 15px;
-      background: #fafafa;
-    }
+    <button class="quick emergency"
+      onclick="direktSprechen('Das ist ein Notfall. Bitte holen Sie sofort Hilfe.')">
+      🚨 NOTFALL
+    </button>
 
-    .satzText {
-      width: 100%;
-      background: #673ab7;
-      color: white;
-      margin: 0 0 10px 0;
-      text-align: left;
-      min-height: 85px;
-    }
-
-    .satzAktionen {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .bearbeiten {
-      background: #0277bd;
-      color: white;
-    }
-
-    .loeschen {
-      background: #c62828;
-      color: white;
-    }
-
-    .hinweis {
-      padding: 15px;
-      background: #e3f2fd;
-      border-radius: 12px;
-      font-size: 18px;
-      line-height: 1.5;
-    }
-
-    #status {
-      margin-top: 15px;
-      padding: 12px;
-      font-size: 18px;
-      font-weight: bold;
-    }
-
-    @media (max-width: 650px) {
-      body {
-        padding: 10px;
-      }
-
-      h1 {
-        font-size: 32px;
-      }
-
-      .buttons {
-        grid-template-columns: 1fr;
-      }
-
-      button {
-        width: 100%;
-        margin: 3px 0;
-      }
-
-      .satzAktionen {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-<main class="app">
-
-  <h1>👅 Tonguebox</h1>
-  <div class="untertitel">
-    Sprich mit deinen Augen
   </div>
 
-  <!-- Texteingabe -->
-  <section class="box">
-
-    <label for="text">
-      Was möchtest du sagen?
-    </label>
-
-    <textarea
-      id="text"
-      aria-label="Text zum Vorlesen"
-      placeholder="Schreibe hier deinen Text..."
-    ></textarea>
-
-    <div class="buttons">
-
-      <button
-        class="sprechen"
-        onclick="sprechen()"
-        aria-label="Text vorlesen">
-        🔊 Vorlesen
-      </button>
-
-      <button
-        class="speichern"
-        onclick="textSpeichern()"
-        aria-label="Text als Button speichern">
-        💾 Speichern
-      </button>
-
-      <button
-        class="stop"
-        onclick="stoppen()"
-        aria-label="Vorlesen stoppen">
-        ⏹ Stop
-      </button>
-
-      <button
-        class="leeren"
-        onclick="textLeeren()"
-        aria-label="Texteingabe leeren">
-        🗑 Text leeren
-      </button>
-
-    </div>
-
-    <div
-      id="status"
-      role="status"
-      aria-live="polite">
-    </div>
-
-  </section>
-
-
-  <!-- JA / NEIN -->
-  <section class="box">
-
-    <h2>Schnelle Kommunikation</h2>
-
-    <div class="ja-nein">
-
-      <button
-        class="ja"
-        onclick="direktSprechen('Ja')">
-        ✅ JA
-      </button>
-
-      <button
-        class="nein"
-        onclick="direktSprechen('Nein')">
-        ❌ NEIN
-      </button>
-
-    </div>
-
-  </section>
-
-
-  <!-- Stimmen -->
-  <section class="box">
-
-    <label for="stimme">
-      Stimme auswählen
-    </label>
-
-    <select
-      id="stimme"
-      aria-label="Stimme auswählen">
-    </select>
-
-    <label for="lautstaerke">
-      Lautstärke
-    </label>
-
-    <input
-      id="lautstaerke"
-      type="range"
-      min="0"
-      max="1"
-      value="1"
-      step="0.1"
-      aria-label="Lautstärke">
-
-  </section>
-
-
-  <!-- gespeicherte Sätze -->
-  <section class="box">
-
-    <h2>Meine gespeicherten Sätze</h2>
-
-    <div id="gespeicherteTexte"></div>
-
-  </section>
-
-
-  <!-- Information -->
-  <section class="box">
-
-    <h2>Über die Tonguebox</h2>
-
-    <div class="hinweis">
-      Die Tonguebox wandelt geschriebene Texte in Sprache um.
-      Gespeicherte Texte können jederzeit erneut vorgelesen,
-      bearbeitet oder gelöscht werden.
-
-      <br><br>
-
-      Die großen Bedienelemente sind besonders für
-      Touchscreens und Blicksteuerungen geeignet.
-
-      <br><br>
-
-      Die verfügbaren Stimmen hängen vom verwendeten Gerät
-      und Browser ab.
-    </div>
-
-  </section>
-
-</main>
-
-
-<script>
-
-  let stimmen = [];
-  let texte = [];
-
-  const textFeld =
-    document.getElementById("text");
-
-  const stimmenAuswahl =
-    document.getElementById("stimme");
-
-  const lautstaerke =
-    document.getElementById("lautstaerke");
-
-  const status =
-    document.getElementById("status");
-
-
-  // ------------------------------
-  // Stimmen laden
-  // ------------------------------
-
-  function stimmenLaden() {
-
-    stimmen =
-      window.speechSynthesis.getVoices();
-
-    stimmenAuswahl.innerHTML = "";
-
-    if (stimmen.length === 0) {
-
-      const option =
-        document.createElement("option");
-
-      option.textContent =
-        "Stimmen werden geladen...";
-
-      stimmenAuswahl.appendChild(option);
-
-      return;
-    }
-
-    stimmen.forEach((stimme, index) => {
-
-      const option =
-        document.createElement("option");
-
-      option.value = index;
-
-      option.textContent =
-        stimme.name +
-        " – " +
-        stimme.lang;
-
-      stimmenAuswahl.appendChild(option);
-
-    });
-
-
-    // gespeicherte Stimme wiederherstellen
-
-    const gespeichert =
-      localStorage.getItem(
-        "tongueboxStimme"
-      );
-
-    if (
-      gespeichert !== null &&
-      stimmen[gespeichert]
-    ) {
-
-      stimmenAuswahl.value =
-        gespeichert;
-
-    }
-
-  }
-
-
-  speechSynthesis.onvoiceschanged =
-    stimmenLaden;
-
-  stimmenLaden();
-
-
-  // Stimme speichern
-
-  stimmenAuswahl.addEventListener(
-    "change",
-    function() {
-
-      localStorage.setItem(
-        "tongueboxStimme",
-        stimmenAuswahl.value
-      );
-
-    }
-  );
-
-
-  // ------------------------------
-  // Text sprechen
-  // ------------------------------
-
-  function sprechen() {
-
-    const text =
-      textFeld.value.trim();
-
-    if (!text) {
-
-      status.textContent =
-        "Bitte zuerst einen Text eingeben.";
-
-      return;
-
-    }
-
-    textVorlesen(text);
-
-  }
-
-
-  function direktSprechen(text) {
-
-    textVorlesen(text);
-
-  }
-
-
-  function textVorlesen(text) {
-
-    speechSynthesis.cancel();
-
-    const sprache =
-      new SpeechSynthesisUtterance(text);
-
-    const index =
-      stimmenAuswahl.value;
-
-    if (stimmen[index]) {
-
-      sprache.voice =
-        stimmen[index];
-
-      sprache.lang =
-        stimmen[index].lang;
-
-    }
-
-    sprache.volume =
-      Number(lautstaerke.value);
-
-    sprache.onstart =
-      function() {
-
-        status.textContent =
-          "🔊 Tonguebox spricht...";
-
-      };
-
-    sprache.onend =
-      function() {
-
-        status.textContent =
-          "";
-
-      };
-
-    sprache.onerror =
-      function() {
-
-        status.textContent =
-          "Die Sprachausgabe konnte nicht gestartet werden.";
-
-      };
-
-    speechSynthesis.speak(
-      sprache
-    );
-
-  }
-
-
-  // ------------------------------
-  // Stop
-  // ------------------------------
-
-  function stoppen() {
-
-    speechSynthesis.cancel();
-
-    status.textContent =
-      "Vorlesen gestoppt.";
-
-  }
-
-
-  // ------------------------------
-  // Textfeld leeren
-  // ------------------------------
-
-  function textLeeren() {
-
-    textFeld.value = "";
-
-    textFeld.focus();
-
-  }
-
-
-  // ------------------------------
-  // Text speichern
-  // ------------------------------
-
-  function textSpeichern() {
-
-    const text =
-      textFeld.value.trim();
-
-    if (!text) {
-
-      status.textContent =
-        "Bitte zuerst einen Text eingeben.";
-
-      return;
-
-    }
-
-
-    // keine doppelten Texte
-
-    if (texte.includes(text)) {
-
-      status.textContent =
-        "Dieser Text ist bereits gespeichert.";
-
-      return;
-
-    }
-
-
-    texte.push(text);
-
-    speichern();
-
-    anzeigen();
-
-    status.textContent =
-      "Text wurde gespeichert.";
-
-  }
-
-
-  // ------------------------------
-  // Browser Speicher
-  // ------------------------------
-
-  function speichern() {
-
-    localStorage.setItem(
-      "tongueboxTexte",
-      JSON.stringify(texte)
-    );
-
-  }
-
-
-  function laden() {
-
-    const daten =
-      localStorage.getItem(
-        "tongueboxTexte"
-      );
-
-    if (daten) {
-
-      try {
-
-        texte =
-          JSON.parse(daten);
-
-      }
-
-      catch {
-
-        texte = [];
-
-      }
-
-    }
-
-    anzeigen();
-
-  }
-
-
-  // ------------------------------
-  // Gespeicherte Texte anzeigen
-  // ------------------------------
-
-  function anzeigen() {
-
-    const bereich =
-      document.getElementById(
-        "gespeicherteTexte"
-      );
-
-    bereich.innerHTML = "";
-
-
-    if (texte.length === 0) {
-
-      const info =
-        document.createElement("p");
-
-      info.textContent =
-        "Noch keine Texte gespeichert.";
-
-      bereich.appendChild(info);
-
-      return;
-
-    }
-
-
-    texte.forEach(
-      function(text, index) {
-
-        const box =
-          document.createElement("div");
-
-        box.className = "satz";
-
-
-        // Sprechen Button
-
-        const textButton =
-          document.createElement("button");
-
-        textButton.className =
-          "satzText";
-
-        textButton.textContent =
-          "🔊 " + text;
-
-        textButton.setAttribute(
-          "aria-label",
-          text + " vorlesen"
-        );
-
-        textButton.onclick =
-          function() {
-
-            textVorlesen(
-              texte[index]
-            );
-
-          };
-
-
-        // Aktionen
-
-        const aktionen =
-          document.createElement("div");
-
-        aktionen.className =
-          "satzAktionen";
-
-
-        // Bearbeiten
-
-        const bearbeiten =
-          document.createElement("button");
-
-        bearbeiten.className =
-          "bearbeiten";
-
-        bearbeiten.textContent =
-          "✏️ Bearbeiten";
-
-        bearbeiten.onclick =
-          function() {
-
-            textBearbeiten(index);
-
-          };
-
-
-        // Löschen
-
-        const loeschen =
-          document.createElement("button");
-
-        loeschen.className =
-          "loeschen";
-
-        loeschen.textContent =
-          "🗑 Löschen";
-
-        loeschen.onclick =
-          function() {
-
-            textLoeschen(index);
-
-          };
-
-
-        aktionen.appendChild(
-          bearbeiten
-        );
-
-        aktionen.appendChild(
-          loeschen
-        );
-
-        box.appendChild(
-          textButton
-        );
-
-        box.appendChild(
-          aktionen
-        );
-
-        bereich.appendChild(
-          box
-        );
-
-      }
-    );
-
-  }
-
-
-  // ------------------------------
-  // Bearbeiten
-  // ------------------------------
-
-  function textBearbeiten(index) {
-
-    const neuerText =
-      prompt(
-        "Text bearbeiten:",
-        texte[index]
-      );
-
-    if (
-      neuerText === null
-    ) {
-
-      return;
-
-    }
-
-    const sauber =
-      neuerText.trim();
-
-    if (!sauber) {
-
-      return;
-
-    }
-
-    texte[index] =
-      sauber;
-
-    speichern();
-
-    anzeigen();
-
-    status.textContent =
-      "Text wurde geändert.";
-
-  }
-
-
-  // ------------------------------
-  // Löschen
-  // ------------------------------
-
-  function textLoeschen(index) {
-
-    const wirklich =
-      confirm(
-        "Diesen gespeicherten Text wirklich löschen?"
-      );
-
-    if (!wirklich) {
-
-      return;
-
-    }
-
-    texte.splice(
-      index,
-      1
-    );
-
-    speichern();
-
-    anzeigen();
-
-    status.textContent =
-      "Text wurde gelöscht.";
-
-  }
-
-
-  // ------------------------------
-  // Lautstärke speichern
-  // ------------------------------
-
-  lautstaerke.addEventListener(
-    "change",
-    function() {
-
-      localStorage.setItem(
-        "tongueboxLautstaerke",
-        lautstaerke.value
-      );
-
-    }
-  );
-
-
-  const gespeicherteLautstaerke =
-    localStorage.getItem(
-      "tongueboxLautstaerke"
-    );
-
-  if (
-    gespeicherteLautstaerke !== null
-  ) {
-
-    lautstaerke.value =
-      gespeicherteLautstaerke;
-
-  }
-
-
-  // gespeicherte Texte laden
-
-  laden();
-
-</script>
-
-</body>
-</html>
+</section>
