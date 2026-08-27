@@ -1,807 +1,913 @@
-<div id="tonguebox">
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-#tonguebox {
-    font-family: Arial, sans-serif;
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 15px;
-    text-align: center;
-}
+  <title>Tonguebox – Sprich mit deinen Augen</title>
 
-#tonguebox * {
-    box-sizing: border-box;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-#tonguebox h1 {
-    font-size: 36px;
-    margin-bottom: 5px;
-}
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      color: #222;
+    }
 
-#tonguebox h2 {
-    font-size: 30px;
-}
+    .app {
+      max-width: 900px;
+      margin: auto;
+    }
 
-#tonguebox p {
-    font-size: 20px;
-}
+    h1 {
+      text-align: center;
+      font-size: 38px;
+      margin-bottom: 5px;
+    }
 
-#tonguebox button {
-    width: 100%;
-    min-height: 95px;
-    margin: 10px 0;
-    padding: 18px;
-    font-size: 26px;
-    font-weight: bold;
-    border: 3px solid #222;
-    border-radius: 18px;
-    cursor: pointer;
-}
+    .untertitel {
+      text-align: center;
+      font-size: 20px;
+      margin-bottom: 30px;
+    }
 
-#tonguebox button:focus,
-#tonguebox textarea:focus,
-#tonguebox input:focus,
-#tonguebox select:focus {
-    outline: 6px solid #000;
-    outline-offset: 3px;
-}
+    .box {
+      background: white;
+      padding: 20px;
+      margin-bottom: 25px;
+      border-radius: 18px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    }
 
-#tonguebox textarea,
-#tonguebox input,
-#tonguebox select {
-    width: 100%;
-    margin: 8px 0 15px;
-    padding: 17px;
-    font-size: 24px;
-    border: 3px solid #222;
-    border-radius: 15px;
-    background: white;
-}
+    label {
+      display: block;
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
 
-#tonguebox textarea {
-    min-height: 170px;
-}
+    textarea {
+      width: 100%;
+      min-height: 160px;
+      padding: 18px;
+      font-size: 26px;
+      border: 3px solid #555;
+      border-radius: 14px;
+      resize: vertical;
+    }
 
-.tb-page {
-    display: none;
-}
+    select,
+    input[type="range"] {
+      width: 100%;
+      min-height: 60px;
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
 
-.tb-page.active {
-    display: block;
-}
+    button {
+      min-height: 75px;
+      padding: 15px 20px;
+      font-size: 24px;
+      font-weight: bold;
+      border: none;
+      border-radius: 16px;
+      cursor: pointer;
+      margin: 5px;
+    }
 
-.tb-menu {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
+    button:focus,
+    textarea:focus,
+    select:focus {
+      outline: 5px solid #ff9800;
+      outline-offset: 3px;
+    }
 
-.tb-menu button {
-    min-height: 125px !important;
-}
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 15px;
+    }
 
-.tb-green {
-    background: #198754;
-    color: white;
-}
+    .sprechen {
+      background: #1565c0;
+      color: white;
+    }
 
-.tb-blue {
-    background: #1976d2;
-    color: white;
-}
+    .speichern {
+      background: #2e7d32;
+      color: white;
+    }
 
-.tb-red {
-    background: #c00000;
-    color: white;
-}
+    .stop {
+      background: #ef6c00;
+      color: white;
+    }
 
-.tb-yellow {
-    background: #ffc107;
-    color: black;
-}
+    .leeren {
+      background: #616161;
+      color: white;
+    }
 
-.tb-orange {
-    background: #e87500;
-    color: white;
-}
+    .ja-nein {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
 
-.tb-gray {
-    background: #555;
-    color: white;
-}
+    .ja {
+      background: #2e7d32;
+      color: white;
+      min-height: 100px;
+      font-size: 32px;
+    }
 
-.tb-yesno {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-}
+    .nein {
+      background: #c62828;
+      color: white;
+      min-height: 100px;
+      font-size: 32px;
+    }
 
-.tb-yesno button {
-    min-height: 230px !important;
-    font-size: 48px !important;
-}
+    #gespeicherteTexte {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
 
-.tb-info {
-    padding: 15px;
-    border: 2px solid #333;
-    border-radius: 12px;
-    background: #fff;
-    font-size: 19px;
-    margin: 10px 0;
-}
+    .satz {
+      border: 2px solid #ccc;
+      padding: 12px;
+      border-radius: 15px;
+      background: #fafafa;
+    }
 
-.tb-small-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
+    .satzText {
+      width: 100%;
+      background: #673ab7;
+      color: white;
+      margin: 0 0 10px 0;
+      text-align: left;
+      min-height: 85px;
+    }
 
-@media (max-width: 600px) {
+    .satzAktionen {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
 
-    .tb-menu {
+    .bearbeiten {
+      background: #0277bd;
+      color: white;
+    }
+
+    .loeschen {
+      background: #c62828;
+      color: white;
+    }
+
+    .hinweis {
+      padding: 15px;
+      background: #e3f2fd;
+      border-radius: 12px;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+
+    #status {
+      margin-top: 15px;
+      padding: 12px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 650px) {
+      body {
+        padding: 10px;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+
+      .buttons {
         grid-template-columns: 1fr;
-    }
+      }
 
-    .tb-yesno {
-        grid-template-columns: 1fr 1fr;
-    }
+      button {
+        width: 100%;
+        margin: 3px 0;
+      }
 
-    .tb-small-grid {
+      .satzAktionen {
         grid-template-columns: 1fr;
+      }
     }
+  </style>
+</head>
 
-    #tonguebox button {
-        font-size: 23px;
-    }
-}
-</style>
+<body>
 
+<main class="app">
 
-<!-- START -->
+  <h1>👅 Tonguebox</h1>
+  <div class="untertitel">
+    Sprich mit deinen Augen
+  </div>
 
-<section id="tb-start" class="tb-page active">
+  <!-- Texteingabe -->
+  <section class="box">
+
+    <label for="text">
+      Was möchtest du sagen?
+    </label>
 
-<h1>🗣️ Tonguebox</h1>
+    <textarea
+      id="text"
+      aria-label="Text zum Vorlesen"
+      placeholder="Schreibe hier deinen Text..."
+    ></textarea>
 
-<p>Kommunikation mit Blickerfassung</p>
+    <div class="buttons">
 
-<div class="tb-menu">
+      <button
+        class="sprechen"
+        onclick="sprechen()"
+        aria-label="Text vorlesen">
+        🔊 Vorlesen
+      </button>
 
-<button
-class="tb-blue"
-aria-label="Text schreiben und vorlesen"
-onclick="tbShow('tb-speak')">
-📝<br>SPRECHEN
-</button>
+      <button
+        class="speichern"
+        onclick="textSpeichern()"
+        aria-label="Text als Button speichern">
+        💾 Speichern
+      </button>
 
-<button
-class="tb-green"
-aria-label="Ja oder Nein Kommunikation"
-onclick="tbShow('tb-yesno')">
-👍<br>JA / NEIN
-</button>
+      <button
+        class="stop"
+        onclick="stoppen()"
+        aria-label="Vorlesen stoppen">
+        ⏹ Stop
+      </button>
 
-<button
-class="tb-blue"
-aria-label="Telefonieren"
-onclick="tbShow('tb-phone')">
-📞<br>TELEFON
-</button>
+      <button
+        class="leeren"
+        onclick="textLeeren()"
+        aria-label="Texteingabe leeren">
+        🗑 Text leeren
+      </button>
 
-<button
-class="tb-yellow"
-aria-label="Nachricht senden"
-onclick="tbShow('tb-message')">
-💬<br>NACHRICHT
-</button>
+    </div>
 
-<button
-class="tb-red"
-aria-label="Notfall"
-onclick="tbShow('tb-emergency')">
-🚨<br>NOTFALL
-</button>
+    <div
+      id="status"
+      role="status"
+      aria-live="polite">
+    </div>
 
-</div>
+  </section>
 
-</section>
 
+  <!-- JA / NEIN -->
+  <section class="box">
 
-<!-- SPRECHEN -->
+    <h2>Schnelle Kommunikation</h2>
 
-<section id="tb-speak" class="tb-page">
+    <div class="ja-nein">
 
-<h2>📝 Sprechen</h2>
+      <button
+        class="ja"
+        onclick="direktSprechen('Ja')">
+        ✅ JA
+      </button>
 
-<label for="tb-text">
-<strong>Was möchtest du sagen?</strong>
-</label>
+      <button
+        class="nein"
+        onclick="direktSprechen('Nein')">
+        ❌ NEIN
+      </button>
 
-<textarea
-id="tb-text"
-placeholder="Hier Text eingeben..."
-aria-label="Text zum Vorlesen">
-</textarea>
+    </div>
 
+  </section>
 
-<label for="tb-voice">
-<strong>Stimme auswählen</strong>
-</label>
 
-<select
-id="tb-voice"
-aria-label="Stimme auswählen">
+  <!-- Stimmen -->
+  <section class="box">
 
-<option value="">
-Automatische deutsche Stimme
-</option>
+    <label for="stimme">
+      Stimme auswählen
+    </label>
 
-</select>
+    <select
+      id="stimme"
+      aria-label="Stimme auswählen">
+    </select>
 
+    <label for="lautstaerke">
+      Lautstärke
+    </label>
 
-<div
-id="tb-voice-info"
-class="tb-info"
-aria-live="polite">
-Verfügbare Stimmen werden geladen.
-</div>
+    <input
+      id="lautstaerke"
+      type="range"
+      min="0"
+      max="1"
+      value="1"
+      step="0.1"
+      aria-label="Lautstärke">
 
+  </section>
 
-<button
-class="tb-green"
-onclick="tbSpeak()"
-aria-label="Text vorlesen">
-🔊 VORLESEN
-</button>
 
+  <!-- gespeicherte Sätze -->
+  <section class="box">
 
-<div class="tb-small-grid">
+    <h2>Meine gespeicherten Sätze</h2>
 
-<button
-class="tb-orange"
-onclick="tbStop()"
-aria-label="Vorlesen stoppen">
-⏹ STOP
-</button>
+    <div id="gespeicherteTexte"></div>
 
-<button
-class="tb-gray"
-onclick="tbClearText()"
-aria-label="Textfeld leeren">
-🗑 TEXT LÖSCHEN
-</button>
+  </section>
 
-</div>
 
+  <!-- Information -->
+  <section class="box">
 
-<button
-class="tb-gray"
-onclick="tbShow('tb-start')">
-← ZURÜCK
-</button>
+    <h2>Über die Tonguebox</h2>
 
-</section>
+    <div class="hinweis">
+      Die Tonguebox wandelt geschriebene Texte in Sprache um.
+      Gespeicherte Texte können jederzeit erneut vorgelesen,
+      bearbeitet oder gelöscht werden.
 
+      <br><br>
 
-<!-- JA NEIN -->
+      Die großen Bedienelemente sind besonders für
+      Touchscreens und Blicksteuerungen geeignet.
 
-<section id="tb-yesno" class="tb-page">
+      <br><br>
 
-<h2>JA oder NEIN?</h2>
+      Die verfügbaren Stimmen hängen vom verwendeten Gerät
+      und Browser ab.
+    </div>
 
-<div class="tb-yesno">
+  </section>
 
-<button
-class="tb-green"
-onclick="tbSay('JA')"
-aria-label="Ja">
-JA
-</button>
-
-<button
-class="tb-red"
-onclick="tbSay('NEIN')"
-aria-label="Nein">
-NEIN
-</button>
-
-</div>
-
-<button
-class="tb-gray"
-onclick="tbShow('tb-start')">
-← ZURÜCK
-</button>
-
-</section>
-
-
-<!-- TELEFON -->
-
-<section id="tb-phone" class="tb-page">
-
-<h2>📞 Telefon</h2>
-
-<label for="tb-phone-number">
-<strong>Telefonnummer</strong>
-</label>
-
-<input
-id="tb-phone-number"
-type="tel"
-inputmode="tel"
-placeholder="+43 ..."
-aria-label="Telefonnummer">
-
-
-<button
-class="tb-green"
-onclick="tbCall()"
-aria-label="Telefonnummer anrufen">
-📞 ANRUFEN
-</button>
-
-
-<button
-class="tb-gray"
-onclick="tbShow('tb-start')">
-← ZURÜCK
-</button>
-
-</section>
-
-
-<!-- NACHRICHT -->
-
-<section id="tb-message" class="tb-page">
-
-<h2>💬 Nachricht</h2>
-
-<label for="tb-message-number">
-<strong>Telefonnummer</strong>
-</label>
-
-<input
-id="tb-message-number"
-type="tel"
-inputmode="tel"
-placeholder="+43 ..."
-aria-label="Telefonnummer">
-
-
-<label for="tb-message-text">
-<strong>Nachricht</strong>
-</label>
-
-<textarea
-id="tb-message-text"
-placeholder="Nachricht schreiben..."
-aria-label="Nachricht">
-</textarea>
-
-
-<button
-class="tb-yellow"
-onclick="tbSendMessage()"
-aria-label="Nachricht senden">
-💬 NACHRICHT SENDEN
-</button>
-
-
-<button
-class="tb-gray"
-onclick="tbShow('tb-start')">
-← ZURÜCK
-</button>
-
-</section>
-
-
-<!-- NOTFALL -->
-
-<section id="tb-emergency" class="tb-page">
-
-<h2>🚨 Notfall</h2>
-
-<p>
-Bitte nur im tatsächlichen Notfall verwenden.
-</p>
-
-
-<button
-class="tb-red"
-onclick="tbEmergency('144')"
-aria-label="Rettung 144 anrufen">
-🚑 RETTUNG 144
-</button>
-
-
-<button
-class="tb-red"
-onclick="tbEmergency('112')"
-aria-label="Euro Notruf 112 anrufen">
-🚨 NOTRUF 112
-</button>
-
-
-<div class="tb-small-grid">
-
-<button
-class="tb-blue"
-onclick="tbEmergency('133')"
-aria-label="Polizei 133 anrufen">
-👮 POLIZEI 133
-</button>
-
-<button
-class="tb-orange"
-onclick="tbEmergency('122')"
-aria-label="Feuerwehr 122 anrufen">
-🚒 FEUERWEHR 122
-</button>
-
-</div>
-
-
-<button
-class="tb-gray"
-onclick="tbShow('tb-start')">
-← ZURÜCK
-</button>
-
-</section>
+</main>
 
 
 <script>
 
-(function() {
+  let stimmen = [];
+  let texte = [];
 
-var tbVoices = [];
+  const textFeld =
+    document.getElementById("text");
 
-var tbVoiceSelect =
-document.getElementById('tb-voice');
+  const stimmenAuswahl =
+    document.getElementById("stimme");
+
+  const lautstaerke =
+    document.getElementById("lautstaerke");
+
+  const status =
+    document.getElementById("status");
 
 
-/* SEITEN */
+  // ------------------------------
+  // Stimmen laden
+  // ------------------------------
 
-window.tbShow = function(id) {
+  function stimmenLaden() {
 
-    var pages =
-    document.querySelectorAll(
-        '#tonguebox .tb-page'
-    );
+    stimmen =
+      window.speechSynthesis.getVoices();
 
-    for (var i = 0; i < pages.length; i++) {
-        pages[i].classList.remove('active');
+    stimmenAuswahl.innerHTML = "";
+
+    if (stimmen.length === 0) {
+
+      const option =
+        document.createElement("option");
+
+      option.textContent =
+        "Stimmen werden geladen...";
+
+      stimmenAuswahl.appendChild(option);
+
+      return;
     }
 
-    var page =
-    document.getElementById(id);
+    stimmen.forEach((stimme, index) => {
 
-    if (page) {
-        page.classList.add('active');
+      const option =
+        document.createElement("option");
 
-        var heading =
-        page.querySelector('h1, h2');
+      option.value = index;
 
-        if (heading) {
-            heading.setAttribute(
-                'tabindex',
-                '-1'
-            );
-            heading.focus();
-        }
-    }
-};
+      option.textContent =
+        stimme.name +
+        " – " +
+        stimme.lang;
+
+      stimmenAuswahl.appendChild(option);
+
+    });
 
 
-/* STIMMEN */
+    // gespeicherte Stimme wiederherstellen
 
-function tbLoadVoices() {
-
-    tbVoices =
-    window.speechSynthesis.getVoices();
-
-    tbVoiceSelect.innerHTML = '';
-
-    var autoOption =
-    document.createElement('option');
-
-    autoOption.value = '';
-
-    autoOption.textContent =
-    'Automatische deutsche Stimme';
-
-    tbVoiceSelect.appendChild(
-        autoOption
-    );
-
-
-    var count = 0;
-
-
-    for (
-        var i = 0;
-        i < tbVoices.length;
-        i++
-    ) {
-
-        var voice =
-        tbVoices[i];
-
-        /*
-        Deutsche Stimmen zuerst anzeigen.
-        Andere Stimmen werden ebenfalls angezeigt.
-        */
-
-        var option =
-        document.createElement(
-            'option'
-        );
-
-        option.value = i;
-
-        var language =
-        voice.lang || '';
-
-        var label =
-        voice.name +
-        ' – ' +
-        language;
-
-        if (
-            language
-            .toLowerCase()
-            .indexOf('de') === 0
-        ) {
-
-            label =
-            '🇩🇪 ' + label;
-        }
-
-        option.textContent =
-        label;
-
-        tbVoiceSelect.appendChild(
-            option
-        );
-
-        count++;
-    }
-
-
-    document
-    .getElementById(
-        'tb-voice-info'
-    )
-    .textContent =
-    count +
-    ' Stimmen auf diesem Gerät gefunden.';
-
-
-    var savedVoice =
-    localStorage.getItem(
-        'tb-selected-voice'
-    );
-
-    if (savedVoice !== null) {
-
-        tbVoiceSelect.value =
-        savedVoice;
-    }
-}
-
-
-tbVoiceSelect.addEventListener(
-'change',
-function() {
-
-    localStorage.setItem(
-        'tb-selected-voice',
-        this.value
-    );
-
-});
-
-
-window.speechSynthesis
-.onvoiceschanged =
-tbLoadVoices;
-
-
-tbLoadVoices();
-
-setTimeout(
-    tbLoadVoices,
-    500
-);
-
-setTimeout(
-    tbLoadVoices,
-    1500
-);
-
-
-/* SPRECHEN */
-
-function tbCreateSpeech(text) {
-
-    var speech =
-    new SpeechSynthesisUtterance(text);
-
-    var selected =
-    tbVoiceSelect.value;
-
+    const gespeichert =
+      localStorage.getItem(
+        "tongueboxStimme"
+      );
 
     if (
-        selected !== '' &&
-        tbVoices[selected]
+      gespeichert !== null &&
+      stimmen[gespeichert]
     ) {
 
-        speech.voice =
-        tbVoices[selected];
+      stimmenAuswahl.value =
+        gespeichert;
 
-        speech.lang =
-        tbVoices[selected].lang;
-
-    } else {
-
-        speech.lang =
-        'de-DE';
     }
 
-
-    speech.rate = 0.9;
-    speech.volume = 1;
-    speech.pitch = 1;
-
-    return speech;
-}
+  }
 
 
-window.tbSpeak = function() {
+  speechSynthesis.onvoiceschanged =
+    stimmenLaden;
 
-    var text =
-    document
-    .getElementById(
-        'tb-text'
-    )
-    .value
-    .trim();
+  stimmenLaden();
 
+
+  // Stimme speichern
+
+  stimmenAuswahl.addEventListener(
+    "change",
+    function() {
+
+      localStorage.setItem(
+        "tongueboxStimme",
+        stimmenAuswahl.value
+      );
+
+    }
+  );
+
+
+  // ------------------------------
+  // Text sprechen
+  // ------------------------------
+
+  function sprechen() {
+
+    const text =
+      textFeld.value.trim();
 
     if (!text) {
 
-        alert(
-            'Bitte zuerst einen Text eingeben.'
-        );
+      status.textContent =
+        "Bitte zuerst einen Text eingeben.";
 
-        return;
+      return;
+
     }
 
+    textVorlesen(text);
+
+  }
+
+
+  function direktSprechen(text) {
+
+    textVorlesen(text);
+
+  }
+
+
+  function textVorlesen(text) {
 
     speechSynthesis.cancel();
+
+    const sprache =
+      new SpeechSynthesisUtterance(text);
+
+    const index =
+      stimmenAuswahl.value;
+
+    if (stimmen[index]) {
+
+      sprache.voice =
+        stimmen[index];
+
+      sprache.lang =
+        stimmen[index].lang;
+
+    }
+
+    sprache.volume =
+      Number(lautstaerke.value);
+
+    sprache.onstart =
+      function() {
+
+        status.textContent =
+          "🔊 Tonguebox spricht...";
+
+      };
+
+    sprache.onend =
+      function() {
+
+        status.textContent =
+          "";
+
+      };
+
+    sprache.onerror =
+      function() {
+
+        status.textContent =
+          "Die Sprachausgabe konnte nicht gestartet werden.";
+
+      };
 
     speechSynthesis.speak(
-        tbCreateSpeech(text)
+      sprache
     );
-};
+
+  }
 
 
-window.tbSay = function(text) {
+  // ------------------------------
+  // Stop
+  // ------------------------------
+
+  function stoppen() {
 
     speechSynthesis.cancel();
 
-    speechSynthesis.speak(
-        tbCreateSpeech(text)
+    status.textContent =
+      "Vorlesen gestoppt.";
+
+  }
+
+
+  // ------------------------------
+  // Textfeld leeren
+  // ------------------------------
+
+  function textLeeren() {
+
+    textFeld.value = "";
+
+    textFeld.focus();
+
+  }
+
+
+  // ------------------------------
+  // Text speichern
+  // ------------------------------
+
+  function textSpeichern() {
+
+    const text =
+      textFeld.value.trim();
+
+    if (!text) {
+
+      status.textContent =
+        "Bitte zuerst einen Text eingeben.";
+
+      return;
+
+    }
+
+
+    // keine doppelten Texte
+
+    if (texte.includes(text)) {
+
+      status.textContent =
+        "Dieser Text ist bereits gespeichert.";
+
+      return;
+
+    }
+
+
+    texte.push(text);
+
+    speichern();
+
+    anzeigen();
+
+    status.textContent =
+      "Text wurde gespeichert.";
+
+  }
+
+
+  // ------------------------------
+  // Browser Speicher
+  // ------------------------------
+
+  function speichern() {
+
+    localStorage.setItem(
+      "tongueboxTexte",
+      JSON.stringify(texte)
     );
-};
+
+  }
 
 
-window.tbStop = function() {
+  function laden() {
 
-    speechSynthesis.cancel();
-};
+    const daten =
+      localStorage.getItem(
+        "tongueboxTexte"
+      );
+
+    if (daten) {
+
+      try {
+
+        texte =
+          JSON.parse(daten);
+
+      }
+
+      catch {
+
+        texte = [];
+
+      }
+
+    }
+
+    anzeigen();
+
+  }
 
 
-window.tbClearText = function() {
+  // ------------------------------
+  // Gespeicherte Texte anzeigen
+  // ------------------------------
 
-    document
-    .getElementById(
-        'tb-text'
-    )
-    .value = '';
+  function anzeigen() {
 
-};
+    const bereich =
+      document.getElementById(
+        "gespeicherteTexte"
+      );
 
-
-/* TELEFON */
-
-window.tbCall = function() {
-
-    var number =
-    document
-    .getElementById(
-        'tb-phone-number'
-    )
-    .value
-    .trim();
+    bereich.innerHTML = "";
 
 
-    if (!number) {
+    if (texte.length === 0) {
 
-        alert(
-            'Bitte Telefonnummer eingeben.'
-        );
+      const info =
+        document.createElement("p");
 
-        return;
+      info.textContent =
+        "Noch keine Texte gespeichert.";
+
+      bereich.appendChild(info);
+
+      return;
+
     }
 
 
-    window.location.href =
-    'tel:' + number;
-};
+    texte.forEach(
+      function(text, index) {
+
+        const box =
+          document.createElement("div");
+
+        box.className = "satz";
 
 
-/* NACHRICHT */
+        // Sprechen Button
 
-window.tbSendMessage = function() {
+        const textButton =
+          document.createElement("button");
 
-    var number =
-    document
-    .getElementById(
-        'tb-message-number'
-    )
-    .value
-    .trim();
+        textButton.className =
+          "satzText";
 
+        textButton.textContent =
+          "🔊 " + text;
 
-    var text =
-    document
-    .getElementById(
-        'tb-message-text'
-    )
-    .value
-    .trim();
-
-
-    if (!number || !text) {
-
-        alert(
-            'Bitte Telefonnummer und Nachricht eingeben.'
+        textButton.setAttribute(
+          "aria-label",
+          text + " vorlesen"
         );
 
-        return;
-    }
+        textButton.onclick =
+          function() {
+
+            textVorlesen(
+              texte[index]
+            );
+
+          };
 
 
-    window.location.href =
-    'sms:' +
-    number +
-    '?body=' +
-    encodeURIComponent(text);
-};
+        // Aktionen
+
+        const aktionen =
+          document.createElement("div");
+
+        aktionen.className =
+          "satzAktionen";
 
 
-/* NOTFALL */
+        // Bearbeiten
 
-window.tbEmergency = function(number) {
+        const bearbeiten =
+          document.createElement("button");
+
+        bearbeiten.className =
+          "bearbeiten";
+
+        bearbeiten.textContent =
+          "✏️ Bearbeiten";
+
+        bearbeiten.onclick =
+          function() {
+
+            textBearbeiten(index);
+
+          };
+
+
+        // Löschen
+
+        const loeschen =
+          document.createElement("button");
+
+        loeschen.className =
+          "loeschen";
+
+        loeschen.textContent =
+          "🗑 Löschen";
+
+        loeschen.onclick =
+          function() {
+
+            textLoeschen(index);
+
+          };
+
+
+        aktionen.appendChild(
+          bearbeiten
+        );
+
+        aktionen.appendChild(
+          loeschen
+        );
+
+        box.appendChild(
+          textButton
+        );
+
+        box.appendChild(
+          aktionen
+        );
+
+        bereich.appendChild(
+          box
+        );
+
+      }
+    );
+
+  }
+
+
+  // ------------------------------
+  // Bearbeiten
+  // ------------------------------
+
+  function textBearbeiten(index) {
+
+    const neuerText =
+      prompt(
+        "Text bearbeiten:",
+        texte[index]
+      );
 
     if (
-        confirm(
-            'Soll jetzt ' +
-            number +
-            ' angerufen werden?'
-        )
+      neuerText === null
     ) {
 
-        window.location.href =
-        'tel:' + number;
-    }
-};
+      return;
 
-})();
+    }
+
+    const sauber =
+      neuerText.trim();
+
+    if (!sauber) {
+
+      return;
+
+    }
+
+    texte[index] =
+      sauber;
+
+    speichern();
+
+    anzeigen();
+
+    status.textContent =
+      "Text wurde geändert.";
+
+  }
+
+
+  // ------------------------------
+  // Löschen
+  // ------------------------------
+
+  function textLoeschen(index) {
+
+    const wirklich =
+      confirm(
+        "Diesen gespeicherten Text wirklich löschen?"
+      );
+
+    if (!wirklich) {
+
+      return;
+
+    }
+
+    texte.splice(
+      index,
+      1
+    );
+
+    speichern();
+
+    anzeigen();
+
+    status.textContent =
+      "Text wurde gelöscht.";
+
+  }
+
+
+  // ------------------------------
+  // Lautstärke speichern
+  // ------------------------------
+
+  lautstaerke.addEventListener(
+    "change",
+    function() {
+
+      localStorage.setItem(
+        "tongueboxLautstaerke",
+        lautstaerke.value
+      );
+
+    }
+  );
+
+
+  const gespeicherteLautstaerke =
+    localStorage.getItem(
+      "tongueboxLautstaerke"
+    );
+
+  if (
+    gespeicherteLautstaerke !== null
+  ) {
+
+    lautstaerke.value =
+      gespeicherteLautstaerke;
+
+  }
+
+
+  // gespeicherte Texte laden
+
+  laden();
 
 </script>
 
-</div>
+</body>
+</html>
