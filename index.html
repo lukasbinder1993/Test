@@ -15,8 +15,8 @@
 body {
   margin: 0;
   padding: 10px;
-  font-family: Arial, Helvetica, sans-serif;
-  background: #eef2f7;
+  font-family: Arial, sans-serif;
+  background: #eef3f8;
   color: #111;
 }
 
@@ -27,20 +27,20 @@ body {
 
 h1 {
   text-align: center;
-  font-size: 40px;
-  margin: 10px 0 4px;
+  font-size: 42px;
+  margin-bottom: 5px;
 }
 
 .subtitle {
   text-align: center;
-  font-size: 22px;
-  margin-bottom: 18px;
+  font-size: 24px;
+  margin-bottom: 20px;
 }
 
 .box {
   background: white;
+  padding: 18px;
   border-radius: 22px;
-  padding: 16px;
   margin-bottom: 18px;
   box-shadow: 0 4px 14px rgba(0,0,0,0.12);
 }
@@ -54,12 +54,13 @@ h2 {
 
 textarea {
   width: 100%;
-  min-height: 250px;
-  padding: 20px;
-  font-size: 31px;
+  min-height: 280px;
+  font-size: 32px;
   line-height: 1.4;
-  border: 4px solid #333;
+  padding: 20px;
   border-radius: 20px;
+  border: 4px solid #333;
+  resize: vertical;
 }
 
 textarea:focus,
@@ -67,6 +68,24 @@ button:focus,
 select:focus {
   outline: 7px solid orange;
   outline-offset: 4px;
+}
+
+/* WORTVORHERSAGE */
+
+.wordSuggestions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.wordButton {
+  min-height: 100px;
+  font-size: 24px;
+  font-weight: bold;
+  background: #e8f5e9;
+  border: 4px solid #2e7d32;
+  border-radius: 20px;
 }
 
 /* HAUPTBUTTONS */
@@ -79,13 +98,15 @@ select:focus {
 }
 
 button {
-  min-height: 110px;
-  padding: 15px;
-  font-size: 25px;
+  cursor: pointer;
+}
+
+.mainButton {
+  min-height: 120px;
+  font-size: 27px;
   font-weight: bold;
   border: none;
   border-radius: 20px;
-  cursor: pointer;
 }
 
 .speak {
@@ -113,41 +134,46 @@ button {
 .yesNo {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 16px;
+}
+
+.yes,
+.no {
+  min-height: 150px;
+  font-size: 40px;
+  font-weight: bold;
+  border: none;
+  border-radius: 22px;
 }
 
 .yes {
-  background: #1b8f3a;
+  background: #2e7d32;
   color: white;
-  min-height: 140px;
-  font-size: 38px;
 }
 
 .no {
   background: #c62828;
   color: white;
-  min-height: 140px;
-  font-size: 38px;
 }
 
-/* KATEGORIEN */
+/* KI VORSCHLÄGE */
 
-.categories {
+.aiSuggestions {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 14px;
 }
 
-.category {
-  background: #e3f2fd;
-  border: 4px solid #1976d2;
+.aiSuggestion {
+  width: 100%;
   min-height: 120px;
+  padding: 18px;
   font-size: 24px;
-}
-
-.category.active {
-  background: #1976d2;
-  color: white;
+  font-weight: bold;
+  text-align: left;
+  background: #ede7f6;
+  border: 4px solid #673ab7;
+  border-radius: 20px;
 }
 
 /* SCHNELLAKTIONEN */
@@ -159,9 +185,13 @@ button {
 }
 
 .quick {
-  background: #f5f5f5;
-  border: 4px solid #777;
-  min-height: 115px;
+  min-height: 120px;
+  padding: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 20px;
+  border: 4px solid #1976d2;
+  background: #e3f2fd;
 }
 
 .help {
@@ -175,48 +205,11 @@ button {
   border-color: #7f0000;
 }
 
-/* WORTVORHERSAGE */
-
-.wordSuggestions {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.wordButton {
-  background: #e8f5e9;
-  border: 4px solid #2e7d32;
-  min-height: 90px;
-  font-size: 22px;
-}
-
-/* KI SATZVORSCHLÄGE */
-
-.aiSuggestions {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 14px;
-}
-
-.aiSuggestion {
-  background: #ede7f6;
-  border: 4px solid #673ab7;
-  text-align: left;
-  min-height: 115px;
-  font-size: 23px;
-}
-
-.aiSpeak {
-  background: #512da8;
-  color: white;
-}
-
-/* STIMME */
+/* STIMMEN */
 
 select {
   width: 100%;
-  min-height: 75px;
+  min-height: 80px;
   font-size: 23px;
   border-radius: 14px;
   padding: 10px;
@@ -229,52 +222,10 @@ label {
   margin-bottom: 10px;
 }
 
-/* GESPEICHERT */
-
-.savedItem {
-  margin-bottom: 14px;
-  background: #f4f4f4;
-  padding: 10px;
-  border-radius: 18px;
-}
-
-.savedSpeak {
-  width: 100%;
-  background: #673ab7;
-  color: white;
-  text-align: left;
-}
-
-.savedActions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 8px;
-}
-
-.edit {
-  background: #0277bd;
-  color: white;
-  min-height: 80px;
-}
-
-.delete {
-  background: #c62828;
-  color: white;
-  min-height: 80px;
-}
-
-.back {
-  width: 100%;
-  background: #455a64;
-  color: white;
-  margin-bottom: 14px;
-}
-
 #status {
-  font-size: 20px;
+  font-size: 21px;
   font-weight: bold;
-  padding: 10px;
+  margin-top: 12px;
 }
 
 /* IPHONE */
@@ -286,23 +237,12 @@ label {
   }
 
   h1 {
-    font-size: 34px;
+    font-size: 35px;
   }
 
   textarea {
-    min-height: 260px;
-    font-size: 29px;
-  }
-
-  button {
-    min-height: 115px;
-    font-size: 22px;
-  }
-
-  .yes,
-  .no {
-    min-height: 145px;
-    font-size: 36px;
+    min-height: 300px;
+    font-size: 30px;
   }
 
   .wordSuggestions {
@@ -310,8 +250,21 @@ label {
   }
 
   .wordButton {
-    min-height: 95px;
-    font-size: 19px;
+    min-height: 105px;
+    font-size: 20px;
+  }
+
+  .mainButton,
+  .quick,
+  .aiSuggestion {
+    min-height: 125px;
+    font-size: 22px;
+  }
+
+  .yes,
+  .no {
+    min-height: 155px;
+    font-size: 38px;
   }
 
 }
@@ -330,11 +283,11 @@ Sprich mit deinen Augen
 </div>
 
 
-<!-- TEXTEINGABE -->
+<!-- TEXT -->
 
 <section class="box">
 
-<h2>💬 Text schreiben</h2>
+<h2>💬 Was möchtest du sagen?</h2>
 
 <textarea
   id="text"
@@ -342,29 +295,67 @@ Sprich mit deinen Augen
   placeholder="Hier schreiben...">
 </textarea>
 
-<div id="wordSuggestions" class="wordSuggestions"></div>
+<!-- WORTVORHERSAGE -->
+
+<div
+  id="wordSuggestions"
+  class="wordSuggestions">
+</div>
+
 
 <div class="mainButtons">
 
-<button class="speak" onclick="sprechen()">
-🔊 VORLESEN
+<button
+  class="mainButton speak"
+  onclick="sprechen()">
+  🔊 VORLESEN
 </button>
 
-<button class="ai" onclick="kiHilfe()">
-✨ KI-VORSCHLÄGE
+<button
+  class="mainButton ai"
+  onclick="kiHilfe()">
+  ✨ KI-VORSCHLÄGE
 </button>
 
-<button class="save" onclick="textSpeichern()">
-⭐ SPEICHERN
+<button
+  class="mainButton save"
+  onclick="textSpeichern()">
+  ⭐ SPEICHERN
 </button>
 
-<button class="clear" onclick="textLeeren()">
-🗑 LEEREN
+<button
+  class="mainButton clear"
+  onclick="textLeeren()">
+  🗑 LEEREN
 </button>
 
 </div>
 
-<div id="status" role="status" aria-live="polite"></div>
+<div
+  id="status"
+  role="status"
+  aria-live="polite">
+</div>
+
+</section>
+
+
+<!-- KI -->
+
+<section class="box">
+
+<h2>✨ KI-Satzvorschläge</h2>
+
+<div
+  id="aiSuggestions"
+  class="aiSuggestions">
+
+  <p>
+    Schreibe ein paar Wörter und wähle
+    „KI-Vorschläge“.
+  </p>
+
+</div>
 
 </section>
 
@@ -377,14 +368,16 @@ Sprich mit deinen Augen
 
 <div class="yesNo">
 
-<button class="yes"
-onclick="direktSprechen('Ja')">
-✅ JA
+<button
+  class="yes"
+  onclick="direktSprechen('Ja')">
+  ✅ JA
 </button>
 
-<button class="no"
-onclick="direktSprechen('Nein')">
-❌ NEIN
+<button
+  class="no"
+  onclick="direktSprechen('Nein')">
+  ❌ NEIN
 </button>
 
 </div>
@@ -392,79 +385,80 @@ onclick="direktSprechen('Nein')">
 </section>
 
 
-<!-- KATEGORIEN -->
+<!-- SCHNELLAKTIONEN -->
 
 <section class="box">
 
-<h2>📂 Schnellbereiche</h2>
+<h2>⚡ Schnell sagen</h2>
 
-<div class="categories">
+<div class="quickGrid">
 
-<button class="category"
-onclick="zeigeKategorie('gespraech', this)">
-💬 Gespräch
+<button class="quick"
+onclick="direktSprechen('Hallo')">
+👋 Hallo
 </button>
 
-<button class="category"
-onclick="zeigeKategorie('beduerfnisse', this)">
-🍽 Bedürfnisse
+<button class="quick"
+onclick="direktSprechen('Danke')">
+🙏 Danke
 </button>
 
-<button class="category"
-onclick="zeigeKategorie('gesundheit', this)">
-🏥 Gesundheit
+<button class="quick"
+onclick="direktSprechen('Bitte warten Sie kurz. Ich brauche etwas Zeit zum Antworten.')">
+⏳ Bitte warten
 </button>
 
-<button class="category"
-onclick="zeigeKategorie('hilfe', this)">
+<button class="quick"
+onclick="direktSprechen('Bitte sagen Sie das noch einmal.')">
+🔁 Noch einmal
+</button>
+
+<button class="quick"
+onclick="direktSprechen('Bitte sprechen Sie langsamer.')">
+🐢 Langsamer
+</button>
+
+<button class="quick"
+onclick="direktSprechen('Ich habe Sie nicht verstanden.')">
+❓ Nicht verstanden
+</button>
+
+<button class="quick help"
+onclick="direktSprechen('Ich brauche Hilfe.')">
 🆘 Hilfe
 </button>
 
-<button class="category"
-onclick="zeigeKategorie('technik', this)">
-📱 Technik
+<button class="quick"
+onclick="direktSprechen('Ich möchte etwas trinken.')">
+🥤 Trinken
 </button>
 
-<button class="category"
-onclick="zeigeKategorie('favoriten', this)">
-⭐ Favoriten
+<button class="quick"
+onclick="direktSprechen('Ich möchte etwas essen.')">
+🍽 Essen
+</button>
+
+<button class="quick"
+onclick="direktSprechen('Ich muss auf die Toilette.')">
+🚻 WC
+</button>
+
+<button class="quick"
+onclick="direktSprechen('Bitte geben Sie mir etwas Zeit zum Antworten.')">
+⏱ Zeit
+</button>
+
+<button class="quick"
+onclick="direktSprechen('Ich kann nicht sprechen. Ich kommuniziere mit einer Augensteuerung.')">
+👁 Augensteuerung
+</button>
+
+<button class="quick emergency"
+onclick="direktSprechen('Das ist ein Notfall. Bitte holen Sie sofort Hilfe.')">
+🚨 NOTFALL
 </button>
 
 </div>
-
-</section>
-
-
-<!-- SCHNELLSÄTZE -->
-
-<section class="box">
-
-<h2 id="categoryTitle">⚡ Schnelle Sätze</h2>
-
-<button class="back"
-onclick="zeigeAlle()">
-⬅ Alle anzeigen
-</button>
-
-<div id="quickActions" class="quickGrid"></div>
-
-</section>
-
-
-<!-- KI -->
-
-<section class="box">
-
-<h2>✨ KI-Satzvorschläge</h2>
-
-<p style="font-size:20px;">
-Schreibe nur wenige Wörter, zum Beispiel:
-<strong>„wasser kalt“</strong>,
-<strong>„schmerzen rücken“</strong> oder
-<strong>„noch einmal“</strong>.
-</p>
-
-<div id="aiSuggestions" class="aiSuggestions"></div>
 
 </section>
 
@@ -483,44 +477,35 @@ Stimme auswählen
 
 </section>
 
-
-<!-- GESPEICHERTE SÄTZE -->
-
-<section class="box">
-
-<h2>⭐ Meine gespeicherten Sätze</h2>
-
-<div id="savedTexts"></div>
-
-</section>
-
 </main>
 
 
 <script>
 
-const textfeld = document.getElementById("text");
-const voiceSelect = document.getElementById("voice");
-const status = document.getElementById("status");
+const textfeld =
+  document.getElementById("text");
+
+const voiceSelect =
+  document.getElementById("voice");
+
+const status =
+  document.getElementById("status");
 
 let stimmen = [];
 
-let texte = JSON.parse(
-  localStorage.getItem("tongueboxTexte") || "[]"
-);
 
-
-/* =============================
+/* =====================
    STIMMEN
-============================= */
+===================== */
 
 function stimmenLaden() {
 
-  stimmen = speechSynthesis.getVoices();
+  stimmen =
+    speechSynthesis.getVoices();
 
   voiceSelect.innerHTML = "";
 
-  stimmen.forEach((voice, index) => {
+  stimmen.forEach((voice,index) => {
 
     const option =
       document.createElement("option");
@@ -535,15 +520,16 @@ function stimmenLaden() {
   });
 
   const gespeichert =
-    localStorage.getItem("tongueboxVoice");
+    localStorage.getItem(
+      "tongueboxVoice"
+    );
 
   if (
     gespeichert !== null &&
     stimmen[gespeichert]
   ) {
-
-    voiceSelect.value = gespeichert;
-
+    voiceSelect.value =
+      gespeichert;
   }
 
 }
@@ -566,9 +552,9 @@ voiceSelect.addEventListener(
 );
 
 
-/* =============================
+/* =====================
    SPRECHEN
-============================= */
+===================== */
 
 function textVorlesen(text) {
 
@@ -590,7 +576,9 @@ function textVorlesen(text) {
   utterance.rate = 0.95;
   utterance.volume = 1;
 
-  speechSynthesis.speak(utterance);
+  speechSynthesis.speak(
+    utterance
+  );
 
 }
 
@@ -621,6 +609,10 @@ function direktSprechen(text) {
 }
 
 
+/* =====================
+   TEXT LEEREN
+===================== */
+
 function textLeeren() {
 
   textfeld.value = "";
@@ -632,9 +624,9 @@ function textLeeren() {
 }
 
 
-/* =============================
+/* =====================
    WORTVORHERSAGE
-============================= */
+===================== */
 
 const woerter = {
 
@@ -647,7 +639,7 @@ const woerter = {
   möchte: [
     "bitte",
     "etwas",
-    "jetzt"
+    "gerne"
   ],
 
   brauche: [
@@ -663,8 +655,8 @@ const woerter = {
   ],
 
   bitte: [
-    "warten",
     "helfen",
+    "warten",
     "noch einmal"
   ],
 
@@ -674,16 +666,34 @@ const woerter = {
     "trinken"
   ],
 
+  kaffee: [
+    "bitte",
+    "Milch",
+    "Zucker"
+  ],
+
   schmerzen: [
     "Rücken",
-    "Beine",
-    "Kopf"
+    "Kopf",
+    "Beine"
+  ],
+
+  toilet: [
+    "bitte",
+    "helfen",
+    "jetzt"
+  ],
+
+  toilette: [
+    "bitte",
+    "helfen",
+    "jetzt"
   ],
 
   default: [
-    "bitte",
-    "ich",
-    "möchte"
+    "Ich",
+    "Bitte",
+    "Danke"
   ]
 
 };
@@ -700,11 +710,19 @@ function wortVorhersage() {
   const text =
     textfeld.value.trim();
 
-  const teile =
-    text.toLowerCase().split(/\s+/);
+  let letztesWort = "";
 
-  const letztesWort =
-    teile[teile.length - 1];
+  if (text) {
+
+    const teile =
+      text
+        .toLowerCase()
+        .split(/\s+/);
+
+    letztesWort =
+      teile[teile.length - 1];
+
+  }
 
   const vorschlaege =
     woerter[letztesWort] ||
@@ -725,28 +743,36 @@ function wortVorhersage() {
     button.className =
       "wordButton";
 
-    button.textContent = wort;
+    button.textContent =
+      wort;
 
-    button.onclick = function() {
+    button.onclick =
+      function() {
 
-      if (
-        textfeld.value.length > 0 &&
-        !textfeld.value.endsWith(" ")
-      ) {
+        let aktuellerText =
+          textfeld.value;
 
-        textfeld.value += " ";
+        if (
+          aktuellerText.length > 0 &&
+          !aktuellerText.endsWith(" ")
+        ) {
 
-      }
+          aktuellerText += " ";
 
-      textfeld.value += wort + " ";
+        }
 
-      wortVorhersage();
+        textfeld.value =
+          aktuellerText +
+          wort +
+          " ";
 
-      textfeld.focus();
+        wortVorhersage();
 
-    };
+      };
 
-    bereich.appendChild(button);
+    bereich.appendChild(
+      button
+    );
 
   });
 
@@ -755,11 +781,11 @@ function wortVorhersage() {
 wortVorhersage();
 
 
-/* =============================
-   KI-HILFE
-============================= */
+/* =====================
+   KI
+===================== */
 
-function kiHilfe() {
+async function kiHilfe() {
 
   const text =
     textfeld.value.trim();
@@ -767,107 +793,91 @@ function kiHilfe() {
   if (!text) {
 
     status.textContent =
-      "Schreibe zuerst ein paar Wörter.";
+      "Bitte zuerst einige Wörter eingeben.";
 
     return;
 
   }
 
   status.textContent =
-    "✨ Vorschläge werden erstellt.";
-
-  let vorschlaege = [];
-
-  const klein =
-    text.toLowerCase();
+    "✨ KI erstellt Vorschläge...";
 
 
-  if (
-    klein.includes("wasser") ||
-    klein.includes("durst")
-  ) {
+  try {
 
-    vorschlaege = [
+    /*
+      HIER DEINE CLOUDFLARE
+      WORKER-ADRESSE EINTRAGEN
+    */
 
-      "Ich habe Durst. Könnten Sie mir bitte etwas Wasser geben?",
+    const response = await fetch(
+      "https://DEIN-WORKER.workers.dev",
+      {
+        method: "POST",
 
-      "Ich möchte bitte etwas trinken.",
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
 
-      "Könnten Sie mir bitte ein Glas Wasser geben?"
+        body: JSON.stringify({
+          text: text
+        })
+      }
+    );
 
-    ];
 
-  }
+    if (!response.ok) {
 
-  else if (
-    klein.includes("schmerz")
-  ) {
+      throw new Error(
+        "KI konnte nicht geladen werden"
+      );
 
-    vorschlaege = [
+    }
 
-      "Ich habe Schmerzen. Bitte helfen Sie mir.",
 
-      "Ich habe gerade Schmerzen und möchte meine Position verändern.",
+    const daten =
+      await response.json();
 
-      "Bitte geben Sie mir etwas Zeit. Ich habe Schmerzen."
 
-    ];
+    if (
+      !daten.vorschlaege ||
+      !Array.isArray(
+        daten.vorschlaege
+      )
+    ) {
 
-  }
+      throw new Error(
+        "Ungültige Antwort"
+      );
 
-  else if (
-    klein.includes("wc") ||
-    klein.includes("toilette")
-  ) {
+    }
 
-    vorschlaege = [
 
-      "Ich muss bitte auf die Toilette.",
+    zeigeKIVorschlaege(
+      daten.vorschlaege
+    );
 
-      "Könnten Sie mir bitte beim Toilettengang helfen?",
-
-      "Ich brauche jetzt bitte Hilfe beim WC."
-
-    ];
-
-  }
-
-  else if (
-    klein.includes("noch einmal")
-  ) {
-
-    vorschlaege = [
-
-      "Bitte sagen Sie das noch einmal.",
-
-      "Ich habe Sie nicht verstanden. Bitte wiederholen Sie das.",
-
-      "Bitte noch einmal und etwas langsamer."
-
-    ];
+    status.textContent =
+      "✨ Wähle einen Vorschlag.";
 
   }
 
-  else {
+  catch (fehler) {
 
-    vorschlaege = [
+    console.error(fehler);
 
-      text,
-
-      "Bitte " + text + ".",
-
-      "Ich möchte " + text + "."
-
-    ];
+    status.textContent =
+      "KI ist gerade nicht erreichbar.";
 
   }
-
-  zeigeKIVorschlaege(
-    vorschlaege
-  );
 
 }
 
+
+/* =====================
+   KI BUTTONS
+===================== */
 
 function zeigeKIVorschlaege(
   vorschlaege
@@ -880,322 +890,50 @@ function zeigeKIVorschlaege(
 
   bereich.innerHTML = "";
 
-  vorschlaege.forEach(text => {
 
-    const button =
-      document.createElement("button");
+  vorschlaege
+    .slice(0,3)
+    .forEach(text => {
 
-    button.className =
-      "aiSuggestion";
+      const button =
+        document.createElement(
+          "button"
+        );
 
-    button.textContent =
-      "✨ " + text;
+      button.className =
+        "aiSuggestion";
 
-    button.onclick =
-      function() {
+      button.textContent =
+        "✨ " + text;
 
-        textfeld.value = text;
 
-        textVorlesen(text);
+      button.onclick =
+        function() {
 
-        status.textContent =
-          "Vorschlag wird gesprochen.";
+          textfeld.value =
+            text;
 
-      };
+          wortVorhersage();
 
-    bereich.appendChild(
-      button
-    );
+          textVorlesen(
+            text
+          );
 
-  });
+        };
 
-}
 
-
-/* =============================
-   KATEGORIEN
-============================= */
-
-const kategorien = {
-
-gespraech: [
-
-  ["👋 Hallo", "Hallo"],
-
-  ["🙏 Danke", "Danke"],
-
-  ["⏳ Bitte warten",
-   "Bitte warten Sie kurz. Ich brauche etwas Zeit zum Antworten."],
-
-  ["🔁 Noch einmal",
-   "Bitte sagen Sie das noch einmal."],
-
-  ["🐢 Langsamer",
-   "Bitte sprechen Sie etwas langsamer."],
-
-  ["❓ Nicht verstanden",
-   "Ich habe Sie nicht verstanden."],
-
-  ["👍 Verstanden",
-   "Ich habe Sie verstanden."],
-
-  ["👋 Auf Wiedersehen",
-   "Auf Wiedersehen."]
-
-],
-
-
-beduerfnisse: [
-
-  ["🥤 Trinken",
-   "Ich möchte etwas trinken."],
-
-  ["💧 Wasser",
-   "Ich möchte bitte Wasser."],
-
-  ["🍽 Essen",
-   "Ich möchte etwas essen."],
-
-  ["🚻 WC",
-   "Ich muss auf die Toilette."],
-
-  ["♿ Position ändern",
-   "Ich möchte meine Position verändern."],
-
-  ["🥶 Zu kalt",
-   "Mir ist zu kalt."],
-
-  ["🥵 Zu warm",
-   "Mir ist zu warm."],
-
-  ["😴 Ruhe",
-   "Ich möchte mich etwas ausruhen."]
-
-],
-
-
-gesundheit: [
-
-  ["🤕 Schmerzen",
-   "Ich habe Schmerzen."],
-
-  ["🩺 Arzt",
-   "Ich möchte bitte mit einem Arzt sprechen."],
-
-  ["💊 Medikamente",
-   "Ich brauche meine Medikamente."],
-
-  ["🤢 Übel",
-   "Mir ist übel."],
-
-  ["😵 Schwindel",
-   "Mir ist schwindelig."],
-
-  ["😮‍💨 Atmung",
-   "Ich bekomme schlecht Luft."],
-
-  ["👍 Alles gut",
-   "Mir geht es gut."],
-
-  ["🛏 Umlagern",
-   "Bitte helfen Sie mir beim Umlagern."]
-
-],
-
-
-hilfe: [
-
-  ["🆘 Hilfe",
-   "Ich brauche Hilfe."],
-
-  ["👁 Augensteuerung",
-   "Ich kann nicht sprechen. Ich kommuniziere mit einer Augensteuerung."],
-
-  ["✅❌ Ja Nein",
-   "Bitte stellen Sie mir Fragen, die ich mit Ja oder Nein beantworten kann."],
-
-  ["⏱ Zeit",
-   "Bitte geben Sie mir etwas Zeit zum Antworten."],
-
-  ["🚨 NOTFALL",
-   "Das ist ein Notfall. Bitte holen Sie sofort Hilfe."]
-
-],
-
-
-technik: [
-
-  ["📱 iPhone",
-   "Bitte geben Sie mir mein iPhone."],
-
-  ["🔋 Laden",
-   "Bitte schließen Sie mein Gerät zum Laden an."],
-
-  ["👁 Blicksteuerung",
-   "Bitte richten Sie meine Blicksteuerung aus."],
-
-  ["🔊 Lauter",
-   "Bitte machen Sie die Lautstärke höher."],
-
-  ["🔉 Leiser",
-   "Bitte machen Sie die Lautstärke niedriger."]
-
-],
-
-
-favoriten: [
-
-  ["👁 Ich kann nicht sprechen",
-   "Ich kann nicht sprechen. Ich kommuniziere mit einer Augensteuerung."],
-
-  ["⏳ Zeit",
-   "Bitte geben Sie mir etwas Zeit zum Antworten."],
-
-  ["🥤 Trinken",
-   "Ich möchte etwas trinken."],
-
-  ["🚻 WC",
-   "Ich muss auf die Toilette."],
-
-  ["🆘 Hilfe",
-   "Ich brauche Hilfe."],
-
-  ["🙏 Danke",
-   "Danke."]
-
-]
-
-};
-
-
-function zeigeKategorie(
-  name,
-  button
-) {
-
-  document
-    .querySelectorAll(".category")
-    .forEach(element => {
-
-      element.classList.remove(
-        "active"
+      bereich.appendChild(
+        button
       );
 
     });
 
-  if (button) {
-
-    button.classList.add(
-      "active"
-    );
-
-  }
-
-  const daten =
-    kategorien[name];
-
-  zeigeSchnellAktionen(
-    daten
-  );
-
 }
 
 
-function zeigeSchnellAktionen(
-  daten
-) {
-
-  const bereich =
-    document.getElementById(
-      "quickActions"
-    );
-
-  bereich.innerHTML = "";
-
-  daten.forEach(eintrag => {
-
-    const button =
-      document.createElement("button");
-
-    button.className =
-      "quick";
-
-    if (
-      eintrag[0].includes("NOTFALL")
-    ) {
-
-      button.classList.add(
-        "emergency"
-      );
-
-    }
-
-    button.textContent =
-      eintrag[0];
-
-    button.onclick =
-      function() {
-
-        direktSprechen(
-          eintrag[1]
-        );
-
-      };
-
-    bereich.appendChild(
-      button
-    );
-
-  });
-
-}
-
-
-function zeigeAlle() {
-
-  const alle = [];
-
-  Object.values(
-    kategorien
-  ).forEach(kategorie => {
-
-    kategorie.forEach(
-      eintrag => {
-
-        const schonDa =
-          alle.some(
-            x =>
-              x[1] ===
-              eintrag[1]
-          );
-
-        if (!schonDa) {
-
-          alle.push(
-            eintrag
-          );
-
-        }
-
-      }
-    );
-
-  });
-
-  zeigeSchnellAktionen(
-    alle
-  );
-
-}
-
-zeigeKategorie(
-  "favoriten"
-);
-
-
-/* =============================
-   TEXTE SPEICHERN
-============================= */
+/* =====================
+   SPEICHERN
+===================== */
 
 function textSpeichern() {
 
@@ -1205,205 +943,44 @@ function textSpeichern() {
   if (!text) {
 
     status.textContent =
-      "Bitte zuerst einen Text eingeben.";
+      "Bitte zuerst etwas schreiben.";
 
     return;
 
   }
 
-  if (!texte.includes(text)) {
-
-    texte.push(text);
-
-    localStorage.setItem(
-      "tongueboxTexte",
-      JSON.stringify(texte)
+  let gespeichert =
+    JSON.parse(
+      localStorage.getItem(
+        "tongueboxTexte"
+      ) || "[]"
     );
 
-  }
-
-  gespeicherteAnzeigen();
-
-  status.textContent =
-    "Text wurde gespeichert.";
-
-}
-
-
-function gespeicherteAnzeigen() {
-
-  const bereich =
-    document.getElementById(
-      "savedTexts"
-    );
-
-  bereich.innerHTML = "";
-
-  if (texte.length === 0) {
-
-    bereich.innerHTML =
-      "<p>Noch keine Sätze gespeichert.</p>";
-
-    return;
-
-  }
-
-  texte.forEach(
-    (text, index) => {
-
-      const item =
-        document.createElement(
-          "div"
-        );
-
-      item.className =
-        "savedItem";
-
-
-      const speak =
-        document.createElement(
-          "button"
-        );
-
-      speak.className =
-        "savedSpeak";
-
-      speak.textContent =
-        "🔊 " + text;
-
-      speak.onclick =
-        function() {
-
-          textVorlesen(
-            texte[index]
-          );
-
-        };
-
-
-      const actions =
-        document.createElement(
-          "div"
-        );
-
-      actions.className =
-        "savedActions";
-
-
-      const edit =
-        document.createElement(
-          "button"
-        );
-
-      edit.className =
-        "edit";
-
-      edit.textContent =
-        "✏️ Bearbeiten";
-
-      edit.onclick =
-        function() {
-
-          bearbeiten(
-            index
-          );
-
-        };
-
-
-      const del =
-        document.createElement(
-          "button"
-        );
-
-      del.className =
-        "delete";
-
-      del.textContent =
-        "🗑 Löschen";
-
-      del.onclick =
-        function() {
-
-          loeschen(
-            index
-          );
-
-        };
-
-
-      actions.appendChild(
-        edit
-      );
-
-      actions.appendChild(
-        del
-      );
-
-      item.appendChild(
-        speak
-      );
-
-      item.appendChild(
-        actions
-      );
-
-      bereich.appendChild(
-        item
-      );
-
-    }
-  );
-
-}
-
-
-function bearbeiten(index) {
-
-  const neu =
-    prompt(
-      "Text bearbeiten:",
-      texte[index]
-    );
 
   if (
-    neu !== null &&
-    neu.trim()
+    !gespeichert.includes(
+      text
+    )
   ) {
 
-    texte[index] =
-      neu.trim();
+    gespeichert.push(
+      text
+    );
 
     localStorage.setItem(
       "tongueboxTexte",
-      JSON.stringify(texte)
+      JSON.stringify(
+        gespeichert
+      )
     );
-
-    gespeicherteAnzeigen();
 
   }
 
-}
 
-
-function loeschen(index) {
-
-  texte.splice(
-    index,
-    1
-  );
-
-  localStorage.setItem(
-    "tongueboxTexte",
-    JSON.stringify(texte)
-  );
-
-  gespeicherteAnzeigen();
+  status.textContent =
+    "⭐ Satz gespeichert.";
 
 }
-
-
-gespeicherteAnzeigen();
 
 </script>
 
