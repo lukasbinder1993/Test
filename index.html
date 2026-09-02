@@ -1584,7 +1584,35 @@ function createSavedItem(sentence,index){
 }
 
 showSaved();
+/* =========================================
+   GEÖFFNETEN BEREICH AUTOMATISCH ZENTRIEREN
+========================================= */
 
+var allDetails =
+  document.querySelectorAll("details");
+
+allDetails.forEach(function(detail){
+
+  detail.addEventListener("toggle", function(){
+
+    if(detail.open){
+
+      /* Kurz warten, bis der Bereich geöffnet ist */
+      setTimeout(function(){
+
+        detail.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+
+      }, 150);
+
+    }
+
+  });
+
+});
+  
 });
 </script>
 
