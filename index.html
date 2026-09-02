@@ -7,6 +7,7 @@
 <title>Tonguebox KI</title>
 
 <style>
+
 *{
   box-sizing:border-box;
 }
@@ -28,18 +29,6 @@ h1{
   text-align:center;
   font-size:30px;
   margin:8px 0 12px;
-}
-
-h2{
-  font-size:22px;
-  margin:4px 0 10px;
-}
-
-.card{
-  background:white;
-  padding:10px;
-  margin-bottom:10px;
-  border-radius:18px;
 }
 
 textarea{
@@ -69,9 +58,17 @@ button{
 
 button:focus,
 textarea:focus,
-select:focus{
+select:focus,
+summary:focus{
   outline:6px solid orange;
   outline-offset:3px;
+}
+
+.card{
+  background:white;
+  padding:10px;
+  margin-bottom:10px;
+  border-radius:18px;
 }
 
 .grid2{
@@ -100,6 +97,16 @@ select:focus{
   color:white;
 }
 
+.smart{
+  background:#fff3cd;
+  border:3px solid #f9a825;
+}
+
+.quick{
+  background:#e3f2fd;
+  border:3px solid #1976d2;
+}
+
 .yes{
   background:#2e7d32;
   color:white;
@@ -114,16 +121,6 @@ select:focus{
   min-height:125px;
 }
 
-.smart{
-  background:#fff3cd;
-  border:3px solid #f9a825;
-}
-
-.quick{
-  background:#e3f2fd;
-  border:3px solid #1976d2;
-}
-
 .emergency{
   background:#b71c1c;
   color:white;
@@ -136,9 +133,9 @@ select:focus{
 
 #volumeDisplay{
   text-align:center;
-  font-size:26px;
+  font-size:25px;
   font-weight:bold;
-  margin:12px 0;
+  margin:10px 0;
 }
 
 .suggestion{
@@ -178,6 +175,47 @@ select{
   margin-top:8px;
 }
 
+
+/* EIN- UND AUSKLAPPBARE KATEGORIEN */
+
+details{
+  background:white;
+  border-radius:18px;
+  margin-bottom:10px;
+  overflow:hidden;
+}
+
+summary{
+  list-style:none;
+  cursor:pointer;
+  min-height:95px;
+  padding:20px 16px;
+  font-size:23px;
+  font-weight:bold;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:#dfe7f1;
+}
+
+summary::-webkit-details-marker{
+  display:none;
+}
+
+summary::after{
+  content:"▼";
+  font-size:24px;
+}
+
+details[open] summary::after{
+  content:"▲";
+}
+
+.details-content{
+  padding:10px;
+  background:white;
+}
+
 @media(max-width:500px){
 
   textarea{
@@ -190,7 +228,13 @@ select{
     font-size:20px;
   }
 
+  summary{
+    min-height:100px;
+    font-size:22px;
+  }
+
 }
+
 </style>
 </head>
 
@@ -200,6 +244,8 @@ select{
 
 <h1>👅 Tonguebox KI</h1>
 
+
+<!-- HAUPTBEREICH -->
 
 <div class="card">
 
@@ -234,51 +280,59 @@ aria-label="Text eingeben">
 </div>
 
 
-<!-- LAUTSTÄRKE -->
+<!-- SOFORT ANTWORTEN -->
 
-<div class="card">
+<details open>
 
-<h2>🔊 Lautstärke</h2>
+<summary>
+⚡ Sofort antworten
+</summary>
 
-<div id="volumeDisplay">
-Lautstärke: 100 %
-</div>
+<div class="details-content">
 
 <div class="grid2">
 
-<button
-class="volumeButton"
-id="volumeDown">
-🔉 LEISER
+<button class="yes" data-speak="Ja">
+✅ JA
 </button>
 
-<button
-class="volumeButton"
-id="volumeUp">
-🔊 LAUTER
+<button class="no" data-speak="Nein">
+❌ NEIN
 </button>
 
 </div>
 
 </div>
 
+</details>
 
-<!-- VORSCHLÄGE -->
 
-<div class="card">
+<!-- KI VORSCHLÄGE -->
 
-<h2>✨ Intelligente Vorschläge</h2>
+<details>
+
+<summary>
+✨ Intelligente Vorschläge
+</summary>
+
+<div class="details-content">
 
 <div id="suggestions"></div>
 
 </div>
 
+</details>
 
-<!-- TEXT-ASSISTENT -->
 
-<div class="card">
+<!-- TEXT ASSISTENT -->
 
-<h2>🧠 Text-Assistent</h2>
+<details>
+
+<summary>
+🧠 Text-Assistent
+</summary>
+
+<div class="details-content">
 
 <div class="grid2">
 
@@ -302,31 +356,18 @@ id="volumeUp">
 
 </div>
 
-
-<!-- JA / NEIN -->
-
-<div class="card">
-
-<div class="grid2">
-
-<button class="yes" data-speak="Ja">
-✅ JA
-</button>
-
-<button class="no" data-speak="Nein">
-❌ NEIN
-</button>
-
-</div>
-
-</div>
+</details>
 
 
-<!-- SCHNELLKOMMUNIKATION -->
+<!-- ALLTAG -->
 
-<div class="card">
+<details>
 
-<h2>⚡ Schnellkommunikation</h2>
+<summary>
+💬 Alltag
+</summary>
+
+<div class="details-content">
 
 <div class="grid2">
 
@@ -352,9 +393,34 @@ data-speak="Bitte sagen Sie das noch einmal.">
 
 <button
 class="quick"
-data-speak="Ich brauche Hilfe.">
-🆘 Hilfe
+data-speak="Bitte sprechen Sie langsamer.">
+🐢 Langsamer
 </button>
+
+<button
+class="quick"
+data-speak="Ich habe Sie nicht verstanden.">
+❓ Nicht verstanden
+</button>
+
+</div>
+
+</div>
+
+</details>
+
+
+<!-- ESSEN & TRINKEN -->
+
+<details>
+
+<summary>
+🍽 Essen & Trinken
+</summary>
+
+<div class="details-content">
+
+<div class="grid2">
 
 <button
 class="quick"
@@ -370,26 +436,75 @@ data-speak="Ich möchte etwas essen.">
 
 <button
 class="quick"
+data-speak="Ich hätte gerne Wasser.">
+💧 Wasser
+</button>
+
+<button
+class="quick"
+data-speak="Ich hätte gerne einen Kaffee.">
+☕ Kaffee
+</button>
+
+<button
+class="quick"
+data-speak="Bitte helfen Sie mir beim Essen.">
+🥄 Hilfe beim Essen
+</button>
+
+<button
+class="quick"
+data-speak="Bitte helfen Sie mir beim Trinken.">
+🥤 Hilfe beim Trinken
+</button>
+
+</div>
+
+</div>
+
+</details>
+
+
+<!-- HILFE & PFLEGE -->
+
+<details>
+
+<summary>
+🆘 Hilfe & Pflege
+</summary>
+
+<div class="details-content">
+
+<div class="grid2">
+
+<button
+class="quick"
+data-speak="Ich brauche Hilfe.">
+🆘 Hilfe
+</button>
+
+<button
+class="quick"
 data-speak="Ich muss auf die Toilette.">
 🚻 WC
 </button>
 
 <button
 class="quick"
-data-speak="Ich habe Sie nicht verstanden.">
-❓ Nicht verstanden
+data-speak="Bitte helfen Sie mir beim Umlagern.">
+🛏 Umlagern
 </button>
 
 <button
 class="quick"
-data-speak="Bitte sprechen Sie langsamer.">
-🐢 Langsamer
+data-speak="Bitte helfen Sie mir beim Anziehen.">
+👕 Anziehen
 </button>
 
 <button
 class="quick"
-data-speak="Ich kann nicht sprechen. Ich kommuniziere mit einer Augensteuerung.">
-👁 Kommunikation
+data-speak="Bitte geben Sie mir etwas Zeit zum Antworten.">
+⏱ Zeit
 </button>
 
 <button
@@ -402,12 +517,108 @@ data-speak="Das ist ein Notfall. Bitte holen Sie sofort Hilfe.">
 
 </div>
 
+</details>
+
+
+<!-- KOMMUNIKATION -->
+
+<details>
+
+<summary>
+👁 Kommunikation
+</summary>
+
+<div class="details-content">
+
+<div class="grid2">
+
+<button
+class="quick"
+data-speak="Ich kann nicht sprechen.">
+🗣 Nicht sprechen
+</button>
+
+<button
+class="quick"
+data-speak="Ich kommuniziere mit einer Augensteuerung.">
+👁 Augensteuerung
+</button>
+
+<button
+class="quick"
+data-speak="Bitte stellen Sie mir Ja oder Nein Fragen.">
+✅❌ Ja-Nein-Fragen
+</button>
+
+<button
+class="quick"
+data-speak="Bitte geben Sie mir etwas Zeit zum Antworten.">
+⏳ Antwortzeit
+</button>
+
+<button
+class="quick"
+data-speak="Bitte sprechen Sie direkt mit mir.">
+👤 Mit mir sprechen
+</button>
+
+<button
+class="quick"
+data-speak="Ich habe Sie verstanden.">
+✅ Verstanden
+</button>
+
+</div>
+
+</div>
+
+</details>
+
+
+<!-- LAUTSTÄRKE -->
+
+<details>
+
+<summary>
+🔊 Lautstärke
+</summary>
+
+<div class="details-content">
+
+<div id="volumeDisplay">
+Lautstärke: 100 %
+</div>
+
+<div class="grid2">
+
+<button
+class="volumeButton"
+id="volumeDown">
+🔉 LEISER
+</button>
+
+<button
+class="volumeButton"
+id="volumeUp">
+🔊 LAUTER
+</button>
+
+</div>
+
+</div>
+
+</details>
+
 
 <!-- STIMME -->
 
-<div class="card">
+<details>
 
-<h2>🗣 Stimme</h2>
+<summary>
+🗣 Stimme auswählen
+</summary>
+
+<div class="details-content">
 
 <select id="voice">
 <option>Stimmen werden geladen...</option>
@@ -415,16 +626,24 @@ data-speak="Das ist ein Notfall. Bitte holen Sie sofort Hilfe.">
 
 </div>
 
+</details>
 
-<!-- GESPEICHERT -->
 
-<div class="card">
+<!-- GESPEICHERTE SÄTZE -->
 
-<h2>⭐ Gespeicherte Sätze</h2>
+<details>
+
+<summary>
+⭐ Gespeicherte Sätze
+</summary>
+
+<div class="details-content">
 
 <div id="saved"></div>
 
 </div>
+
+</details>
 
 </main>
 
@@ -441,11 +660,14 @@ var volumeDisplay = document.getElementById("volumeDisplay");
 var voices = [];
 
 
-/* LAUTSTÄRKE LADEN */
+/* ======================================
+   LAUTSTÄRKE
+====================================== */
 
-var volume = parseFloat(
-  localStorage.getItem("tongueboxVolume")
-);
+var volume =
+  parseFloat(
+    localStorage.getItem("tongueboxVolume")
+  );
 
 if(isNaN(volume)){
   volume = 1;
@@ -453,8 +675,6 @@ if(isNaN(volume)){
 
 updateVolumeDisplay();
 
-
-/* LAUTER */
 
 document.getElementById("volumeUp")
 .onclick = function(){
@@ -470,8 +690,6 @@ document.getElementById("volumeUp")
 };
 
 
-/* LEISER */
-
 document.getElementById("volumeDown")
 .onclick = function(){
 
@@ -485,8 +703,6 @@ document.getElementById("volumeDown")
 
 };
 
-
-/* LAUTSTÄRKE SPEICHERN */
 
 function saveVolume(){
 
@@ -503,22 +719,19 @@ function saveVolume(){
 }
 
 
-/* ANZEIGE */
-
 function updateVolumeDisplay(){
-
-  var percent =
-    Math.round(volume * 100);
 
   volumeDisplay.textContent =
     "Lautstärke: " +
-    percent +
+    Math.round(volume * 100) +
     " %";
 
 }
 
 
-/* STIMMEN */
+/* ======================================
+   STIMMEN
+====================================== */
 
 function loadVoices(){
 
@@ -563,7 +776,9 @@ speechSynthesis.onvoiceschanged =
 voiceSelect.onchange = function(){
 
   var selected =
-    voices[Number(voiceSelect.value)];
+    voices[
+      Number(voiceSelect.value)
+    ];
 
   if(selected){
 
@@ -577,7 +792,9 @@ voiceSelect.onchange = function(){
 };
 
 
-/* SPRECHEN */
+/* ======================================
+   SPRECHEN
+====================================== */
 
 function speakText(message){
 
@@ -593,7 +810,9 @@ function speakText(message){
     );
 
   var selected =
-    voices[Number(voiceSelect.value)];
+    voices[
+      Number(voiceSelect.value)
+    ];
 
   if(selected){
 
@@ -603,8 +822,6 @@ function speakText(message){
   }
 
   speech.rate = 0.95;
-
-  /* HIER WIRD DIE LAUTSTÄRKE VERWENDET */
   speech.volume = volume;
 
   speech.onstart = function(){
@@ -625,7 +842,9 @@ function speakText(message){
 }
 
 
-/* SPRECHEN */
+/* ======================================
+   TEXT SPRECHEN
+====================================== */
 
 document.getElementById("speak")
 .onclick = function(){
@@ -639,6 +858,7 @@ document.getElementById("speak")
       "Bitte zuerst etwas schreiben.";
 
     return;
+
   }
 
   speakText(value);
@@ -646,7 +866,30 @@ document.getElementById("speak")
 };
 
 
-/* INTELLIGENTE VORSCHLÄGE */
+/* ======================================
+   SCHNELLBUTTONS
+====================================== */
+
+document
+.querySelectorAll("[data-speak]")
+.forEach(function(button){
+
+  button.onclick = function(){
+
+    speakText(
+      this.getAttribute(
+        "data-speak"
+      )
+    );
+
+  };
+
+});
+
+
+/* ======================================
+   INTELLIGENTE VORSCHLÄGE
+====================================== */
 
 function getAISuggestions(){
 
@@ -658,6 +901,7 @@ function getAISuggestions(){
 
   var list = [];
 
+
   if(!input){
 
     list = [
@@ -668,7 +912,9 @@ function getAISuggestions(){
 
   }
 
-  else if(lower.includes("kaffee")){
+  else if(
+    lower.includes("kaffee")
+  ){
 
     list = [
       "Ich möchte bitte einen Kaffee.",
@@ -704,7 +950,9 @@ function getAISuggestions(){
 
   }
 
-  else if(lower.includes("hilfe")){
+  else if(
+    lower.includes("hilfe")
+  ){
 
     list = [
       "Ich brauche bitte Hilfe.",
@@ -714,25 +962,14 @@ function getAISuggestions(){
 
   }
 
-  else if(lower.includes("schmerz")){
+  else if(
+    lower.includes("schmerz")
+  ){
 
     list = [
       "Ich habe Schmerzen.",
       "Bitte helfen Sie mir, ich habe Schmerzen.",
       "Ich möchte sagen, wo ich Schmerzen habe."
-    ];
-
-  }
-
-  else if(
-    lower.includes("toilette") ||
-    lower.includes("wc")
-  ){
-
-    list = [
-      "Ich muss auf die Toilette.",
-      "Bitte helfen Sie mir auf die Toilette.",
-      "Ich brauche Hilfe beim Toilettengang."
     ];
 
   }
@@ -754,8 +991,6 @@ function getAISuggestions(){
 
 }
 
-
-/* VORSCHLÄGE ANZEIGEN */
 
 function showSuggestions(list){
 
@@ -781,9 +1016,7 @@ function showSuggestions(list){
 
     };
 
-    suggestionBox.appendChild(
-      button
-    );
+    suggestionBox.appendChild(button);
 
   });
 
@@ -795,7 +1028,9 @@ document.getElementById("aiSuggestions")
   getAISuggestions;
 
 
-/* VERVOLLSTÄNDIGEN */
+/* ======================================
+   TEXT ASSISTENT
+====================================== */
 
 function completeText(){
 
@@ -849,8 +1084,6 @@ function completeText(){
 }
 
 
-/* KÜRZER */
-
 function makeShort(){
 
   var value =
@@ -882,8 +1115,6 @@ function makeShort(){
 }
 
 
-/* FREUNDLICHER */
-
 function makeFriendly(){
 
   var value =
@@ -912,8 +1143,6 @@ function makeFriendly(){
 
 }
 
-
-/* HÖFLICHER */
 
 function makeFormal(){
 
@@ -946,7 +1175,9 @@ function makeFormal(){
 }
 
 
-/* SATZ BEREINIGEN */
+/* ======================================
+   HILFSFUNKTIONEN
+====================================== */
 
 function cleanSentence(value){
 
@@ -985,26 +1216,9 @@ function lowerFirst(value){
 }
 
 
-/* SCHNELLBUTTONS */
-
-document
-.querySelectorAll("[data-speak]")
-.forEach(function(button){
-
-  button.onclick = function(){
-
-    speakText(
-      this.getAttribute(
-        "data-speak"
-      )
-    );
-
-  };
-
-});
-
-
-/* LEEREN */
+/* ======================================
+   LEEREN
+====================================== */
 
 document.getElementById("clear")
 .onclick = function(){
@@ -1020,7 +1234,9 @@ document.getElementById("clear")
 };
 
 
-/* SPEICHERN */
+/* ======================================
+   SPEICHERN
+====================================== */
 
 function getSaved(){
 
@@ -1050,7 +1266,12 @@ document.getElementById("save")
     text.value.trim();
 
   if(!value){
+
+    statusBox.textContent =
+      "Bitte zuerst etwas schreiben.";
+
     return;
+
   }
 
   var saved =
@@ -1075,8 +1296,6 @@ document.getElementById("save")
 };
 
 
-/* GESPEICHERTE SÄTZE */
-
 function showSaved(){
 
   savedBox.innerHTML = "";
@@ -1090,6 +1309,7 @@ function showSaved(){
       "<p>Noch keine Sätze gespeichert.</p>";
 
     return;
+
   }
 
   saved.forEach(function(sentence,index){
@@ -1150,7 +1370,6 @@ function showSaved(){
 
 
 showSaved();
-getAISuggestions();
 
 </script>
 
