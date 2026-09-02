@@ -2,292 +2,171 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
->
-
-<title>Tonguebox – Sprich mit deinen Augen</title>
+<title>Tonguebox</title>
 
 <style>
-
-* {
-  box-sizing: border-box;
+*{
+  box-sizing:border-box;
 }
 
-body {
-  margin: 0;
-  padding: 10px;
-  font-family: Arial, Helvetica, sans-serif;
-  background: #eef2f7;
-  color: #111;
+body{
+  margin:0;
+  padding:8px;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f3f5f7;
+  color:#111;
 }
 
-.app {
-  max-width: 900px;
-  margin: 0 auto;
+.app{
+  max-width:700px;
+  margin:auto;
 }
 
-h1 {
-  text-align: center;
-  font-size: 42px;
-  margin-bottom: 5px;
+h1{
+  text-align:center;
+  font-size:32px;
+  margin:8px 0 14px;
 }
 
-.subtitle {
-  text-align: center;
-  font-size: 23px;
-  margin-bottom: 20px;
+.card{
+  background:white;
+  border-radius:18px;
+  padding:12px;
+  margin-bottom:12px;
 }
 
-.box {
-  background: white;
-  border-radius: 22px;
-  padding: 18px;
-  margin-bottom: 18px;
-  box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+textarea{
+  width:100%;
+  min-height:230px;
+  padding:16px;
+  font-size:28px;
+  line-height:1.35;
+  border:4px solid #222;
+  border-radius:18px;
+  resize:none;
 }
 
-h2 {
-  font-size: 27px;
-  margin-top: 0;
+button,
+select{
+  width:100%;
+  min-height:95px;
+  border-radius:18px;
+  font-size:22px;
+  font-weight:bold;
 }
 
-
-/* TEXTFELD */
-
-#textInput {
-  width: 100%;
-  min-height: 300px;
-  padding: 18px;
-  font-size: 31px;
-  line-height: 1.4;
-  border: 4px solid #333;
-  border-radius: 20px;
-  resize: vertical;
+button{
+  border:none;
 }
-
-
-/* FOKUS */
 
 button:focus,
 textarea:focus,
-select:focus {
-  outline: 7px solid orange;
-  outline-offset: 4px;
+select:focus{
+  outline:6px solid orange;
+  outline-offset:3px;
 }
 
-
-/* HAUPTBUTTONS */
-
-.main-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin-top: 18px;
+.grid2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
 }
 
-.main-button {
-  min-height: 115px;
-  padding: 12px;
-  border: none;
-  border-radius: 20px;
-  font-size: 24px;
-  font-weight: bold;
+.speak{
+  background:#1565c0;
+  color:white;
 }
 
-.speak {
-  background: #1565c0;
-  color: white;
+.save{
+  background:#2e7d32;
+  color:white;
 }
 
-.save {
-  background: #2e7d32;
-  color: white;
+.clear{
+  background:#555;
+  color:white;
 }
 
-.clear {
-  background: #555;
-  color: white;
+.stop{
+  background:#c62828;
+  color:white;
 }
 
-.stop {
-  background: #c62828;
-  color: white;
+.yes{
+  background:#2e7d32;
+  color:white;
+  font-size:36px;
+  min-height:130px;
 }
 
-
-/* SATZVORSCHLÄGE */
-
-.sentence-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
+.no{
+  background:#c62828;
+  color:white;
+  font-size:36px;
+  min-height:130px;
 }
 
-.sentence-button {
-  width: 100%;
-  min-height: 110px;
-  padding: 16px;
-  border-radius: 20px;
-  border: 4px solid #673ab7;
-  background: #ede7f6;
-  font-size: 23px;
-  font-weight: bold;
-  text-align: left;
+.quick{
+  background:#e3f2fd;
+  border:3px solid #1976d2;
 }
 
-
-/* JA / NEIN */
-
-.yes-no {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
+.emergency{
+  background:#b71c1c;
+  color:white;
 }
 
-.yes,
-.no {
-  min-height: 150px;
-  border: none;
-  border-radius: 22px;
-  font-size: 40px;
-  font-weight: bold;
-  color: white;
+select{
+  padding:10px;
+  border:3px solid #444;
+  background:white;
 }
 
-.yes {
-  background: #2e7d32;
+.saved{
+  margin-top:10px;
 }
 
-.no {
-  background: #c62828;
+.saved button{
+  margin-bottom:8px;
+  background:#512da8;
+  color:white;
+  min-height:90px;
 }
 
-
-/* SCHNELLKOMMUNIKATION */
-
-.quick-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+.delete{
+  background:#c62828 !important;
 }
 
-.quick-button {
-  min-height: 110px;
-  padding: 12px;
-  border-radius: 20px;
-  border: 4px solid #1976d2;
-  background: #e3f2fd;
-  font-size: 22px;
-  font-weight: bold;
+#status{
+  min-height:28px;
+  font-size:19px;
+  font-weight:bold;
+  margin-top:8px;
 }
 
-.emergency {
-  background: #b71c1c;
-  color: white;
-  border-color: #7f0000;
-}
+@media(max-width:500px){
 
-
-/* STIMME */
-
-select {
-  width: 100%;
-  min-height: 75px;
-  padding: 10px;
-  border-radius: 15px;
-  font-size: 21px;
-}
-
-
-/* STATUS */
-
-#status {
-  margin-top: 15px;
-  min-height: 30px;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-
-/* GESPEICHERTE SÄTZE */
-
-.saved-item {
-  margin-bottom: 12px;
-  padding: 10px;
-  background: #f3f3f3;
-  border-radius: 18px;
-}
-
-.saved-speak {
-  width: 100%;
-  min-height: 95px;
-  border: none;
-  border-radius: 16px;
-  background: #512da8;
-  color: white;
-  font-size: 21px;
-  font-weight: bold;
-  padding: 14px;
-  text-align: left;
-}
-
-.saved-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.edit-button,
-.delete-button {
-  min-height: 70px;
-  border: none;
-  border-radius: 15px;
-  font-size: 19px;
-  font-weight: bold;
-}
-
-.edit-button {
-  background: #ffca28;
-}
-
-.delete-button {
-  background: #c62828;
-  color: white;
-}
-
-
-/* IPHONE */
-
-@media (max-width: 600px) {
-
-  h1 {
-    font-size: 34px;
+  body{
+    padding:6px;
   }
 
-  #textInput {
-    min-height: 320px;
-    font-size: 29px;
+  h1{
+    font-size:29px;
   }
 
-  .main-button,
-  .quick-button,
-  .sentence-button {
-    min-height: 120px;
-    font-size: 21px;
+  textarea{
+    min-height:250px;
+    font-size:27px;
   }
 
-  .yes,
-  .no {
-    min-height: 155px;
-    font-size: 38px;
+  button{
+    min-height:100px;
+    font-size:21px;
   }
 
 }
-
 </style>
 </head>
 
@@ -297,939 +176,338 @@ select {
 
 <h1>👅 Tonguebox</h1>
 
-<div class="subtitle">
-  Sprich mit deinen Augen
-</div>
-
-
-<!-- TEXTEINGABE -->
-
-<section class="box">
-
-<h2>💬 Was möchtest du sagen?</h2>
+<div class="card">
 
 <textarea
-  id="textInput"
-  placeholder="Hier schreiben..."
-  aria-label="Text eingeben"
-  spellcheck="true"
-></textarea>
+id="text"
+placeholder="Hier schreiben..."
+aria-label="Text eingeben">
+</textarea>
 
+<div class="grid2" style="margin-top:10px;">
 
-<div class="main-grid">
-
-<button
-  class="main-button speak"
-  id="speakButton"
->
-  🔊 VORLESEN
+<button class="speak" id="speak">
+🔊 Sprechen
 </button>
 
-<button
-  class="main-button save"
-  id="saveButton"
->
-  ⭐ SPEICHERN
+<button class="save" id="save">
+⭐ Speichern
 </button>
 
-<button
-  class="main-button clear"
-  id="clearButton"
->
-  🗑 LEEREN
+<button class="clear" id="clear">
+🗑 Leeren
 </button>
 
-<button
-  class="main-button stop"
-  id="stopButton"
->
-  ⏹ STOPP
+<button class="stop" id="stop">
+⏹ Stopp
 </button>
 
 </div>
 
-<div
-  id="status"
-  role="status"
-  aria-live="polite"
-></div>
+<div id="status"></div>
 
-</section>
+</div>
 
 
-<!-- SATZVORSCHLÄGE -->
+<div class="card">
 
-<section class="box">
+<div class="grid2">
 
-<h2>✨ Satzvorschläge</h2>
-
-<div
-  id="sentenceBox"
-  class="sentence-grid"
-></div>
-
-</section>
-
-
-<!-- JA / NEIN -->
-
-<section class="box">
-
-<h2>⚡ Sofort antworten</h2>
-
-<div class="yes-no">
-
-<button
-  class="yes"
-  data-speak="Ja"
->
-  ✅ JA
+<button class="yes" data-speak="Ja">
+✅ JA
 </button>
 
-<button
-  class="no"
-  data-speak="Nein"
->
-  ❌ NEIN
+<button class="no" data-speak="Nein">
+❌ NEIN
 </button>
 
 </div>
 
-</section>
+</div>
 
 
-<!-- SCHNELLKOMMUNIKATION -->
+<div class="card">
 
-<section class="box">
+<div class="grid2">
 
-<h2>⚡ Schnell sagen</h2>
+<button class="quick" data-speak="Hallo">
+👋 Hallo
+</button>
 
-<div class="quick-grid">
-
-<button
-  class="quick-button"
-  data-speak="Hallo"
->
-  👋 Hallo
+<button class="quick" data-speak="Danke">
+🙏 Danke
 </button>
 
 <button
-  class="quick-button"
-  data-speak="Danke"
->
-  🙏 Danke
+class="quick"
+data-speak="Bitte warten Sie kurz. Ich brauche etwas Zeit zum Antworten.">
+⏳ Warten
 </button>
 
 <button
-  class="quick-button"
-  data-speak="Bitte warten Sie kurz. Ich brauche etwas Zeit zum Antworten."
->
-  ⏳ Bitte warten
+class="quick"
+data-speak="Bitte sagen Sie das noch einmal.">
+🔁 Nochmal
 </button>
 
 <button
-  class="quick-button"
-  data-speak="Bitte sagen Sie das noch einmal."
->
-  🔁 Noch einmal
+class="quick"
+data-speak="Ich brauche Hilfe.">
+🆘 Hilfe
 </button>
 
 <button
-  class="quick-button"
-  data-speak="Bitte sprechen Sie langsamer."
->
-  🐢 Langsamer
+class="quick"
+data-speak="Ich möchte etwas trinken.">
+🥤 Trinken
 </button>
 
 <button
-  class="quick-button"
-  data-speak="Ich habe Sie nicht verstanden."
->
-  ❓ Nicht verstanden
+class="quick"
+data-speak="Ich muss auf die Toilette.">
+🚻 WC
 </button>
 
 <button
-  class="quick-button"
-  data-speak="Ich möchte etwas trinken."
->
-  🥤 Trinken
+class="quick"
+data-speak="Ich habe Sie nicht verstanden.">
+❓ Nicht verstanden
 </button>
 
 <button
-  class="quick-button"
-  data-speak="Ich möchte etwas essen."
->
-  🍽 Essen
+class="quick"
+data-speak="Ich kann nicht sprechen. Ich kommuniziere mit einer Augensteuerung.">
+👁 Kommunikation
 </button>
 
 <button
-  class="quick-button"
-  data-speak="Ich muss auf die Toilette."
->
-  🚻 WC
-</button>
-
-<button
-  class="quick-button"
-  data-speak="Ich brauche Hilfe."
->
-  🆘 Hilfe
-</button>
-
-<button
-  class="quick-button"
-  data-speak="Bitte geben Sie mir etwas Zeit zum Antworten."
->
-  ⏱ Zeit zum Antworten
-</button>
-
-<button
-  class="quick-button"
-  data-speak="Ich kann nicht sprechen. Ich kommuniziere mit einer Augensteuerung."
->
-  👁 Augensteuerung
-</button>
-
-<button
-  class="quick-button emergency"
-  data-speak="Das ist ein Notfall. Bitte holen Sie sofort Hilfe."
->
-  🚨 NOTFALL
+class="emergency"
+data-speak="Das ist ein Notfall. Bitte holen Sie sofort Hilfe.">
+🚨 NOTFALL
 </button>
 
 </div>
 
-</section>
+</div>
 
 
-<!-- STIMME -->
+<div class="card">
 
-<section class="box">
-
-<h2>🗣 Stimme auswählen</h2>
-
-<select id="voiceSelect">
-  <option>Stimmen werden geladen...</option>
+<select id="voice" aria-label="Stimme auswählen">
+<option>Stimmen laden...</option>
 </select>
 
-</section>
+</div>
 
 
-<!-- GESPEICHERTE SÄTZE -->
+<div class="card">
 
-<section class="box">
+<h2 style="margin-top:0;">
+⭐ Gespeichert
+</h2>
 
-<h2>⭐ Gespeicherte Sätze</h2>
+<div id="saved" class="saved"></div>
 
-<div id="savedBox"></div>
-
-</section>
+</div>
 
 </main>
 
 
 <script>
 
-document.addEventListener("DOMContentLoaded", function () {
-
-var textInput =
-  document.getElementById("textInput");
-
-var sentenceBox =
-  document.getElementById("sentenceBox");
-
-var voiceSelect =
-  document.getElementById("voiceSelect");
-
-var savedBox =
-  document.getElementById("savedBox");
-
-var statusBox =
-  document.getElementById("status");
-
-var speakButton =
-  document.getElementById("speakButton");
-
-var saveButton =
-  document.getElementById("saveButton");
-
-var clearButton =
-  document.getElementById("clearButton");
-
-var stopButton =
-  document.getElementById("stopButton");
+var text = document.getElementById("text");
+var voiceSelect = document.getElementById("voice");
+var savedBox = document.getElementById("saved");
+var statusBox = document.getElementById("status");
 
 var voices = [];
 
 
-/* =====================================================
-   STIMMEN LADEN
-===================================================== */
+/* STIMMEN */
 
-function loadVoices() {
+function loadVoices(){
 
-  voices =
-    window.speechSynthesis.getVoices();
+  voices = speechSynthesis.getVoices();
 
   voiceSelect.innerHTML = "";
 
-  if (voices.length === 0) {
+  if(voices.length === 0){
 
-    var option =
-      document.createElement("option");
+    var option = document.createElement("option");
 
-    option.textContent =
-      "Keine Stimme verfügbar";
+    option.textContent = "Keine Stimme verfügbar";
 
     voiceSelect.appendChild(option);
 
     return;
   }
 
-
   var savedVoice =
-    localStorage.getItem(
-      "tongueboxVoice"
-    );
+    localStorage.getItem("tongueboxVoice");
 
-
-  for (
-    var i = 0;
-    i < voices.length;
-    i++
-  ) {
+  voices.forEach(function(voice,index){
 
     var option =
       document.createElement("option");
 
-    option.value = i;
+    option.value = index;
 
     option.textContent =
-      voices[i].name +
-      " – " +
-      voices[i].lang;
+      voice.name + " – " + voice.lang;
 
-
-    if (
-      savedVoice ===
-      voices[i].name
-    ) {
-
+    if(savedVoice === voice.name){
       option.selected = true;
-
     }
-
 
     voiceSelect.appendChild(option);
 
-  }
+  });
 
 }
-
 
 loadVoices();
 
-
-if (
-  "speechSynthesis"
-  in window
-) {
-
-  window.speechSynthesis.onvoiceschanged =
-    loadVoices;
-
-}
+speechSynthesis.onvoiceschanged =
+  loadVoices;
 
 
 voiceSelect.addEventListener(
-  "change",
-  function () {
+"change",
+function(){
 
-    var index =
-      Number(
-        voiceSelect.value
-      );
+  var voice =
+    voices[Number(voiceSelect.value)];
 
-    if (voices[index]) {
+  if(voice){
 
-      localStorage.setItem(
-        "tongueboxVoice",
-        voices[index].name
-      );
-
-    }
+    localStorage.setItem(
+      "tongueboxVoice",
+      voice.name
+    );
 
   }
-);
+
+});
 
 
-/* =====================================================
-   SPRECHEN
-===================================================== */
+/* SPRECHEN */
 
-function speakText(text) {
+function speakText(message){
 
-  if (!text) {
+  if(!message){
     return;
   }
 
-
-  if (
-    !(
-      "speechSynthesis"
-      in window
-    )
-  ) {
-
-    statusBox.textContent =
-      "Sprachausgabe wird von diesem Browser nicht unterstützt.";
-
-    return;
-
-  }
-
-
-  window.speechSynthesis.cancel();
-
+  speechSynthesis.cancel();
 
   var speech =
-    new SpeechSynthesisUtterance(
-      text
-    );
+    new SpeechSynthesisUtterance(message);
 
+  var voice =
+    voices[Number(voiceSelect.value)];
 
-  var voiceIndex =
-    Number(
-      voiceSelect.value
-    );
+  if(voice){
 
-
-  if (
-    voices[
-      voiceIndex
-    ]
-  ) {
-
-    speech.voice =
-      voices[
-        voiceIndex
-      ];
-
-    speech.lang =
-      voices[
-        voiceIndex
-      ].lang;
+    speech.voice = voice;
+    speech.lang = voice.lang;
 
   }
-
 
   speech.rate = 0.95;
   speech.volume = 1;
 
+  speech.onstart = function(){
+    statusBox.textContent =
+      "🔊 Tonguebox spricht";
+  };
 
-  speech.onstart =
-    function () {
+  speech.onend = function(){
+    statusBox.textContent = "";
+  };
 
-      statusBox.textContent =
-        "🔊 Tonguebox spricht...";
-
-    };
-
-
-  speech.onend =
-    function () {
-
-      statusBox.textContent =
-        "";
-
-    };
-
-
-  window.speechSynthesis.speak(
-    speech
-  );
+  speechSynthesis.speak(speech);
 
 }
 
 
-/* =====================================================
-   VORLESEN
-===================================================== */
+/* HAUPTBUTTONS */
 
-speakButton.addEventListener(
-  "click",
-  function () {
+document.getElementById("speak")
+.addEventListener("click",function(){
 
-    var text =
-      textInput.value.trim();
+  var value = text.value.trim();
 
-
-    if (!text) {
-
-      statusBox.textContent =
-        "Bitte zuerst etwas schreiben.";
-
-      return;
-
-    }
-
-
-    speakText(
-      text
-    );
-
-  }
-);
-
-
-/* =====================================================
-   STOPP
-===================================================== */
-
-stopButton.addEventListener(
-  "click",
-  function () {
-
-    window.speechSynthesis.cancel();
+  if(!value){
 
     statusBox.textContent =
-      "⏹ Sprachausgabe gestoppt.";
+      "Bitte zuerst Text schreiben.";
 
-  }
-);
-
-
-/* =====================================================
-   LEEREN
-===================================================== */
-
-clearButton.addEventListener(
-  "click",
-  function () {
-
-    textInput.value = "";
-
-    statusBox.textContent = "";
-
-    updateSentenceSuggestions();
-
-    textInput.focus();
-
-  }
-);
-
-
-/* =====================================================
-   SATZVORSCHLÄGE
-===================================================== */
-
-textInput.addEventListener(
-  "input",
-  updateSentenceSuggestions
-);
-
-
-function updateSentenceSuggestions() {
-
-  var originalText =
-    textInput.value.trim();
-
-  var text =
-    originalText.toLowerCase();
-
-
-  var sentences = [];
-
-
-  if (text === "") {
-
-    sentences = [
-
-      "Ich möchte etwas sagen.",
-
-      "Bitte warten Sie kurz.",
-
-      "Ich brauche Hilfe."
-
-    ];
-
+    return;
   }
 
+  speakText(value);
 
-  else if (
-    text.indexOf("kaffee") !== -1
-  ) {
+});
 
-    sentences = [
 
-      "Ich möchte bitte einen Kaffee.",
+document.getElementById("clear")
+.addEventListener("click",function(){
 
-      "Ich hätte gerne einen Kaffee mit Milch.",
+  text.value = "";
 
-      "Könnten Sie mir bitte einen Kaffee bringen?"
+  statusBox.textContent = "";
 
-    ];
+  text.focus();
 
-  }
+});
 
 
-  else if (
-    text.indexOf("wasser") !== -1
-    ||
-    text.indexOf("trinken") !== -1
-  ) {
+document.getElementById("stop")
+.addEventListener("click",function(){
 
-    sentences = [
+  speechSynthesis.cancel();
 
-      "Ich möchte bitte etwas trinken.",
+  statusBox.textContent =
+    "⏹ Gestoppt";
 
-      "Ich hätte gerne etwas Wasser.",
+});
 
-      "Könnten Sie mir bitte etwas zu trinken geben?"
 
-    ];
+/* SCHNELLBUTTONS */
 
-  }
-
-
-  else if (
-    text.indexOf("essen") !== -1
-    ||
-    text.indexOf("hunger") !== -1
-  ) {
-
-    sentences = [
-
-      "Ich möchte bitte etwas essen.",
-
-      "Ich habe Hunger.",
-
-      "Bitte helfen Sie mir beim Essen."
-
-    ];
-
-  }
-
-
-  else if (
-    text.indexOf("hilfe") !== -1
-  ) {
-
-    sentences = [
-
-      "Ich brauche bitte Hilfe.",
-
-      "Könnten Sie mir bitte helfen?",
-
-      "Bitte helfen Sie mir kurz."
-
-    ];
-
-  }
-
-
-  else if (
-    text.indexOf("schmerz") !== -1
-  ) {
-
-    sentences = [
-
-      "Ich habe Schmerzen.",
-
-      "Bitte helfen Sie mir, ich habe Schmerzen.",
-
-      "Ich brauche wegen meiner Schmerzen Hilfe."
-
-    ];
-
-  }
-
-
-  else if (
-    text.indexOf("toilette") !== -1
-    ||
-    text.indexOf("wc") !== -1
-  ) {
-
-    sentences = [
-
-      "Ich muss bitte auf die Toilette.",
-
-      "Bitte helfen Sie mir auf die Toilette.",
-
-      "Ich brauche Hilfe beim Toilettengang."
-
-    ];
-
-  }
-
-
-  else if (
-    text.indexOf("nicht verstanden") !== -1
-    ||
-    text.indexOf("verstehe nicht") !== -1
-  ) {
-
-    sentences = [
-
-      "Ich habe Sie nicht verstanden.",
-
-      "Bitte sagen Sie das noch einmal.",
-
-      "Bitte sprechen Sie langsamer."
-
-    ];
-
-  }
-
-
-  else if (
-    text.indexOf("warten") !== -1
-    ||
-    text.indexOf("zeit") !== -1
-  ) {
-
-    sentences = [
-
-      "Bitte warten Sie kurz.",
-
-      "Ich brauche etwas Zeit zum Antworten.",
-
-      "Bitte geben Sie mir einen Moment."
-
-    ];
-
-  }
-
-
-  else {
-
-    sentences = [
-
-      makeSentence(
-        originalText
-      ),
-
-      "Bitte " +
-      lowerFirst(
-        originalText
-      ),
-
-      "Ich möchte sagen: " +
-      originalText
-
-    ];
-
-  }
-
-
-  showSentences(
-    sentences
-  );
-
-}
-
-
-/* =====================================================
-   SATZBUTTONS ANZEIGEN
-===================================================== */
-
-function showSentences(
-  sentences
-) {
-
-  sentenceBox.innerHTML = "";
-
-
-  for (
-    var i = 0;
-    i < sentences.length;
-    i++
-  ) {
-
-    if (!sentences[i]) {
-      continue;
-    }
-
-
-    createSentenceButton(
-      sentences[i]
-    );
-
-  }
-
-}
-
-
-function createSentenceButton(
-  sentence
-) {
-
-  var button =
-    document.createElement(
-      "button"
-    );
-
-
-  button.type =
-    "button";
-
-
-  button.className =
-    "sentence-button";
-
-
-  button.textContent =
-    "✨ " +
-    sentence;
-
+document
+.querySelectorAll("[data-speak]")
+.forEach(function(button){
 
   button.addEventListener(
     "click",
-    function () {
-
-      textInput.value =
-        sentence;
-
-
-      updateSentenceSuggestions();
-
+    function(){
 
       speakText(
-        sentence
+        this.getAttribute("data-speak")
       );
 
     }
   );
 
-
-  sentenceBox.appendChild(
-    button
-  );
-
-}
+});
 
 
-/* =====================================================
-   SATZ FORMATIEREN
-===================================================== */
+/* SPEICHERN */
 
-function makeSentence(
-  text
-) {
+function getSaved(){
 
-  if (!text) {
-    return "";
-  }
-
-
-  var sentence =
-    text.charAt(0)
-      .toUpperCase()
-    +
-    text.slice(1);
-
-
-  if (
-    !/[.!?]$/.test(
-      sentence
-    )
-  ) {
-
-    sentence += ".";
-
-  }
-
-
-  return sentence;
-
-}
-
-
-function lowerFirst(
-  text
-) {
-
-  if (!text) {
-    return "";
-  }
-
-
-  return (
-    text.charAt(0)
-      .toLowerCase()
-    +
-    text.slice(1)
-  );
-
-}
-
-
-/* =====================================================
-   SCHNELLBUTTONS
-===================================================== */
-
-var quickButtons =
-  document.querySelectorAll(
-    "[data-speak]"
-  );
-
-
-for (
-  var q = 0;
-  q < quickButtons.length;
-  q++
-) {
-
-  quickButtons[q]
-    .addEventListener(
-      "click",
-      function () {
-
-        var text =
-          this.getAttribute(
-            "data-speak"
-          );
-
-
-        speakText(
-          text
-        );
-
-      }
-    );
-
-}
-
-
-/* =====================================================
-   GESPEICHERTE SÄTZE
-===================================================== */
-
-function getSavedTexts() {
-
-  var saved =
-    localStorage.getItem(
-      "tongueboxSaved"
-    );
-
-
-  if (!saved) {
-
-    return [];
-
-  }
-
-
-  try {
+  try{
 
     return JSON.parse(
-      saved
+      localStorage.getItem(
+        "tongueboxSaved"
+      ) || "[]"
     );
 
   }
 
-  catch (error) {
+  catch(error){
 
     return [];
 
@@ -1238,353 +516,117 @@ function getSavedTexts() {
 }
 
 
-/* =====================================================
-   SPEICHERN
-===================================================== */
+document.getElementById("save")
+.addEventListener("click",function(){
 
-saveButton.addEventListener(
-  "click",
-  function () {
+  var value =
+    text.value.trim();
 
-    var text =
-      textInput.value.trim();
-
-
-    if (!text) {
-
-      statusBox.textContent =
-        "Bitte zuerst einen Satz schreiben.";
-
-      return;
-
-    }
-
-
-    var saved =
-      getSavedTexts();
-
-
-    if (
-      saved.indexOf(
-        text
-      ) === -1
-    ) {
-
-      saved.push(
-        text
-      );
-
-
-      localStorage.setItem(
-        "tongueboxSaved",
-        JSON.stringify(
-          saved
-        )
-      );
-
-    }
-
-
-    showSavedTexts();
-
+  if(!value){
 
     statusBox.textContent =
-      "⭐ Satz gespeichert.";
+      "Bitte zuerst Text schreiben.";
 
+    return;
   }
-);
-
-
-/* =====================================================
-   GESPEICHERTE ANZEIGEN
-===================================================== */
-
-function showSavedTexts() {
 
   var saved =
-    getSavedTexts();
+    getSaved();
 
+  if(saved.indexOf(value) === -1){
+
+    saved.push(value);
+
+    localStorage.setItem(
+      "tongueboxSaved",
+      JSON.stringify(saved)
+    );
+
+  }
+
+  showSaved();
+
+  statusBox.textContent =
+    "⭐ Gespeichert";
+
+});
+
+
+function showSaved(){
+
+  var saved =
+    getSaved();
 
   savedBox.innerHTML = "";
 
-
-  if (
-    saved.length === 0
-  ) {
+  if(saved.length === 0){
 
     savedBox.innerHTML =
       "<p>Noch keine Sätze gespeichert.</p>";
 
     return;
-
   }
 
+  saved.forEach(function(sentence,index){
 
-  for (
-    var i = 0;
-    i < saved.length;
-    i++
-  ) {
+    var speakButton =
+      document.createElement("button");
 
-    createSavedItem(
-      saved[i],
-      i
+    speakButton.textContent =
+      "🔊 " + sentence;
+
+    speakButton.addEventListener(
+      "click",
+      function(){
+
+        speakText(sentence);
+
+      }
     );
 
-  }
+    var deleteButton =
+      document.createElement("button");
+
+    deleteButton.textContent =
+      "🗑 Löschen";
+
+    deleteButton.className =
+      "delete";
+
+    deleteButton.addEventListener(
+      "click",
+      function(){
+
+        var current =
+          getSaved();
+
+        current.splice(index,1);
+
+        localStorage.setItem(
+          "tongueboxSaved",
+          JSON.stringify(current)
+        );
+
+        showSaved();
+
+      }
+    );
+
+    savedBox.appendChild(
+      speakButton
+    );
+
+    savedBox.appendChild(
+      deleteButton
+    );
+
+  });
 
 }
 
 
-/* =====================================================
-   GESPEICHERTEN SATZ ERSTELLEN
-===================================================== */
+showSaved();
 
-function createSavedItem(
-  text,
-  index
-) {
-
-  var item =
-    document.createElement(
-      "div"
-    );
-
-
-  item.className =
-    "saved-item";
-
-
-  var speakButton =
-    document.createElement(
-      "button"
-    );
-
-
-  speakButton.type =
-    "button";
-
-
-  speakButton.className =
-    "saved-speak";
-
-
-  speakButton.textContent =
-    "🔊 " +
-    text;
-
-
-  speakButton.addEventListener(
-    "click",
-    function () {
-
-      speakText(
-        text
-      );
-
-    }
-  );
-
-
-  var actions =
-    document.createElement(
-      "div"
-    );
-
-
-  actions.className =
-    "saved-actions";
-
-
-  var editButton =
-    document.createElement(
-      "button"
-    );
-
-
-  editButton.type =
-    "button";
-
-
-  editButton.className =
-    "edit-button";
-
-
-  editButton.textContent =
-    "✏️ Bearbeiten";
-
-
-  editButton.addEventListener(
-    "click",
-    function () {
-
-      editSavedText(
-        index
-      );
-
-    }
-  );
-
-
-  var deleteButton =
-    document.createElement(
-      "button"
-    );
-
-
-  deleteButton.type =
-    "button";
-
-
-  deleteButton.className =
-    "delete-button";
-
-
-  deleteButton.textContent =
-    "🗑 Löschen";
-
-
-  deleteButton.addEventListener(
-    "click",
-    function () {
-
-      deleteSavedText(
-        index
-      );
-
-    }
-  );
-
-
-  actions.appendChild(
-    editButton
-  );
-
-
-  actions.appendChild(
-    deleteButton
-  );
-
-
-  item.appendChild(
-    speakButton
-  );
-
-
-  item.appendChild(
-    actions
-  );
-
-
-  savedBox.appendChild(
-    item
-  );
-
-}
-
-
-/* =====================================================
-   BEARBEITEN
-===================================================== */
-
-function editSavedText(
-  index
-) {
-
-  var saved =
-    getSavedTexts();
-
-
-  if (
-    !saved[index]
-  ) {
-    return;
-  }
-
-
-  textInput.value =
-    saved[index];
-
-
-  saved.splice(
-    index,
-    1
-  );
-
-
-  localStorage.setItem(
-    "tongueboxSaved",
-    JSON.stringify(
-      saved
-    )
-  );
-
-
-  showSavedTexts();
-
-  updateSentenceSuggestions();
-
-
-  window.scrollTo(
-    0,
-    0
-  );
-
-
-  textInput.focus();
-
-
-  statusBox.textContent =
-    "✏️ Satz kann jetzt bearbeitet werden.";
-
-}
-
-
-/* =====================================================
-   LÖSCHEN
-===================================================== */
-
-function deleteSavedText(
-  index
-) {
-
-  var saved =
-    getSavedTexts();
-
-
-  saved.splice(
-    index,
-    1
-  );
-
-
-  localStorage.setItem(
-    "tongueboxSaved",
-    JSON.stringify(
-      saved
-    )
-  );
-
-
-  showSavedTexts();
-
-
-  statusBox.textContent =
-    "🗑 Satz gelöscht.";
-
-}
-
-
-/* =====================================================
-   START
-===================================================== */
-
-updateSentenceSuggestions();
-
-showSavedTexts();
-
-
-});
 </script>
 
 </body>
