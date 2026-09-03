@@ -2,11 +2,16 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<title>Tonguebox</title>
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
+
+<title>Tonguebox KI</title>
 
 <style>
+
 *{
   box-sizing:border-box;
 }
@@ -85,8 +90,6 @@ details{
   margin-bottom:10px;
   border-radius:18px;
   overflow:hidden;
-  scroll-margin-top:20px;
-  scroll-margin-bottom:20px;
 }
 
 summary{
@@ -119,7 +122,7 @@ details[open] summary::after{
   padding:10px;
 }
 
-/* TEXTEINGABE */
+/* TEXTFELD */
 
 textarea{
   width:100%;
@@ -152,6 +155,25 @@ textarea{
   color:white;
 }
 
+/* KI */
+
+.ai{
+  background:#fff3cd;
+  border:3px solid #f9a825;
+}
+
+.aiPurple{
+  background:#ede7f6;
+  border:3px solid #673ab7;
+}
+
+.suggestion{
+  background:#ede7f6;
+  border:3px solid #673ab7;
+  text-align:left;
+  margin-bottom:9px;
+}
+
 /* SCHNELLKOMMUNIKATION */
 
 .quick{
@@ -162,34 +184,6 @@ textarea{
 .emergency{
   background:#b71c1c;
   color:white;
-}
-
-/* TEXTASSISTENT */
-
-.assistant{
-  background:#fff3cd;
-  border:3px solid #f9a825;
-}
-
-.suggestion{
-  background:#ede7f6;
-  border:3px solid #673ab7;
-  text-align:left;
-  margin-bottom:8px;
-}
-
-/* LAUTSTÄRKE */
-
-.volume{
-  background:#e8f5e9;
-  border:3px solid #2e7d32;
-}
-
-#volumeDisplay{
-  text-align:center;
-  font-size:24px;
-  font-weight:bold;
-  margin-bottom:10px;
 }
 
 /* STIMME */
@@ -213,7 +207,7 @@ select{
   font-weight:bold;
 }
 
-/* GESPEICHERTE SÄTZE */
+/* GESPEICHERT */
 
 .saved{
   background:#512da8;
@@ -222,11 +216,22 @@ select{
   margin-bottom:7px;
 }
 
+.savedActions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+  margin-bottom:12px;
+}
+
+.edit{
+  background:#ffca28;
+  min-height:65px;
+}
+
 .delete{
   background:#c62828;
   color:white;
   min-height:65px;
-  margin-bottom:12px;
 }
 
 /* IPHONE */
@@ -261,7 +266,9 @@ select{
     min-height:100px;
     font-size:21px;
   }
+
 }
+
 </style>
 </head>
 
@@ -269,9 +276,9 @@ select{
 
 <main class="app">
 
-<h1>👅 Tonguebox</h1>
+<h1>👅 Tonguebox KI</h1>
 
-<!-- JA / NEIN IMMER SICHTBAR -->
+<!-- JA / NEIN -->
 
 <div class="grid2" style="margin-bottom:10px;">
 
@@ -291,7 +298,8 @@ select{
 
 </div>
 
-<!-- TEXTEINGABE -->
+
+<!-- TEXT SCHREIBEN -->
 
 <details>
 
@@ -350,22 +358,23 @@ select{
 
 </details>
 
-<!-- SATZVORSCHLÄGE -->
+
+<!-- KI SATZVORSCHLÄGE -->
 
 <details>
 
 <summary>
-✨ Satzvorschläge
+✨ KI-Vorschläge
 </summary>
 
 <div class="content">
 
 <button
-  id="suggestionButton"
-  class="assistant"
+  id="smartSuggestions"
+  class="aiPurple"
   type="button"
   style="margin-bottom:9px;">
-✨ Vorschläge erstellen
+✨ Passende Sätze finden
 </button>
 
 <div id="suggestionBox"></div>
@@ -374,12 +383,13 @@ select{
 
 </details>
 
-<!-- TEXTASSISTENT -->
+
+<!-- KI TEXTASSISTENT -->
 
 <details>
 
 <summary>
-🧠 Text-Assistent
+🧠 KI Text-Assistent
 </summary>
 
 <div class="content">
@@ -388,30 +398,58 @@ select{
 
 <button
   id="completeButton"
-  class="assistant"
+  class="ai"
   type="button">
 ✍️ Vervollständigen
 </button>
 
 <button
-  id="friendlyButton"
-  class="assistant"
-  type="button">
-🙂 Freundlicher
-</button>
-
-<button
   id="shortButton"
-  class="assistant"
+  class="ai"
   type="button">
 ⚡ Kürzer
 </button>
 
 <button
+  id="friendlyButton"
+  class="ai"
+  type="button">
+🙂 Freundlicher
+</button>
+
+<button
+  id="directButton"
+  class="ai"
+  type="button">
+➡️ Direkter
+</button>
+
+<button
   id="questionButton"
-  class="assistant"
+  class="ai"
   type="button">
 ❓ Als Frage
+</button>
+
+<button
+  id="requestButton"
+  class="ai"
+  type="button">
+🙏 Als Bitte
+</button>
+
+<button
+  id="improveButton"
+  class="ai"
+  type="button">
+✅ Verbessern
+</button>
+
+<button
+  id="emergencyTextButton"
+  class="ai"
+  type="button">
+🚨 Dringend
 </button>
 
 </div>
@@ -419,6 +457,7 @@ select{
 </div>
 
 </details>
+
 
 <!-- SCHNELLKOMMUNIKATION -->
 
@@ -432,59 +471,61 @@ select{
 
 <div class="grid2">
 
-<button class="quick speakPhrase" data-text="Hallo" type="button">
+<button class="quick speakPhrase" data-text="Hallo">
 👋 Hallo
 </button>
 
-<button class="quick speakPhrase" data-text="Danke" type="button">
+<button class="quick speakPhrase" data-text="Danke">
 🙏 Danke
 </button>
 
-<button class="quick speakPhrase" data-text="Bitte warten Sie kurz." type="button">
+<button class="quick speakPhrase" data-text="Bitte warten Sie kurz.">
 ⏳ Warten
 </button>
 
-<button class="quick speakPhrase" data-text="Bitte sagen Sie das noch einmal." type="button">
+<button class="quick speakPhrase" data-text="Bitte sagen Sie das noch einmal.">
 🔁 Nochmal
 </button>
 
-<button class="quick speakPhrase" data-text="Ich brauche Hilfe." type="button">
+<button class="quick speakPhrase" data-text="Ich brauche Hilfe.">
 🆘 Hilfe
 </button>
 
-<button class="quick speakPhrase" data-text="Ich möchte etwas trinken." type="button">
+<button class="quick speakPhrase" data-text="Ich möchte etwas trinken.">
 🥤 Trinken
 </button>
 
-<button class="quick speakPhrase" data-text="Ich möchte etwas essen." type="button">
+<button class="quick speakPhrase" data-text="Ich möchte etwas essen.">
 🍽 Essen
 </button>
 
-<button class="quick speakPhrase" data-text="Ich muss auf die Toilette." type="button">
+<button class="quick speakPhrase" data-text="Ich muss auf die Toilette.">
 🚻 WC
 </button>
 
-<button class="quick speakPhrase" data-text="Ich habe Sie nicht verstanden." type="button">
+<button class="quick speakPhrase" data-text="Ich habe Sie nicht verstanden.">
 ❓ Nicht verstanden
 </button>
 
-<button class="quick speakPhrase" data-text="Bitte sprechen Sie langsamer." type="button">
+<button class="quick speakPhrase" data-text="Bitte sprechen Sie langsamer.">
 🐢 Langsamer
 </button>
 
-<button class="quick speakPhrase" data-text="Bitte geben Sie mir etwas Zeit zum Antworten." type="button">
+<button class="quick speakPhrase" data-text="Bitte geben Sie mir etwas Zeit zum Antworten.">
 ⏳ Mehr Zeit
 </button>
 
-<button class="quick speakPhrase" data-text="Ich kommuniziere mit einer Augensteuerung." type="button">
+<button class="quick speakPhrase" data-text="Ich kommuniziere mit einer Augensteuerung.">
 👁 Augensteuerung
 </button>
 
-<button class="quick speakPhrase" data-text="Ich habe Schmerzen." type="button">
+<button class="quick speakPhrase" data-text="Ich habe Schmerzen.">
 🤕 Schmerzen
 </button>
 
-<button class="emergency speakPhrase" data-text="Das ist ein Notfall. Bitte holen Sie sofort Hilfe." type="button">
+<button
+  class="emergency speakPhrase"
+  data-text="Das ist ein Notfall. Bitte holen Sie sofort Hilfe.">
 🚨 NOTFALL
 </button>
 
@@ -494,45 +535,22 @@ select{
 
 </details>
 
-<!-- STIMME & LAUTSTÄRKE -->
+
+<!-- STIMME -->
 
 <details>
 
 <summary>
-🔊 Stimme & Lautstärke
+🗣 Stimme auswählen
 </summary>
 
 <div class="content">
-
-<div id="volumeDisplay">
-Lautstärke: 100 %
-</div>
-
-<div class="grid2">
-
-<button
-  id="volumeDown"
-  class="volume"
-  type="button">
-🔉 Leiser
-</button>
-
-<button
-  id="volumeUp"
-  class="volume"
-  type="button">
-🔊 Lauter
-</button>
-
-</div>
-
-<br>
 
 <select
   id="voiceSelect"
   aria-label="Stimme auswählen">
 
-<option value="">
+<option>
 Stimmen werden geladen...
 </option>
 
@@ -541,6 +559,7 @@ Stimmen werden geladen...
 </div>
 
 </details>
+
 
 <!-- GESPEICHERTE SÄTZE -->
 
@@ -560,28 +579,41 @@ Stimmen werden geladen...
 
 </main>
 
+
 <script>
+
 document.addEventListener("DOMContentLoaded", function(){
 
-var textInput = document.getElementById("textInput");
-var statusBox = document.getElementById("status");
-var voiceSelect = document.getElementById("voiceSelect");
-var suggestionBox = document.getElementById("suggestionBox");
-var savedBox = document.getElementById("savedBox");
-var volumeDisplay = document.getElementById("volumeDisplay");
+var textInput =
+  document.getElementById("textInput");
+
+var statusBox =
+  document.getElementById("status");
+
+var voiceSelect =
+  document.getElementById("voiceSelect");
+
+var suggestionBox =
+  document.getElementById("suggestionBox");
+
+var savedBox =
+  document.getElementById("savedBox");
+
 var voices = [];
 
 
 /* =========================================
-   AUTOMATISCHE ZENTRIERUNG
-   UND NUR EIN BEREICH GLEICHZEITIG
+   BEREICHE ZENTRIEREN
 ========================================= */
 
-var allDetails = document.querySelectorAll("details");
+var allDetails =
+  document.querySelectorAll("details");
 
 for(var d = 0; d < allDetails.length; d++){
 
-  allDetails[d].addEventListener("toggle", function(){
+  allDetails[d].addEventListener(
+  "toggle",
+  function(){
 
     var current = this;
 
@@ -612,72 +644,6 @@ for(var d = 0; d < allDetails.length; d++){
 
 
 /* =========================================
-   LAUTSTÄRKE
-========================================= */
-
-var volume = parseFloat(
-  localStorage.getItem("tongueboxVolume")
-);
-
-if(isNaN(volume)){
-  volume = 1;
-}
-
-function updateVolume(){
-
-  volumeDisplay.textContent =
-    "Lautstärke: " +
-    Math.round(volume * 100) +
-    " %";
-
-}
-
-function saveVolume(){
-
-  volume =
-    Math.round(volume * 10) / 10;
-
-  localStorage.setItem(
-    "tongueboxVolume",
-    String(volume)
-  );
-
-  updateVolume();
-
-}
-
-document.getElementById("volumeUp").addEventListener(
-"click",
-function(){
-
-  volume += 0.1;
-
-  if(volume > 1){
-    volume = 1;
-  }
-
-  saveVolume();
-
-});
-
-document.getElementById("volumeDown").addEventListener(
-"click",
-function(){
-
-  volume -= 0.1;
-
-  if(volume < 0){
-    volume = 0;
-  }
-
-  saveVolume();
-
-});
-
-updateVolume();
-
-
-/* =========================================
    STIMMEN
 ========================================= */
 
@@ -693,17 +659,19 @@ function loadVoices(){
   voiceSelect.innerHTML = "";
 
   var savedVoice =
-    localStorage.getItem("tongueboxVoice");
+    localStorage.getItem(
+      "tongueboxVoice"
+    );
 
   if(voices.length === 0){
 
-    var option =
+    var waiting =
       document.createElement("option");
 
-    option.textContent =
+    waiting.textContent =
       "Stimmen werden geladen...";
 
-    voiceSelect.appendChild(option);
+    voiceSelect.appendChild(waiting);
 
     return;
   }
@@ -713,7 +681,7 @@ function loadVoices(){
     var option =
       document.createElement("option");
 
-    option.value = String(i);
+    option.value = i;
 
     option.textContent =
       voices[i].name +
@@ -733,7 +701,10 @@ function loadVoices(){
 loadVoices();
 
 if("speechSynthesis" in window){
-  window.speechSynthesis.onvoiceschanged = loadVoices;
+
+  window.speechSynthesis.onvoiceschanged =
+    loadVoices;
+
 }
 
 voiceSelect.addEventListener(
@@ -746,7 +717,7 @@ function(){
       10
     );
 
-  if(!isNaN(index) && voices[index]){
+  if(voices[index]){
 
     localStorage.setItem(
       "tongueboxVoice",
@@ -790,19 +761,22 @@ function speakText(message){
       10
     );
 
-  if(!isNaN(index) && voices[index]){
+  if(voices[index]){
 
-    speech.voice = voices[index];
-    speech.lang = voices[index].lang;
+    speech.voice =
+      voices[index];
 
-  }else{
+    speech.lang =
+      voices[index].lang;
+
+  }
+  else{
 
     speech.lang = "de-DE";
 
   }
 
   speech.rate = 0.95;
-  speech.volume = volume;
 
   speech.onstart =
   function(){
@@ -826,7 +800,9 @@ function speakText(message){
 
 /* TEXT SPRECHEN */
 
-document.getElementById("speakButton").addEventListener(
+document
+.getElementById("speakButton")
+.addEventListener(
 "click",
 function(){
 
@@ -846,15 +822,15 @@ function(){
 });
 
 
-/* STOPP */
+/* STOP */
 
-document.getElementById("stopButton").addEventListener(
+document
+.getElementById("stopButton")
+.addEventListener(
 "click",
 function(){
 
-  if("speechSynthesis" in window){
-    window.speechSynthesis.cancel();
-  }
+  window.speechSynthesis.cancel();
 
   statusBox.textContent =
     "⏹ Gestoppt.";
@@ -864,12 +840,16 @@ function(){
 
 /* LEEREN */
 
-document.getElementById("clearButton").addEventListener(
+document
+.getElementById("clearButton")
+.addEventListener(
 "click",
 function(){
 
   textInput.value = "";
+
   suggestionBox.innerHTML = "";
+
   statusBox.textContent = "";
 
 });
@@ -886,10 +866,9 @@ for(var p = 0; p < phraseButtons.length; p++){
   "click",
   function(){
 
-    var message =
-      this.getAttribute("data-text");
-
-    speakText(message);
+    speakText(
+      this.getAttribute("data-text")
+    );
 
   });
 
@@ -897,99 +876,239 @@ for(var p = 0; p < phraseButtons.length; p++){
 
 
 /* =========================================
-   SATZVORSCHLÄGE
+   LOKALE KI - ABSICHT ERKENNEN
 ========================================= */
 
-document.getElementById("suggestionButton").addEventListener(
+function detectIntent(text){
+
+  var value =
+    text.toLowerCase();
+
+  if(
+    contains(value,[
+      "hilfe",
+      "helfen"
+    ])
+  ){
+    return "hilfe";
+  }
+
+  if(
+    contains(value,[
+      "kaffee"
+    ])
+  ){
+    return "kaffee";
+  }
+
+  if(
+    contains(value,[
+      "wasser",
+      "trinken",
+      "durst"
+    ])
+  ){
+    return "trinken";
+  }
+
+  if(
+    contains(value,[
+      "essen",
+      "hunger",
+      "hungrig"
+    ])
+  ){
+    return "essen";
+  }
+
+  if(
+    contains(value,[
+      "wc",
+      "toilette"
+    ])
+  ){
+    return "wc";
+  }
+
+  if(
+    contains(value,[
+      "schmerz",
+      "weh"
+    ])
+  ){
+    return "schmerzen";
+  }
+
+  if(
+    contains(value,[
+      "warten",
+      "zeit",
+      "moment"
+    ])
+  ){
+    return "warten";
+  }
+
+  if(
+    contains(value,[
+      "verstehe",
+      "verstanden",
+      "nochmal",
+      "noch einmal"
+    ])
+  ){
+    return "verstehen";
+  }
+
+  if(
+    contains(value,[
+      "arzt",
+      "ärzt",
+      "medizin"
+    ])
+  ){
+    return "arzt";
+  }
+
+  return "normal";
+
+}
+
+
+/* =========================================
+   INTELLIGENTE VORSCHLÄGE
+========================================= */
+
+document
+.getElementById("smartSuggestions")
+.addEventListener(
 "click",
 function(){
 
   var value =
     textInput.value.trim();
 
-  var lower =
-    value.toLowerCase();
+  var intent =
+    detectIntent(value);
 
-  var suggestions = [];
+  var list = [];
 
-  if(!value){
+  if(intent === "hilfe"){
 
-    suggestions = [
-      "Ich möchte etwas sagen.",
-      "Bitte warten Sie kurz.",
-      "Ich brauche Hilfe."
+    list = [
+      "Ich brauche bitte Hilfe.",
+      "Könnten Sie mir bitte helfen?",
+      "Bitte holen Sie jemanden, der mir helfen kann."
     ];
 
   }
-  else if(lower.indexOf("kaffee") !== -1){
 
-    suggestions = [
+  else if(intent === "kaffee"){
+
+    list = [
       "Ich möchte bitte einen Kaffee.",
       "Ich hätte gerne einen Kaffee mit Milch.",
-      "Bitte bringen Sie mir einen Kaffee."
+      "Könnten Sie mir bitte einen Kaffee bringen?"
     ];
 
   }
-  else if(
-    lower.indexOf("wasser") !== -1 ||
-    lower.indexOf("trinken") !== -1 ||
-    lower.indexOf("durst") !== -1
-  ){
 
-    suggestions = [
+  else if(intent === "trinken"){
+
+    list = [
       "Ich möchte bitte etwas trinken.",
       "Ich hätte gerne Wasser.",
       "Bitte helfen Sie mir beim Trinken."
     ];
 
   }
-  else if(
-    lower.indexOf("essen") !== -1 ||
-    lower.indexOf("hunger") !== -1
-  ){
 
-    suggestions = [
+  else if(intent === "essen"){
+
+    list = [
       "Ich möchte bitte etwas essen.",
       "Ich habe Hunger.",
       "Bitte helfen Sie mir beim Essen."
     ];
 
   }
-  else if(lower.indexOf("hilfe") !== -1){
 
-    suggestions = [
-      "Ich brauche Hilfe.",
-      "Könnten Sie mir bitte helfen?",
-      "Bitte holen Sie jemanden."
-    ];
+  else if(intent === "wc"){
 
-  }
-  else if(
-    lower.indexOf("wc") !== -1 ||
-    lower.indexOf("toilette") !== -1
-  ){
-
-    suggestions = [
+    list = [
       "Ich muss auf die Toilette.",
       "Bitte helfen Sie mir auf die Toilette.",
-      "Ich brauche Hilfe beim Toilettengang."
+      "Ich brauche jetzt Hilfe beim Toilettengang."
     ];
 
   }
-  else{
 
-    suggestions = [
-      cleanSentence(value),
+  else if(intent === "schmerzen"){
+
+    list = [
+      "Ich habe Schmerzen.",
+      "Meine Schmerzen sind stärker geworden.",
+      "Bitte helfen Sie mir wegen meiner Schmerzen."
+    ];
+
+  }
+
+  else if(intent === "warten"){
+
+    list = [
+      "Bitte warten Sie kurz.",
+      "Ich brauche etwas Zeit zum Antworten.",
+      "Bitte geben Sie mir einen Moment."
+    ];
+
+  }
+
+  else if(intent === "verstehen"){
+
+    list = [
+      "Ich habe Sie nicht verstanden.",
+      "Bitte sagen Sie das noch einmal.",
+      "Bitte sprechen Sie langsamer."
+    ];
+
+  }
+
+  else if(intent === "arzt"){
+
+    list = [
+      "Ich möchte mit einem Arzt sprechen.",
+      "Bitte erklären Sie mir das noch einmal.",
+      "Bitte geben Sie mir Zeit, meine Antwort zu formulieren."
+    ];
+
+  }
+
+  else if(value){
+
+    list = [
+      improveText(value),
       friendlyText(value),
       questionText(value)
     ];
 
   }
 
-  showSuggestions(suggestions);
+  else{
+
+    list = [
+      "Ich möchte etwas sagen.",
+      "Bitte warten Sie kurz.",
+      "Ich brauche Hilfe."
+    ];
+
+  }
+
+  showSuggestions(list);
 
 });
 
+
+/* VORSCHLÄGE ANZEIGEN */
 
 function showSuggestions(list){
 
@@ -1001,13 +1120,15 @@ function showSuggestions(list){
       document.createElement("button");
 
     button.type = "button";
-    button.className = "suggestion";
+
+    button.className =
+      "suggestion";
 
     button.textContent =
       "✨ " + list[i];
 
     button.setAttribute(
-      "data-sentence",
+      "data-text",
       list[i]
     );
 
@@ -1016,11 +1137,10 @@ function showSuggestions(list){
     function(){
 
       var sentence =
-        this.getAttribute(
-          "data-sentence"
-        );
+        this.getAttribute("data-text");
 
-      textInput.value = sentence;
+      textInput.value =
+        sentence;
 
       speakText(sentence);
 
@@ -1034,102 +1154,76 @@ function showSuggestions(list){
 
 
 /* =========================================
-   TEXT VERVOLLSTÄNDIGEN
+   KI TEXTASSISTENT
 ========================================= */
 
-document.getElementById("completeButton").addEventListener(
+document
+.getElementById("completeButton")
+.addEventListener(
 "click",
 function(){
 
   var value =
     textInput.value.trim();
 
-  var lower =
-    value.toLowerCase();
-
   if(!value){
-
-    statusBox.textContent =
-      "Bitte zuerst Text eingeben.";
-
     return;
-
   }
 
-  if(lower.indexOf("kaffee") !== -1){
+  var intent =
+    detectIntent(value);
+
+  if(intent === "kaffee"){
 
     textInput.value =
       "Ich möchte bitte einen Kaffee.";
 
   }
-  else if(
-    lower.indexOf("trinken") !== -1 ||
-    lower.indexOf("wasser") !== -1
-  ){
+  else if(intent === "trinken"){
 
     textInput.value =
       "Ich möchte bitte etwas trinken.";
 
   }
-  else if(lower.indexOf("essen") !== -1){
+  else if(intent === "essen"){
 
     textInput.value =
       "Ich möchte bitte etwas essen.";
 
   }
-  else if(lower.indexOf("hilfe") !== -1){
+  else if(intent === "hilfe"){
 
     textInput.value =
       "Ich brauche bitte Hilfe.";
 
   }
-  else if(
-    lower.indexOf("wc") !== -1 ||
-    lower.indexOf("toilette") !== -1
-  ){
+  else if(intent === "wc"){
 
     textInput.value =
       "Ich muss bitte auf die Toilette.";
 
   }
+  else if(intent === "schmerzen"){
+
+    textInput.value =
+      "Ich habe Schmerzen und brauche bitte Hilfe.";
+
+  }
   else{
 
     textInput.value =
-      cleanSentence(value);
+      improveText(value);
 
   }
-
-  statusBox.textContent =
-    "✍️ Text vervollständigt.";
-
-});
-
-
-/* FREUNDLICHER */
-
-document.getElementById("friendlyButton").addEventListener(
-"click",
-function(){
-
-  var value =
-    textInput.value.trim();
-
-  if(!value){
-    return;
-  }
-
-  textInput.value =
-    friendlyText(value);
-
-  statusBox.textContent =
-    "🙂 Freundlicher formuliert.";
 
 });
 
 
 /* KÜRZER */
 
-document.getElementById("shortButton").addEventListener(
+document
+.getElementById("shortButton")
+.addEventListener(
 "click",
 function(){
 
@@ -1142,13 +1236,13 @@ function(){
 
   value =
     value.replace(
-      /ich hätte gerne/gi,
+      /ich würde gerne/gi,
       "Ich möchte"
     );
 
   value =
     value.replace(
-      /ich würde gerne/gi,
+      /ich hätte gerne/gi,
       "Ich möchte"
     );
 
@@ -1164,18 +1258,83 @@ function(){
       "Ich möchte"
     );
 
-  textInput.value =
-    cleanSentence(value);
+  value =
+    value.replace(
+      /bitte geben sie mir einen moment/gi,
+      "Bitte warten"
+    );
 
-  statusBox.textContent =
-    "⚡ Text gekürzt.";
+  textInput.value =
+    improveText(value);
 
 });
 
 
-/* ALS FRAGE */
+/* FREUNDLICHER */
 
-document.getElementById("questionButton").addEventListener(
+document
+.getElementById("friendlyButton")
+.addEventListener(
+"click",
+function(){
+
+  var value =
+    textInput.value.trim();
+
+  if(!value){
+    return;
+  }
+
+  textInput.value =
+    friendlyText(value);
+
+});
+
+
+/* DIREKTER */
+
+document
+.getElementById("directButton")
+.addEventListener(
+"click",
+function(){
+
+  var value =
+    textInput.value.trim();
+
+  if(!value){
+    return;
+  }
+
+  value =
+    value.replace(
+      /könnten sie mir bitte/gi,
+      "Bitte"
+    );
+
+  value =
+    value.replace(
+      /ich hätte gerne/gi,
+      "Ich möchte"
+    );
+
+  value =
+    value.replace(
+      /ich würde gerne/gi,
+      "Ich möchte"
+    );
+
+  textInput.value =
+    improveText(value);
+
+});
+
+
+/* FRAGE */
+
+document
+.getElementById("questionButton")
+.addEventListener(
 "click",
 function(){
 
@@ -1189,8 +1348,115 @@ function(){
   textInput.value =
     questionText(value);
 
-  statusBox.textContent =
-    "❓ Frage erstellt.";
+});
+
+
+/* BITTE */
+
+document
+.getElementById("requestButton")
+.addEventListener(
+"click",
+function(){
+
+  var value =
+    textInput.value.trim();
+
+  if(!value){
+    return;
+  }
+
+  value =
+    removeEnd(value);
+
+  if(
+    value.toLowerCase()
+      .indexOf("bitte") === -1
+  ){
+
+    value =
+      "Bitte " +
+      lowerFirst(value);
+
+  }
+
+  textInput.value =
+    improveText(value);
+
+});
+
+
+/* VERBESSERN */
+
+document
+.getElementById("improveButton")
+.addEventListener(
+"click",
+function(){
+
+  var value =
+    textInput.value.trim();
+
+  if(!value){
+    return;
+  }
+
+  textInput.value =
+    improveText(value);
+
+});
+
+
+/* DRINGEND */
+
+document
+.getElementById("emergencyTextButton")
+.addEventListener(
+"click",
+function(){
+
+  var value =
+    textInput.value.trim();
+
+  if(!value){
+
+    textInput.value =
+      "Ich brauche dringend Hilfe.";
+
+    return;
+  }
+
+  var intent =
+    detectIntent(value);
+
+  if(intent === "schmerzen"){
+
+    textInput.value =
+      "Ich habe starke Schmerzen. Bitte helfen Sie mir sofort.";
+
+  }
+  else if(intent === "wc"){
+
+    textInput.value =
+      "Ich muss dringend auf die Toilette. Bitte helfen Sie mir jetzt.";
+
+  }
+  else if(intent === "hilfe"){
+
+    textInput.value =
+      "Ich brauche dringend Hilfe. Bitte kommen Sie sofort.";
+
+  }
+  else{
+
+    textInput.value =
+      "Dringend: " +
+      removeEnd(
+        improveText(value)
+      ) +
+      ".";
+
+  }
 
 });
 
@@ -1199,17 +1465,65 @@ function(){
    HILFSFUNKTIONEN
 ========================================= */
 
-function cleanSentence(value){
+function contains(text,list){
 
-  value =
-    String(value || "").trim();
+  for(var i = 0; i < list.length; i++){
+
+    if(
+      text.indexOf(
+        list[i]
+      ) !== -1
+    ){
+
+      return true;
+
+    }
+
+  }
+
+  return false;
+
+}
+
+function removeEnd(value){
+
+  return String(value || "")
+    .trim()
+    .replace(/[.!?]+$/,"");
+
+}
+
+function lowerFirst(value){
 
   if(!value){
     return "";
   }
 
+  return (
+    value.charAt(0).toLowerCase() +
+    value.slice(1)
+  );
+
+}
+
+function improveText(value){
+
+  value =
+    String(value || "")
+      .trim();
+
   value =
     value.replace(/\s+/g," ");
+
+  value =
+    value.replace(
+      /\s+([,.!?])/g,
+      "$1"
+    );
+
+  if(!value){
+    return "";
+  }
 
   value =
     value.charAt(0).toUpperCase() +
@@ -1226,7 +1540,7 @@ function cleanSentence(value){
 function friendlyText(value){
 
   value =
-    value.replace(/[.!?]+$/,"");
+    removeEnd(value);
 
   if(
     value.toLowerCase()
@@ -1235,12 +1549,11 @@ function friendlyText(value){
 
     value =
       "Bitte " +
-      value.charAt(0).toLowerCase() +
-      value.slice(1);
+      lowerFirst(value);
 
   }
 
-  return cleanSentence(value);
+  return improveText(value);
 
 }
 
@@ -1249,36 +1562,44 @@ function questionText(value){
   var lower =
     value.toLowerCase();
 
-  if(lower.indexOf("kaffee") !== -1){
+  var intent =
+    detectIntent(value);
 
-    return "Könnten Sie mir bitte einen Kaffee bringen?";
-
-  }
-
-  if(lower.indexOf("hilfe") !== -1){
+  if(intent === "hilfe"){
 
     return "Könnten Sie mir bitte helfen?";
 
   }
 
-  if(
-    lower.indexOf("trinken") !== -1 ||
-    lower.indexOf("wasser") !== -1
-  ){
+  if(intent === "kaffee"){
+
+    return "Könnten Sie mir bitte einen Kaffee bringen?";
+
+  }
+
+  if(intent === "trinken"){
 
     return "Könnten Sie mir bitte etwas zu trinken geben?";
 
   }
 
-  if(lower.indexOf("essen") !== -1){
+  if(intent === "essen"){
 
     return "Könnten Sie mir bitte etwas zu essen geben?";
 
   }
 
+  if(intent === "wc"){
+
+    return "Könnten Sie mir bitte auf die Toilette helfen?";
+
+  }
+
   return (
     "Könnten Sie bitte " +
-    value.replace(/[.!?]+$/,"") +
+    lowerFirst(
+      removeEnd(value)
+    ) +
     "?"
   );
 
@@ -1324,7 +1645,9 @@ function saveList(list){
 
 }
 
-document.getElementById("saveButton").addEventListener(
+document
+.getElementById("saveButton")
+.addEventListener(
 "click",
 function(){
 
@@ -1332,12 +1655,7 @@ function(){
     textInput.value.trim();
 
   if(!value){
-
-    statusBox.textContent =
-      "Bitte zuerst Text eingeben.";
-
     return;
-
   }
 
   var saved =
@@ -1371,10 +1689,10 @@ function(){
 
 function showSaved(){
 
+  savedBox.innerHTML = "";
+
   var saved =
     getSaved();
-
-  savedBox.innerHTML = "";
 
   if(saved.length === 0){
 
@@ -1387,7 +1705,7 @@ function showSaved(){
 
   for(var i = 0; i < saved.length; i++){
 
-    createSavedItem(
+    createSaved(
       saved[i],
       i
     );
@@ -1396,21 +1714,19 @@ function showSaved(){
 
 }
 
-function createSavedItem(sentence,index){
+function createSaved(sentence,index){
 
-  var speakButton =
+  var speak =
     document.createElement("button");
 
-  speakButton.type =
-    "button";
+  speak.type = "button";
 
-  speakButton.className =
-    "saved";
+  speak.className = "saved";
 
-  speakButton.textContent =
+  speak.textContent =
     "🔊 " + sentence;
 
-  speakButton.addEventListener(
+  speak.addEventListener(
   "click",
   function(){
 
@@ -1419,26 +1735,72 @@ function createSavedItem(sentence,index){
   });
 
 
-  var deleteButton =
+  var actions =
+    document.createElement("div");
+
+  actions.className =
+    "savedActions";
+
+
+  var edit =
     document.createElement("button");
 
-  deleteButton.type =
-    "button";
+  edit.type = "button";
 
-  deleteButton.className =
-    "delete";
+  edit.className = "edit";
 
-  deleteButton.textContent =
+  edit.textContent =
+    "✏️ Bearbeiten";
+
+  edit.addEventListener(
+  "click",
+  function(){
+
+    textInput.value =
+      sentence;
+
+    var textSection =
+      textInput.closest("details");
+
+    if(textSection){
+
+      textSection.open = true;
+
+    }
+
+    setTimeout(function(){
+
+      textInput.scrollIntoView({
+        behavior:"smooth",
+        block:"center"
+      });
+
+    },150);
+
+  });
+
+
+  var remove =
+    document.createElement("button");
+
+  remove.type = "button";
+
+  remove.className = "delete";
+
+  remove.textContent =
     "🗑 Löschen";
 
-  deleteButton.addEventListener(
+  remove.addEventListener(
   "click",
   function(){
 
     var saved =
       getSaved();
 
-    saved.splice(index,1);
+    saved.splice(
+      index,
+      1
+    );
 
     saveList(saved);
 
@@ -1447,13 +1809,13 @@ function createSavedItem(sentence,index){
   });
 
 
-  savedBox.appendChild(
-    speakButton
-  );
+  actions.appendChild(edit);
 
-  savedBox.appendChild(
-    deleteButton
-  );
+  actions.appendChild(remove);
+
+  savedBox.appendChild(speak);
+
+  savedBox.appendChild(actions);
 
 }
 
