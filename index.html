@@ -32,7 +32,14 @@ body{
 h1{
   text-align:center;
   font-size:30px;
-  margin:10px 0 14px;
+  margin:10px 0 5px;
+}
+
+#timeInfo{
+  text-align:center;
+  font-size:19px;
+  font-weight:bold;
+  margin-bottom:12px;
 }
 
 button,
@@ -83,7 +90,7 @@ summary:focus{
   font-size:38px;
 }
 
-/* AUFKLAPPBARE BEREICHE */
+/* AUFKLAPPBAR */
 
 details{
   background:white;
@@ -111,7 +118,6 @@ summary::-webkit-details-marker{
 
 summary::after{
   content:"▼";
-  font-size:24px;
 }
 
 details[open] summary::after{
@@ -122,7 +128,7 @@ details[open] summary::after{
   padding:10px;
 }
 
-/* TEXTFELD */
+/* TEXT */
 
 textarea{
   width:100%;
@@ -155,14 +161,14 @@ textarea{
   color:white;
 }
 
-/* KI */
+/* TAGESZEIT */
 
-.ai{
-  background:#fff3cd;
-  border:3px solid #f9a825;
+.timeButton{
+  background:#fff8e1;
+  border:3px solid #ffb300;
 }
 
-.aiPurple{
+.smart{
   background:#ede7f6;
   border:3px solid #673ab7;
 }
@@ -174,7 +180,7 @@ textarea{
   margin-bottom:9px;
 }
 
-/* SCHNELLKOMMUNIKATION */
+/* SCHNELL */
 
 .quick{
   background:#e3f2fd;
@@ -195,7 +201,6 @@ select{
   border:3px solid #444;
   border-radius:16px;
   font-size:20px;
-  background:white;
 }
 
 /* STATUS */
@@ -216,35 +221,14 @@ select{
   margin-bottom:7px;
 }
 
-.savedActions{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:7px;
-  margin-bottom:12px;
-}
-
-.edit{
-  background:#ffca28;
-  min-height:65px;
-}
-
 .delete{
   background:#c62828;
   color:white;
   min-height:65px;
+  margin-bottom:12px;
 }
 
-/* IPHONE */
-
 @media(max-width:500px){
-
-  body{
-    padding:5px;
-  }
-
-  h1{
-    font-size:27px;
-  }
 
   button{
     min-height:98px;
@@ -278,28 +262,45 @@ select{
 
 <h1>👅 Tonguebox KI</h1>
 
+<div id="timeInfo">
+Tageszeit wird erkannt...
+</div>
+
 <!-- JA / NEIN -->
 
 <div class="grid2" style="margin-bottom:10px;">
 
 <button
   class="yes speakPhrase"
-  data-text="Ja"
-  type="button">
+  data-text="Ja">
 ✅ JA
 </button>
 
 <button
   class="no speakPhrase"
-  data-text="Nein"
-  type="button">
+  data-text="Nein">
 ❌ NEIN
 </button>
 
 </div>
 
+<!-- TAGESZEIT -->
 
-<!-- TEXT SCHREIBEN -->
+<details>
+
+<summary>
+🕒 Passend zur Tageszeit
+</summary>
+
+<div class="content">
+
+<div id="timeButtons" class="grid2"></div>
+
+</div>
+
+</details>
+
+<!-- TEXT -->
 
 <details>
 
@@ -312,69 +313,50 @@ select{
 <textarea
   id="textInput"
   placeholder="Was möchtest du sagen?"
-  aria-label="Text eingeben"
-  spellcheck="true">
+  aria-label="Text eingeben">
 </textarea>
 
 <div class="grid2" style="margin-top:9px;">
 
-<button
-  id="speakButton"
-  class="speak"
-  type="button">
+<button id="speakButton" class="speak">
 🔊 Sprechen
 </button>
 
-<button
-  id="saveButton"
-  class="save"
-  type="button">
+<button id="saveButton" class="save">
 ⭐ Speichern
 </button>
 
-<button
-  id="clearButton"
-  class="clear"
-  type="button">
+<button id="clearButton" class="clear">
 🗑 Leeren
 </button>
 
-<button
-  id="stopButton"
-  class="stop"
-  type="button">
+<button id="stopButton" class="stop">
 ⏹ Stopp
 </button>
 
 </div>
 
-<div
-  id="status"
-  role="status"
-  aria-live="polite">
-</div>
+<div id="status"></div>
 
 </div>
 
 </details>
 
-
-<!-- KI SATZVORSCHLÄGE -->
+<!-- INTELLIGENTE VORSCHLÄGE -->
 
 <details>
 
 <summary>
-✨ KI-Vorschläge
+✨ Intelligente Vorschläge
 </summary>
 
 <div class="content">
 
 <button
-  id="smartSuggestions"
-  class="aiPurple"
-  type="button"
+  id="suggestionButton"
+  class="smart"
   style="margin-bottom:9px;">
-✨ Passende Sätze finden
+✨ Vorschläge erstellen
 </button>
 
 <div id="suggestionBox"></div>
@@ -383,73 +365,32 @@ select{
 
 </details>
 
-
-<!-- KI TEXTASSISTENT -->
+<!-- TEXT ASSISTENT -->
 
 <details>
 
 <summary>
-🧠 KI Text-Assistent
+🧠 Text-Assistent
 </summary>
 
 <div class="content">
 
 <div class="grid2">
 
-<button
-  id="completeButton"
-  class="ai"
-  type="button">
+<button id="completeButton" class="timeButton">
 ✍️ Vervollständigen
 </button>
 
-<button
-  id="shortButton"
-  class="ai"
-  type="button">
-⚡ Kürzer
-</button>
-
-<button
-  id="friendlyButton"
-  class="ai"
-  type="button">
+<button id="friendlyButton" class="timeButton">
 🙂 Freundlicher
 </button>
 
-<button
-  id="directButton"
-  class="ai"
-  type="button">
-➡️ Direkter
+<button id="shortButton" class="timeButton">
+⚡ Kürzer
 </button>
 
-<button
-  id="questionButton"
-  class="ai"
-  type="button">
+<button id="questionButton" class="timeButton">
 ❓ Als Frage
-</button>
-
-<button
-  id="requestButton"
-  class="ai"
-  type="button">
-🙏 Als Bitte
-</button>
-
-<button
-  id="improveButton"
-  class="ai"
-  type="button">
-✅ Verbessern
-</button>
-
-<button
-  id="emergencyTextButton"
-  class="ai"
-  type="button">
-🚨 Dringend
 </button>
 
 </div>
@@ -457,7 +398,6 @@ select{
 </div>
 
 </details>
-
 
 <!-- SCHNELLKOMMUNIKATION -->
 
@@ -507,25 +447,15 @@ select{
 ❓ Nicht verstanden
 </button>
 
-<button class="quick speakPhrase" data-text="Bitte sprechen Sie langsamer.">
-🐢 Langsamer
-</button>
-
 <button class="quick speakPhrase" data-text="Bitte geben Sie mir etwas Zeit zum Antworten.">
 ⏳ Mehr Zeit
-</button>
-
-<button class="quick speakPhrase" data-text="Ich kommuniziere mit einer Augensteuerung.">
-👁 Augensteuerung
 </button>
 
 <button class="quick speakPhrase" data-text="Ich habe Schmerzen.">
 🤕 Schmerzen
 </button>
 
-<button
-  class="emergency speakPhrase"
-  data-text="Das ist ein Notfall. Bitte holen Sie sofort Hilfe.">
+<button class="emergency speakPhrase" data-text="Das ist ein Notfall. Bitte holen Sie sofort Hilfe.">
 🚨 NOTFALL
 </button>
 
@@ -534,7 +464,6 @@ select{
 </div>
 
 </details>
-
 
 <!-- STIMME -->
 
@@ -546,22 +475,15 @@ select{
 
 <div class="content">
 
-<select
-  id="voiceSelect"
-  aria-label="Stimme auswählen">
-
-<option>
-Stimmen werden geladen...
-</option>
-
+<select id="voiceSelect">
+<option>Stimmen werden geladen...</option>
 </select>
 
 </div>
 
 </details>
 
-
-<!-- GESPEICHERTE SÄTZE -->
+<!-- GESPEICHERT -->
 
 <details>
 
@@ -578,7 +500,6 @@ Stimmen werden geladen...
 </details>
 
 </main>
-
 
 <script>
 
@@ -599,19 +520,215 @@ var suggestionBox =
 var savedBox =
   document.getElementById("savedBox");
 
+var timeButtons =
+  document.getElementById("timeButtons");
+
+var timeInfo =
+  document.getElementById("timeInfo");
+
 var voices = [];
 
 
-/* =========================================
-   BEREICHE ZENTRIEREN
-========================================= */
+/* ===============================
+   TAGESZEIT ERKENNEN
+================================ */
 
-var allDetails =
+function getDayTime(){
+
+  var hour =
+    new Date().getHours();
+
+  if(hour >= 5 && hour < 10){
+    return "morgen";
+  }
+
+  if(hour >= 10 && hour < 12){
+    return "vormittag";
+  }
+
+  if(hour >= 12 && hour < 14){
+    return "mittag";
+  }
+
+  if(hour >= 14 && hour < 18){
+    return "nachmittag";
+  }
+
+  if(hour >= 18 && hour < 22){
+    return "abend";
+  }
+
+  return "nacht";
+}
+
+
+/* ===============================
+   TAGESZEIT-TEXTE
+================================ */
+
+function getTimePhrases(){
+
+  var time =
+    getDayTime();
+
+  if(time === "morgen"){
+
+    return [
+      "Guten Morgen.",
+      "Ich möchte frühstücken.",
+      "Ich hätte gerne einen Kaffee.",
+      "Ich möchte etwas trinken.",
+      "Wie geht es Ihnen?",
+      "Was ist heute geplant?"
+    ];
+
+  }
+
+  if(time === "vormittag"){
+
+    return [
+      "Guten Vormittag.",
+      "Ich hätte gerne etwas zu trinken.",
+      "Ich brauche eine kurze Pause.",
+      "Was machen wir als Nächstes?",
+      "Bitte geben Sie mir etwas Zeit.",
+      "Ich brauche Hilfe."
+    ];
+
+  }
+
+  if(time === "mittag"){
+
+    return [
+      "Mahlzeit.",
+      "Ich möchte etwas essen.",
+      "Ich hätte gerne etwas zu trinken.",
+      "Bitte helfen Sie mir beim Essen.",
+      "Ich bin satt.",
+      "Ich möchte noch etwas."
+    ];
+
+  }
+
+  if(time === "nachmittag"){
+
+    return [
+      "Guten Nachmittag.",
+      "Ich hätte gerne einen Kaffee.",
+      "Ich möchte etwas trinken.",
+      "Ich brauche eine Pause.",
+      "Was machen wir heute noch?",
+      "Ich möchte mich ausruhen."
+    ];
+
+  }
+
+  if(time === "abend"){
+
+    return [
+      "Guten Abend.",
+      "Ich möchte etwas essen.",
+      "Ich möchte etwas trinken.",
+      "Ich möchte mich ausruhen.",
+      "Ich möchte ins Bett.",
+      "Danke für heute."
+    ];
+
+  }
+
+  return [
+    "Ich brauche Hilfe.",
+    "Ich muss auf die Toilette.",
+    "Ich habe Schmerzen.",
+    "Bitte helfen Sie mir.",
+    "Ich kann nicht schlafen.",
+    "Das ist ein Notfall."
+  ];
+
+}
+
+
+/* ===============================
+   TAGESZEIT ANZEIGEN
+================================ */
+
+function updateTimeArea(){
+
+  var time =
+    getDayTime();
+
+  var labels = {
+    morgen:"🌅 Guten Morgen",
+    vormittag:"☀️ Guten Vormittag",
+    mittag:"🍽 Mittagszeit",
+    nachmittag:"🌤 Guten Nachmittag",
+    abend:"🌙 Guten Abend",
+    nacht:"🌙 Nacht"
+  };
+
+  timeInfo.textContent =
+    labels[time];
+
+  timeButtons.innerHTML = "";
+
+  var phrases =
+    getTimePhrases();
+
+  for(var i = 0; i < phrases.length; i++){
+
+    var button =
+      document.createElement("button");
+
+    button.type = "button";
+
+    button.className =
+      "timeButton";
+
+    button.textContent =
+      phrases[i];
+
+    button.setAttribute(
+      "data-text",
+      phrases[i]
+    );
+
+    button.addEventListener(
+    "click",
+    function(){
+
+      speakText(
+        this.getAttribute("data-text")
+      );
+
+    });
+
+    timeButtons.appendChild(button);
+
+  }
+
+}
+
+updateTimeArea();
+
+
+/* Alle 5 Minuten Tageszeit prüfen */
+
+setInterval(
+  updateTimeArea,
+  300000
+);
+
+
+/* ===============================
+   BEREICHE ZENTRIEREN
+================================ */
+
+var details =
   document.querySelectorAll("details");
 
-for(var d = 0; d < allDetails.length; d++){
+for(var d = 0; d < details.length; d++){
 
-  allDetails[d].addEventListener(
+  details[d].addEventListener(
   "toggle",
   function(){
 
@@ -621,10 +738,10 @@ for(var d = 0; d < allDetails.length; d++){
       return;
     }
 
-    for(var j = 0; j < allDetails.length; j++){
+    for(var j = 0; j < details.length; j++){
 
-      if(allDetails[j] !== current){
-        allDetails[j].open = false;
+      if(details[j] !== current){
+        details[j].open = false;
       }
 
     }
@@ -643,9 +760,9 @@ for(var d = 0; d < allDetails.length; d++){
 }
 
 
-/* =========================================
+/* ===============================
    STIMMEN
-========================================= */
+================================ */
 
 function loadVoices(){
 
@@ -665,15 +782,16 @@ function loadVoices(){
 
   if(voices.length === 0){
 
-    var waiting =
+    var loading =
       document.createElement("option");
 
-    waiting.textContent =
+    loading.textContent =
       "Stimmen werden geladen...";
 
-    voiceSelect.appendChild(waiting);
+    voiceSelect.appendChild(loading);
 
     return;
+
   }
 
   for(var i = 0; i < voices.length; i++){
@@ -702,7 +820,7 @@ loadVoices();
 
 if("speechSynthesis" in window){
 
-  window.speechSynthesis.onvoiceschanged =
+  speechSynthesis.onvoiceschanged =
     loadVoices;
 
 }
@@ -729,9 +847,9 @@ function(){
 });
 
 
-/* =========================================
+/* ===============================
    SPRECHEN
-========================================= */
+================================ */
 
 function speakText(message){
 
@@ -743,17 +861,15 @@ function speakText(message){
   }
 
   if(!("speechSynthesis" in window)){
-
-    statusBox.textContent =
-      "Sprachausgabe wird nicht unterstützt.";
-
     return;
   }
 
-  window.speechSynthesis.cancel();
+  speechSynthesis.cancel();
 
   var speech =
-    new SpeechSynthesisUtterance(message);
+    new SpeechSynthesisUtterance(
+      message
+    );
 
   var index =
     parseInt(
@@ -772,93 +888,24 @@ function speakText(message){
   }
   else{
 
-    speech.lang = "de-DE";
+    speech.lang =
+      "de-DE";
 
   }
 
   speech.rate = 0.95;
 
-  speech.onstart =
-  function(){
-
-    statusBox.textContent =
-      "🔊 Tonguebox spricht...";
-
-  };
-
-  speech.onend =
-  function(){
-
-    statusBox.textContent = "";
-
-  };
-
-  window.speechSynthesis.speak(speech);
+  speechSynthesis.speak(speech);
 
 }
 
 
-/* TEXT SPRECHEN */
-
-document
-.getElementById("speakButton")
-.addEventListener(
-"click",
-function(){
-
-  var value =
-    textInput.value.trim();
-
-  if(!value){
-
-    statusBox.textContent =
-      "Bitte zuerst Text eingeben.";
-
-    return;
-  }
-
-  speakText(value);
-
-});
-
-
-/* STOP */
-
-document
-.getElementById("stopButton")
-.addEventListener(
-"click",
-function(){
-
-  window.speechSynthesis.cancel();
-
-  statusBox.textContent =
-    "⏹ Gestoppt.";
-
-});
-
-
-/* LEEREN */
-
-document
-.getElementById("clearButton")
-.addEventListener(
-"click",
-function(){
-
-  textInput.value = "";
-
-  suggestionBox.innerHTML = "";
-
-  statusBox.textContent = "";
-
-});
-
-
-/* SCHNELLBUTTONS */
+/* JA / NEIN + SCHNELL */
 
 var phraseButtons =
-  document.querySelectorAll(".speakPhrase");
+  document.querySelectorAll(
+    ".speakPhrase"
+  );
 
 for(var p = 0; p < phraseButtons.length; p++){
 
@@ -875,135 +922,76 @@ for(var p = 0; p < phraseButtons.length; p++){
 }
 
 
-/* =========================================
-   LOKALE KI - ABSICHT ERKENNEN
-========================================= */
-
-function detectIntent(text){
-
-  var value =
-    text.toLowerCase();
-
-  if(
-    contains(value,[
-      "hilfe",
-      "helfen"
-    ])
-  ){
-    return "hilfe";
-  }
-
-  if(
-    contains(value,[
-      "kaffee"
-    ])
-  ){
-    return "kaffee";
-  }
-
-  if(
-    contains(value,[
-      "wasser",
-      "trinken",
-      "durst"
-    ])
-  ){
-    return "trinken";
-  }
-
-  if(
-    contains(value,[
-      "essen",
-      "hunger",
-      "hungrig"
-    ])
-  ){
-    return "essen";
-  }
-
-  if(
-    contains(value,[
-      "wc",
-      "toilette"
-    ])
-  ){
-    return "wc";
-  }
-
-  if(
-    contains(value,[
-      "schmerz",
-      "weh"
-    ])
-  ){
-    return "schmerzen";
-  }
-
-  if(
-    contains(value,[
-      "warten",
-      "zeit",
-      "moment"
-    ])
-  ){
-    return "warten";
-  }
-
-  if(
-    contains(value,[
-      "verstehe",
-      "verstanden",
-      "nochmal",
-      "noch einmal"
-    ])
-  ){
-    return "verstehen";
-  }
-
-  if(
-    contains(value,[
-      "arzt",
-      "ärzt",
-      "medizin"
-    ])
-  ){
-    return "arzt";
-  }
-
-  return "normal";
-
-}
-
-
-/* =========================================
-   INTELLIGENTE VORSCHLÄGE
-========================================= */
+/* ===============================
+   TEXT SPRECHEN
+================================ */
 
 document
-.getElementById("smartSuggestions")
+.getElementById("speakButton")
 .addEventListener(
 "click",
 function(){
 
-  var value =
+  speakText(
+    textInput.value
+  );
+
+});
+
+
+document
+.getElementById("stopButton")
+.addEventListener(
+"click",
+function(){
+
+  speechSynthesis.cancel();
+
+});
+
+
+document
+.getElementById("clearButton")
+.addEventListener(
+"click",
+function(){
+
+  textInput.value = "";
+
+  suggestionBox.innerHTML = "";
+
+});
+
+
+/* ===============================
+   INTELLIGENTE VORSCHLÄGE
+================================ */
+
+document
+.getElementById("suggestionButton")
+.addEventListener(
+"click",
+function(){
+
+  var text =
     textInput.value.trim();
 
-  var intent =
-    detectIntent(value);
+  var lower =
+    text.toLowerCase();
 
   var list = [];
 
-  if(intent === "hilfe"){
+  if(!text){
 
-    list = [
-      "Ich brauche bitte Hilfe.",
-      "Könnten Sie mir bitte helfen?",
-      "Bitte holen Sie jemanden, der mir helfen kann."
-    ];
+    list =
+      getTimePhrases()
+        .slice(0,3);
 
   }
 
-  else if(intent === "kaffee"){
+  else if(
+    lower.indexOf("kaffee") !== -1
+  ){
 
     list = [
       "Ich möchte bitte einen Kaffee.",
@@ -1013,82 +1001,39 @@ function(){
 
   }
 
-  else if(intent === "trinken"){
+  else if(
+    lower.indexOf("trinken") !== -1 ||
+    lower.indexOf("wasser") !== -1
+  ){
 
     list = [
-      "Ich möchte bitte etwas trinken.",
+      "Ich möchte etwas trinken.",
       "Ich hätte gerne Wasser.",
       "Bitte helfen Sie mir beim Trinken."
     ];
 
   }
 
-  else if(intent === "essen"){
+  else if(
+    lower.indexOf("essen") !== -1
+  ){
 
     list = [
-      "Ich möchte bitte etwas essen.",
-      "Ich habe Hunger.",
-      "Bitte helfen Sie mir beim Essen."
+      "Ich möchte etwas essen.",
+      "Bitte helfen Sie mir beim Essen.",
+      "Ich hätte gerne noch etwas."
     ];
 
   }
 
-  else if(intent === "wc"){
+  else if(
+    lower.indexOf("hilfe") !== -1
+  ){
 
     list = [
-      "Ich muss auf die Toilette.",
-      "Bitte helfen Sie mir auf die Toilette.",
-      "Ich brauche jetzt Hilfe beim Toilettengang."
-    ];
-
-  }
-
-  else if(intent === "schmerzen"){
-
-    list = [
-      "Ich habe Schmerzen.",
-      "Meine Schmerzen sind stärker geworden.",
-      "Bitte helfen Sie mir wegen meiner Schmerzen."
-    ];
-
-  }
-
-  else if(intent === "warten"){
-
-    list = [
-      "Bitte warten Sie kurz.",
-      "Ich brauche etwas Zeit zum Antworten.",
-      "Bitte geben Sie mir einen Moment."
-    ];
-
-  }
-
-  else if(intent === "verstehen"){
-
-    list = [
-      "Ich habe Sie nicht verstanden.",
-      "Bitte sagen Sie das noch einmal.",
-      "Bitte sprechen Sie langsamer."
-    ];
-
-  }
-
-  else if(intent === "arzt"){
-
-    list = [
-      "Ich möchte mit einem Arzt sprechen.",
-      "Bitte erklären Sie mir das noch einmal.",
-      "Bitte geben Sie mir Zeit, meine Antwort zu formulieren."
-    ];
-
-  }
-
-  else if(value){
-
-    list = [
-      improveText(value),
-      friendlyText(value),
-      questionText(value)
+      "Ich brauche Hilfe.",
+      "Könnten Sie mir bitte helfen?",
+      "Bitte holen Sie jemanden."
     ];
 
   }
@@ -1096,9 +1041,9 @@ function(){
   else{
 
     list = [
-      "Ich möchte etwas sagen.",
-      "Bitte warten Sie kurz.",
-      "Ich brauche Hilfe."
+      cleanText(text),
+      friendlyText(text),
+      questionText(text)
     ];
 
   }
@@ -1108,8 +1053,6 @@ function(){
 });
 
 
-/* VORSCHLÄGE ANZEIGEN */
-
 function showSuggestions(list){
 
   suggestionBox.innerHTML = "";
@@ -1118,8 +1061,6 @@ function showSuggestions(list){
 
     var button =
       document.createElement("button");
-
-    button.type = "button";
 
     button.className =
       "suggestion";
@@ -1153,9 +1094,9 @@ function showSuggestions(list){
 }
 
 
-/* =========================================
-   KI TEXTASSISTENT
-========================================= */
+/* ===============================
+   TEXTASSISTENT
+================================ */
 
 document
 .getElementById("completeButton")
@@ -1163,114 +1104,51 @@ document
 "click",
 function(){
 
-  var value =
+  var text =
     textInput.value.trim();
 
-  if(!value){
-    return;
-  }
+  var lower =
+    text.toLowerCase();
 
-  var intent =
-    detectIntent(value);
-
-  if(intent === "kaffee"){
+  if(lower.indexOf("kaffee") !== -1){
 
     textInput.value =
       "Ich möchte bitte einen Kaffee.";
 
   }
-  else if(intent === "trinken"){
-
-    textInput.value =
-      "Ich möchte bitte etwas trinken.";
-
-  }
-  else if(intent === "essen"){
+  else if(
+    lower.indexOf("essen") !== -1
+  ){
 
     textInput.value =
       "Ich möchte bitte etwas essen.";
 
   }
-  else if(intent === "hilfe"){
+  else if(
+    lower.indexOf("trinken") !== -1
+  ){
+
+    textInput.value =
+      "Ich möchte bitte etwas trinken.";
+
+  }
+  else if(
+    lower.indexOf("hilfe") !== -1
+  ){
 
     textInput.value =
       "Ich brauche bitte Hilfe.";
 
   }
-  else if(intent === "wc"){
-
-    textInput.value =
-      "Ich muss bitte auf die Toilette.";
-
-  }
-  else if(intent === "schmerzen"){
-
-    textInput.value =
-      "Ich habe Schmerzen und brauche bitte Hilfe.";
-
-  }
   else{
 
     textInput.value =
-      improveText(value);
+      cleanText(text);
 
   }
 
 });
 
-
-/* KÜRZER */
-
-document
-.getElementById("shortButton")
-.addEventListener(
-"click",
-function(){
-
-  var value =
-    textInput.value.trim();
-
-  if(!value){
-    return;
-  }
-
-  value =
-    value.replace(
-      /ich würde gerne/gi,
-      "Ich möchte"
-    );
-
-  value =
-    value.replace(
-      /ich hätte gerne/gi,
-      "Ich möchte"
-    );
-
-  value =
-    value.replace(
-      /könnten sie mir bitte/gi,
-      "Bitte"
-    );
-
-  value =
-    value.replace(
-      /ich möchte gerne/gi,
-      "Ich möchte"
-    );
-
-  value =
-    value.replace(
-      /bitte geben sie mir einen moment/gi,
-      "Bitte warten"
-    );
-
-  textInput.value =
-    improveText(value);
-
-});
-
-
-/* FREUNDLICHER */
 
 document
 .getElementById("friendlyButton")
@@ -1278,59 +1156,40 @@ document
 "click",
 function(){
 
-  var value =
-    textInput.value.trim();
-
-  if(!value){
-    return;
-  }
-
   textInput.value =
-    friendlyText(value);
+    friendlyText(
+      textInput.value
+    );
 
 });
 
 
-/* DIREKTER */
-
 document
-.getElementById("directButton")
+.getElementById("shortButton")
 .addEventListener(
 "click",
 function(){
 
-  var value =
-    textInput.value.trim();
+  var text =
+    textInput.value;
 
-  if(!value){
-    return;
-  }
-
-  value =
-    value.replace(
-      /könnten sie mir bitte/gi,
-      "Bitte"
-    );
-
-  value =
-    value.replace(
+  text =
+    text.replace(
       /ich hätte gerne/gi,
       "Ich möchte"
     );
 
-  value =
-    value.replace(
+  text =
+    text.replace(
       /ich würde gerne/gi,
       "Ich möchte"
     );
 
   textInput.value =
-    improveText(value);
+    cleanText(text);
 
 });
 
-
-/* FRAGE */
 
 document
 .getElementById("questionButton")
@@ -1338,294 +1197,99 @@ document
 "click",
 function(){
 
-  var value =
-    textInput.value.trim();
-
-  if(!value){
-    return;
-  }
-
   textInput.value =
-    questionText(value);
-
-});
-
-
-/* BITTE */
-
-document
-.getElementById("requestButton")
-.addEventListener(
-"click",
-function(){
-
-  var value =
-    textInput.value.trim();
-
-  if(!value){
-    return;
-  }
-
-  value =
-    removeEnd(value);
-
-  if(
-    value.toLowerCase()
-      .indexOf("bitte") === -1
-  ){
-
-    value =
-      "Bitte " +
-      lowerFirst(value);
-
-  }
-
-  textInput.value =
-    improveText(value);
-
-});
-
-
-/* VERBESSERN */
-
-document
-.getElementById("improveButton")
-.addEventListener(
-"click",
-function(){
-
-  var value =
-    textInput.value.trim();
-
-  if(!value){
-    return;
-  }
-
-  textInput.value =
-    improveText(value);
-
-});
-
-
-/* DRINGEND */
-
-document
-.getElementById("emergencyTextButton")
-.addEventListener(
-"click",
-function(){
-
-  var value =
-    textInput.value.trim();
-
-  if(!value){
-
-    textInput.value =
-      "Ich brauche dringend Hilfe.";
-
-    return;
-  }
-
-  var intent =
-    detectIntent(value);
-
-  if(intent === "schmerzen"){
-
-    textInput.value =
-      "Ich habe starke Schmerzen. Bitte helfen Sie mir sofort.";
-
-  }
-  else if(intent === "wc"){
-
-    textInput.value =
-      "Ich muss dringend auf die Toilette. Bitte helfen Sie mir jetzt.";
-
-  }
-  else if(intent === "hilfe"){
-
-    textInput.value =
-      "Ich brauche dringend Hilfe. Bitte kommen Sie sofort.";
-
-  }
-  else{
-
-    textInput.value =
-      "Dringend: " +
-      removeEnd(
-        improveText(value)
-      ) +
-      ".";
-
-  }
-
-});
-
-
-/* =========================================
-   HILFSFUNKTIONEN
-========================================= */
-
-function contains(text,list){
-
-  for(var i = 0; i < list.length; i++){
-
-    if(
-      text.indexOf(
-        list[i]
-      ) !== -1
-    ){
-
-      return true;
-
-    }
-
-  }
-
-  return false;
-
-}
-
-function removeEnd(value){
-
-  return String(value || "")
-    .trim()
-    .replace(/[.!?]+$/,"");
-
-}
-
-function lowerFirst(value){
-
-  if(!value){
-    return "";
-  }
-
-  return (
-    value.charAt(0).toLowerCase() +
-    value.slice(1)
-  );
-
-}
-
-function improveText(value){
-
-  value =
-    String(value || "")
-      .trim();
-
-  value =
-    value.replace(/\s+/g," ");
-
-  value =
-    value.replace(
-      /\s+([,.!?])/g,
-      "$1"
+    questionText(
+      textInput.value
     );
 
-  if(!value){
+});
+
+
+function cleanText(text){
+
+  text =
+    String(text || "")
+      .trim();
+
+  if(!text){
     return "";
   }
 
-  value =
-    value.charAt(0).toUpperCase() +
-    value.slice(1);
+  text =
+    text.charAt(0).toUpperCase() +
+    text.slice(1);
 
-  if(!/[.!?]$/.test(value)){
-    value += ".";
+  if(!/[.!?]$/.test(text)){
+    text += ".";
   }
 
-  return value;
+  return text;
 
 }
 
-function friendlyText(value){
 
-  value =
-    removeEnd(value);
+function friendlyText(text){
+
+  text =
+    String(text || "")
+      .trim()
+      .replace(/[.!?]+$/,"");
+
+  if(!text){
+    return "";
+  }
 
   if(
-    value.toLowerCase()
+    text.toLowerCase()
       .indexOf("bitte") === -1
   ){
 
-    value =
+    text =
       "Bitte " +
-      lowerFirst(value);
+      text.charAt(0).toLowerCase() +
+      text.slice(1);
 
   }
 
-  return improveText(value);
+  return cleanText(text);
 
 }
 
-function questionText(value){
 
-  var lower =
-    value.toLowerCase();
+function questionText(text){
 
-  var intent =
-    detectIntent(value);
+  text =
+    String(text || "")
+      .trim()
+      .replace(/[.!?]+$/,"");
 
-  if(intent === "hilfe"){
-
-    return "Könnten Sie mir bitte helfen?";
-
-  }
-
-  if(intent === "kaffee"){
-
-    return "Könnten Sie mir bitte einen Kaffee bringen?";
-
-  }
-
-  if(intent === "trinken"){
-
-    return "Könnten Sie mir bitte etwas zu trinken geben?";
-
-  }
-
-  if(intent === "essen"){
-
-    return "Könnten Sie mir bitte etwas zu essen geben?";
-
-  }
-
-  if(intent === "wc"){
-
-    return "Könnten Sie mir bitte auf die Toilette helfen?";
-
+  if(!text){
+    return "";
   }
 
   return (
     "Könnten Sie bitte " +
-    lowerFirst(
-      removeEnd(value)
-    ) +
+    text.charAt(0).toLowerCase() +
+    text.slice(1) +
     "?"
   );
 
 }
 
 
-/* =========================================
+/* ===============================
    SPEICHERN
-========================================= */
+================================ */
 
 function getSaved(){
 
   try{
 
-    var result =
-      JSON.parse(
-        localStorage.getItem(
-          "tongueboxSaved"
-        ) || "[]"
-      );
-
-    if(Array.isArray(result)){
-      return result;
-    }
-
-    return [];
+    return JSON.parse(
+      localStorage.getItem(
+        "tongueboxSaved"
+      ) || "[]"
+    );
 
   }
   catch(error){
@@ -1636,14 +1300,6 @@ function getSaved(){
 
 }
 
-function saveList(list){
-
-  localStorage.setItem(
-    "tongueboxSaved",
-    JSON.stringify(list)
-  );
-
-}
 
 document
 .getElementById("saveButton")
@@ -1651,30 +1307,24 @@ document
 "click",
 function(){
 
-  var value =
+  var text =
     textInput.value.trim();
 
-  if(!value){
+  if(!text){
     return;
   }
 
   var saved =
     getSaved();
 
-  if(saved.indexOf(value) === -1){
+  if(saved.indexOf(text) === -1){
 
-    saved.push(value);
+    saved.push(text);
 
-    saveList(saved);
-
-    statusBox.textContent =
-      "⭐ Gespeichert.";
-
-  }
-  else{
-
-    statusBox.textContent =
-      "Dieser Satz ist bereits gespeichert.";
+    localStorage.setItem(
+      "tongueboxSaved",
+      JSON.stringify(saved)
+    );
 
   }
 
@@ -1682,10 +1332,6 @@ function(){
 
 });
 
-
-/* =========================================
-   GESPEICHERTE SÄTZE
-========================================= */
 
 function showSaved(){
 
@@ -1714,14 +1360,14 @@ function showSaved(){
 
 }
 
+
 function createSaved(sentence,index){
 
   var speak =
     document.createElement("button");
 
-  speak.type = "button";
-
-  speak.className = "saved";
+  speak.className =
+    "saved";
 
   speak.textContent =
     "🔊 " + sentence;
@@ -1735,57 +1381,11 @@ function createSaved(sentence,index){
   });
 
 
-  var actions =
-    document.createElement("div");
-
-  actions.className =
-    "savedActions";
-
-
-  var edit =
-    document.createElement("button");
-
-  edit.type = "button";
-
-  edit.className = "edit";
-
-  edit.textContent =
-    "✏️ Bearbeiten";
-
-  edit.addEventListener(
-  "click",
-  function(){
-
-    textInput.value =
-      sentence;
-
-    var textSection =
-      textInput.closest("details");
-
-    if(textSection){
-
-      textSection.open = true;
-
-    }
-
-    setTimeout(function(){
-
-      textInput.scrollIntoView({
-        behavior:"smooth",
-        block:"center"
-      });
-
-    },150);
-
-  });
-
-
   var remove =
     document.createElement("button");
 
-  remove.type = "button";
-
-  remove.className = "delete";
+  remove.className =
+    "delete";
 
   remove.textContent =
     "🗑 Löschen";
@@ -1797,25 +1397,21 @@ function createSaved(sentence,index){
     var saved =
       getSaved();
 
-    saved.splice(
-      index,
-      1
-    );
+    saved.splice(index,1);
 
-    saveList(saved);
+    localStorage.setItem(
+      "tongueboxSaved",
+      JSON.stringify(saved)
+    );
 
     showSaved();
 
   });
 
 
-  actions.appendChild(edit);
-
-  actions.appendChild(remove);
-
   savedBox.appendChild(speak);
 
-  savedBox.appendChild(actions);
+  savedBox.appendChild(remove);
 
 }
 
