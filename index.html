@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-
 <meta charset="UTF-8">
 
 <meta
@@ -76,8 +75,7 @@ h1{
 ========================= */
 
 button,
-textarea,
-summary{
+textarea{
   font-family:inherit;
 }
 
@@ -86,8 +84,7 @@ button{
 }
 
 button:focus-visible,
-textarea:focus-visible,
-summary:focus-visible{
+textarea:focus-visible{
   outline:7px solid #ff9800;
   outline-offset:4px;
 }
@@ -134,60 +131,103 @@ button{
 
 
 /* =========================
-   AUFKLAPPBARE BEREICHE
+   KATEGORIEN
 ========================= */
 
-details{
-  background:white;
+.category{
+  margin-top:10px;
   margin-bottom:10px;
-  border-radius:20px;
-  overflow:hidden;
 }
 
-summary{
-  list-style:none;
-  cursor:pointer;
-  min-height:105px;
-  padding:18px;
+
+/*
+  DIE GANZE KATEGORIE IST EIN BUTTON
+*/
+
+.categoryButton{
+  width:100%;
+  min-height:110px;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
+
+  padding:18px 20px;
+
   background:#dfe7f1;
+  color:#111;
+
+  border:4px solid #b0bec5;
+  border-radius:20px;
+
   font-size:23px;
   font-weight:bold;
+
+  text-align:left;
 }
 
-summary::-webkit-details-marker{
+
+/*
+  Der ganze Bereich gehört zum Button.
+*/
+
+.categoryButton span{
+  pointer-events:none;
+}
+
+
+.categoryButton.open{
+  background:#c5d4e8;
+  border-color:#1565c0;
+
+  border-bottom-left-radius:0;
+  border-bottom-right-radius:0;
+}
+
+
+.arrow{
+  font-size:28px;
+  margin-left:14px;
+}
+
+
+.categoryContent{
   display:none;
+
+  background:white;
+
+  padding:12px;
+
+  border-left:4px solid #b0bec5;
+  border-right:4px solid #b0bec5;
+  border-bottom:4px solid #b0bec5;
+
+  border-bottom-left-radius:20px;
+  border-bottom-right-radius:20px;
 }
 
-summary::after{
-  content:"▼";
-  font-size:26px;
-  margin-left:10px;
-}
 
-details[open] summary::after{
-  content:"▲";
-}
-
-.content{
-  padding:10px;
+.categoryContent.open{
+  display:block;
 }
 
 
 /* =========================
-   TEXTEINGABE
+   TEXT
 ========================= */
 
 textarea{
   width:100%;
   min-height:230px;
+
   padding:16px;
+
   border:4px solid #222;
   border-radius:18px;
+
   font-size:27px;
   line-height:1.4;
+
   resize:none;
 }
 
@@ -255,48 +295,26 @@ textarea{
 
 
 /* =========================
-   STIMMAUSWAHL
+   STIMMEN
 ========================= */
 
 .voiceIntro{
   font-size:20px;
   line-height:1.4;
-  margin:5px 0 12px;
 }
-
-
-/*
-  WICHTIG:
-  Jede Stimme bekommt eine
-  komplette Zeile.
-*/
-
-#voiceButtons{
-  display:block;
-  width:100%;
-}
-
-
-/*
-  Sehr großer Stimmen-Button
-*/
 
 .voiceButton{
-
   width:100%;
 
-  min-height:145px;
+  min-height:155px;
 
   margin-bottom:14px;
 
-  padding:18px;
+  padding:20px;
 
-  background:#ffffff;
+  background:#fff;
 
-  border:
-    5px solid
-    #1976d2;
-
+  border:5px solid #1976d2;
   border-radius:24px;
 
   color:#111;
@@ -304,105 +322,54 @@ textarea{
   text-align:left;
 
   display:flex;
-
   flex-direction:column;
 
   justify-content:center;
-
   align-items:flex-start;
 
   gap:8px;
 }
 
 
-/*
-  Stimme Name
-*/
+.voiceButton.selected{
+  background:#dcedc8;
+  border:7px solid #2e7d32;
+}
+
 
 .voiceName{
-
   display:block;
 
   width:100%;
 
   font-size:28px;
-
   font-weight:bold;
-
-  line-height:1.2;
 }
 
-
-/*
-  Sprache
-*/
 
 .voiceLang{
-
   display:block;
 
-  width:100%;
-
   font-size:21px;
-
   font-weight:normal;
-
-  line-height:1.3;
 }
 
-
-/*
-  AUSGEWÄHLTE STIMME
-*/
-
-.voiceButton.selected{
-
-  background:#dcedc8;
-
-  border:
-    7px solid
-    #2e7d32;
-
-  min-height:155px;
-}
-
-
-.voiceButton.selected .voiceName{
-
-  font-size:29px;
-}
-
-
-/*
-  AUSGEWÄHLT-Beschriftung
-*/
 
 .voiceSelectedLabel{
-
   display:block;
 
-  margin-top:5px;
-
   font-size:21px;
-
   font-weight:bold;
 
   color:#1b5e20;
 }
 
 
-/*
-  Großer Testbutton
-*/
-
 .voiceTest{
-
-  min-height:125px;
-
-  margin-top:12px;
+  min-height:130px;
+  margin-top:10px;
 
   background:#1565c0;
-
   color:white;
 
   font-size:25px;
@@ -422,7 +389,7 @@ textarea{
 
 
 /* =========================
-   GESPEICHERTE SÄTZE
+   GESPEICHERT
 ========================= */
 
 .saved{
@@ -481,67 +448,46 @@ textarea{
     font-size:26px;
   }
 
-  summary{
-    min-height:110px;
-    font-size:22px;
+  /*
+    KATEGORIEN EXTRA GROSS
+  */
+
+  .categoryButton{
+    min-height:120px;
+    font-size:23px;
+    padding:20px;
+  }
+
+  .arrow{
+    font-size:30px;
   }
 
   /*
-    AUF DEM IPHONE NOCH GRÖSSER
+    STIMMEN EXTRA GROSS
   */
 
   .voiceButton{
-
-    min-height:155px;
-
-    padding:20px;
-
-    margin-bottom:16px;
-
-    border-width:5px;
-  }
-
-  .voiceButton.selected{
-
     min-height:165px;
-
-    border-width:7px;
+    padding:22px;
   }
 
   .voiceName{
-    font-size:27px;
+    font-size:28px;
   }
 
   .voiceLang{
-    font-size:20px;
-  }
-
-  .voiceSelectedLabel{
-    font-size:20px;
-  }
-
-  .voiceTest{
-
-    min-height:135px;
-
-    font-size:25px;
+    font-size:21px;
   }
 
 }
 
 </style>
-
 </head>
 
 
 <body>
 
 <main class="app">
-
-
-<!-- =========================
-     KOPF
-========================= -->
 
 <header>
 
@@ -556,9 +502,7 @@ Unterstützte Kommunikation
 <div
   id="timeInfo"
   aria-live="polite">
-
 Tageszeit wird erkannt...
-
 </div>
 
 </header>
@@ -568,14 +512,10 @@ Tageszeit wird erkannt...
      JA / NEIN
 ========================= -->
 
-<section aria-labelledby="answerHeading">
+<section>
 
-<h2
-  id="answerHeading"
-  class="visually-hidden">
-
+<h2 class="visually-hidden">
 Sofortantworten
-
 </h2>
 
 <div class="grid2">
@@ -585,20 +525,15 @@ Sofortantworten
   data-text="Ja"
   type="button"
   aria-label="Ja sprechen">
-
 ✅ JA
-
 </button>
-
 
 <button
   class="no speakPhrase"
   data-text="Nein"
   type="button"
   aria-label="Nein sprechen">
-
 ❌ NEIN
-
 </button>
 
 </div>
@@ -610,43 +545,71 @@ Sofortantworten
      TAGESZEIT
 ========================= -->
 
-<details>
+<section class="category">
 
-<summary>
+<button
+  class="categoryButton"
+  type="button"
+  aria-expanded="false"
+  aria-controls="timeCategory">
+
+<span>
 🕒 Tageszeit
-</summary>
+</span>
 
-<div class="content">
+<span class="arrow">
+▼
+</span>
+
+</button>
+
+
+<div
+  id="timeCategory"
+  class="categoryContent">
 
 <div
   id="timeButtons"
-  class="grid2"
-  aria-label="Sätze passend zur Tageszeit">
+  class="grid2">
 </div>
 
 </div>
 
-</details>
+</section>
 
 
 <!-- =========================
-     TEXT
+     TEXT SCHREIBEN
 ========================= -->
 
-<details id="textSection">
+<section class="category">
 
-<summary>
+<button
+  id="textCategoryButton"
+  class="categoryButton"
+  type="button"
+  aria-expanded="false"
+  aria-controls="textCategory">
+
+<span>
 ⌨️ Text schreiben
-</summary>
+</span>
 
-<div class="content">
+<span class="arrow">
+▼
+</span>
+
+</button>
+
+
+<div
+  id="textCategory"
+  class="categoryContent">
 
 <label
   class="visually-hidden"
   for="textInput">
-
 Text eingeben
-
 </label>
 
 <textarea
@@ -665,36 +628,28 @@ Text eingeben
   id="speakButton"
   class="speak"
   type="button">
-
 🔊 Sprechen
-
 </button>
 
 <button
   id="saveButton"
   class="save"
   type="button">
-
 ⭐ Speichern
-
 </button>
 
 <button
   id="clearButton"
   class="clear"
   type="button">
-
 🗑 Leeren
-
 </button>
 
 <button
   id="stopButton"
   class="stop"
   type="button">
-
 ⏹ Stopp
-
 </button>
 
 </div>
@@ -709,28 +664,41 @@ Text eingeben
 
 </div>
 
-</details>
+</section>
 
 
 <!-- =========================
-     VORSCHLÄGE
+     INTELLIGENTE VORSCHLÄGE
 ========================= -->
 
-<details>
+<section class="category">
 
-<summary>
+<button
+  class="categoryButton"
+  type="button"
+  aria-expanded="false"
+  aria-controls="suggestionCategory">
+
+<span>
 ✨ Intelligente Vorschläge
-</summary>
+</span>
 
-<div class="content">
+<span class="arrow">
+▼
+</span>
+
+</button>
+
+
+<div
+  id="suggestionCategory"
+  class="categoryContent">
 
 <button
   id="suggestionButton"
   class="smart"
   type="button">
-
 ✨ Vorschläge erstellen
-
 </button>
 
 
@@ -743,170 +711,192 @@ Text eingeben
 
 
 <div
-  id="suggestionBox"
-  aria-label="Satzvorschläge">
+  id="suggestionBox">
 </div>
 
 </div>
 
-</details>
+</section>
 
 
 <!-- =========================
-     SCHNELL
+     SCHNELLKOMMUNIKATION
 ========================= -->
 
-<details>
+<section class="category">
 
-<summary>
+<button
+  class="categoryButton"
+  type="button"
+  aria-expanded="false"
+  aria-controls="quickCategory">
+
+<span>
 ⚡ Schnellkommunikation
-</summary>
+</span>
 
-<div class="content">
+<span class="arrow">
+▼
+</span>
+
+</button>
+
+
+<div
+  id="quickCategory"
+  class="categoryContent">
 
 <div class="grid2">
+
 
 <button
   class="quick speakPhrase"
   data-text="Hallo"
   type="button">
-
 👋 Hallo
-
 </button>
+
 
 <button
   class="quick speakPhrase"
   data-text="Danke"
   type="button">
-
 🙏 Danke
-
 </button>
+
 
 <button
   class="quick speakPhrase"
   data-text="Bitte warten Sie kurz."
   type="button">
-
 ⏳ Warten
-
 </button>
+
 
 <button
   class="quick speakPhrase"
   data-text="Bitte sagen Sie das noch einmal."
   type="button">
-
 🔁 Nochmal
-
 </button>
+
 
 <button
   class="quick speakPhrase"
   data-text="Ich brauche Hilfe."
   type="button">
-
 🆘 Hilfe
-
 </button>
+
 
 <button
   class="quick speakPhrase"
   data-text="Ich möchte etwas trinken."
   type="button">
-
 🥤 Trinken
-
 </button>
+
 
 <button
   class="quick speakPhrase"
   data-text="Ich möchte etwas essen."
   type="button">
-
 🍽 Essen
-
 </button>
+
 
 <button
   class="quick speakPhrase"
   data-text="Ich muss auf die Toilette."
   type="button">
-
 🚻 WC
-
 </button>
+
 
 <button
   class="quick speakPhrase"
   data-text="Ich habe Sie nicht verstanden."
   type="button">
-
 ❓ Nicht verstanden
-
 </button>
+
 
 <button
   class="quick speakPhrase"
   data-text="Bitte sprechen Sie langsamer."
   type="button">
-
 🐢 Langsamer
-
 </button>
+
 
 <button
   class="quick speakPhrase"
   data-text="Bitte geben Sie mir etwas Zeit zum Antworten."
   type="button">
-
 ⏳ Mehr Zeit
-
 </button>
+
+
+<button
+  class="quick speakPhrase"
+  data-text="Ich kommuniziere mit einer Augensteuerung."
+  type="button">
+👁 Augensteuerung
+</button>
+
 
 <button
   class="quick speakPhrase"
   data-text="Ich habe Schmerzen."
   type="button">
-
 🤕 Schmerzen
-
 </button>
+
 
 <button
   class="emergency speakPhrase"
   data-text="Das ist ein Notfall. Bitte holen Sie sofort Hilfe."
   type="button">
-
 🚨 NOTFALL
-
 </button>
 
-</div>
 
 </div>
 
-</details>
+</div>
+
+</section>
 
 
 <!-- =========================
-     GROSSE STIMMAUSWAHL
+     STIMMAUSWAHL
 ========================= -->
 
-<details id="voiceSection">
+<section class="category">
 
-<summary>
+<button
+  class="categoryButton"
+  type="button"
+  aria-expanded="false"
+  aria-controls="voiceCategory">
+
+<span>
 🗣 Stimme auswählen
-</summary>
+</span>
 
-<div class="content">
+<span class="arrow">
+▼
+</span>
+
+</button>
+
+
+<div
+  id="voiceCategory"
+  class="categoryContent">
 
 <p class="voiceIntro">
-
-Wähle eine Stimme aus.  
-Jede Stimme hat einen großen eigenen Button.
-
+Tippe auf eine Stimme. Die komplette große Schaltfläche ist auswählbar.
 </p>
 
 
@@ -914,15 +904,14 @@ Jede Stimme hat einen großen eigenen Button.
   id="voiceStatus"
   class="status"
   role="status"
-  aria-live="polite"
-  aria-atomic="true">
+  aria-live="polite">
 </div>
 
 
 <div
   id="voiceButtons"
   role="radiogroup"
-  aria-label="Große Stimmauswahl">
+  aria-label="Stimmen auswählen">
 </div>
 
 
@@ -930,27 +919,40 @@ Jede Stimme hat einen großen eigenen Button.
   id="voiceTestButton"
   class="voiceTest"
   type="button">
-
 🔊 Ausgewählte Stimme testen
-
 </button>
 
 </div>
 
-</details>
+</section>
 
 
 <!-- =========================
-     GESPEICHERT
+     GESPEICHERTE SÄTZE
 ========================= -->
 
-<details>
+<section class="category">
 
-<summary>
+<button
+  class="categoryButton"
+  type="button"
+  aria-expanded="false"
+  aria-controls="savedCategory">
+
+<span>
 ⭐ Gespeicherte Sätze
-</summary>
+</span>
 
-<div class="content">
+<span class="arrow">
+▼
+</span>
+
+</button>
+
+
+<div
+  id="savedCategory"
+  class="categoryContent">
 
 <div
   id="savedStatus"
@@ -959,14 +961,11 @@ Jede Stimme hat einen großen eigenen Button.
   aria-live="polite">
 </div>
 
-<div
-  id="savedBox"
-  aria-label="Gespeicherte Sätze">
-</div>
+<div id="savedBox"></div>
 
 </div>
 
-</details>
+</section>
 
 
 </main>
@@ -1013,9 +1012,156 @@ var voiceStatus =
 var voices = [];
 
 var selectedVoiceName =
-  localStorage.getItem(
-    "tongueboxVoice"
-  ) || "";
+  localStorage.getItem("tongueboxVoice") || "";
+
+
+/* =========================
+   KATEGORIEN
+========================= */
+
+var categoryButtons =
+  document.querySelectorAll(".categoryButton");
+
+
+for(
+  var c = 0;
+  c < categoryButtons.length;
+  c++
+){
+
+  categoryButtons[c]
+  .addEventListener(
+  "click",
+  function(){
+
+    var currentButton =
+      this;
+
+    var targetId =
+      currentButton.getAttribute(
+        "aria-controls"
+      );
+
+    var target =
+      document.getElementById(
+        targetId
+      );
+
+    var isOpen =
+      currentButton.getAttribute(
+        "aria-expanded"
+      ) === "true";
+
+
+    /*
+      ALLE ANDEREN SCHLIESSEN
+    */
+
+    for(
+      var i = 0;
+      i < categoryButtons.length;
+      i++
+    ){
+
+      categoryButtons[i]
+      .setAttribute(
+        "aria-expanded",
+        "false"
+      );
+
+      categoryButtons[i]
+      .classList.remove(
+        "open"
+      );
+
+      var otherId =
+        categoryButtons[i]
+        .getAttribute(
+          "aria-controls"
+        );
+
+      var otherContent =
+        document.getElementById(
+          otherId
+        );
+
+      if(otherContent){
+
+        otherContent
+        .classList.remove(
+          "open"
+        );
+      }
+
+      var arrow =
+        categoryButtons[i]
+        .querySelector(
+          ".arrow"
+        );
+
+      if(arrow){
+        arrow.textContent =
+          "▼";
+      }
+    }
+
+
+    /*
+      WENN VORHER GESCHLOSSEN:
+      JETZT ÖFFNEN
+    */
+
+    if(!isOpen){
+
+      currentButton
+      .setAttribute(
+        "aria-expanded",
+        "true"
+      );
+
+      currentButton
+      .classList.add(
+        "open"
+      );
+
+      target
+      .classList.add(
+        "open"
+      );
+
+      var currentArrow =
+        currentButton
+        .querySelector(
+          ".arrow"
+        );
+
+      if(currentArrow){
+        currentArrow.textContent =
+          "▲";
+      }
+
+
+      /*
+        ZENTRIEREN
+      */
+
+      setTimeout(
+      function(){
+
+        currentButton.scrollIntoView({
+          behavior:"smooth",
+          block:"center"
+        });
+
+      },
+      180
+      );
+
+    }
+
+  });
+
+}
 
 
 /* =========================
@@ -1132,21 +1278,35 @@ function updateTimeArea(){
     getDayTime();
 
   var labels = {
-    morgen:"🌅 Guten Morgen",
-    mittag:"🍽 Guten Appetit",
-    nachmittag:"🌤 Guten Nachmittag",
-    abend:"🌙 Guten Abend",
-    nacht:"🌙 Gute Nacht"
+
+    morgen:
+      "🌅 Guten Morgen",
+
+    mittag:
+      "🍽 Guten Appetit",
+
+    nachmittag:
+      "🌤 Guten Nachmittag",
+
+    abend:
+      "🌙 Guten Abend",
+
+    nacht:
+      "🌙 Gute Nacht"
   };
+
 
   timeInfo.textContent =
     labels[time];
 
+
   timeButtons.innerHTML =
     "";
 
+
   var phrases =
     getTimePhrases();
+
 
   for(
     var i = 0;
@@ -1158,6 +1318,7 @@ function updateTimeArea(){
       phrases[i]
     );
   }
+
 }
 
 
@@ -1182,6 +1343,7 @@ function createTimeButton(sentence){
     sentence + " sprechen"
   );
 
+
   button.addEventListener(
   "click",
   function(){
@@ -1189,6 +1351,7 @@ function createTimeButton(sentence){
     speakText(sentence);
 
   });
+
 
   timeButtons.appendChild(
     button
@@ -1205,63 +1368,7 @@ setInterval(
 
 
 /* =========================
-   BEREICHE
-========================= */
-
-var details =
-  document.querySelectorAll(
-    "details"
-  );
-
-for(
-  var d = 0;
-  d < details.length;
-  d++
-){
-
-  details[d].addEventListener(
-  "toggle",
-  function(){
-
-    var current =
-      this;
-
-    if(!current.open){
-      return;
-    }
-
-    for(
-      var j = 0;
-      j < details.length;
-      j++
-    ){
-
-      if(
-        details[j] !== current
-      ){
-
-        details[j].open =
-          false;
-      }
-    }
-
-    setTimeout(
-    function(){
-
-      current.scrollIntoView({
-        behavior:"smooth",
-        block:"center"
-      });
-
-    },
-    180
-    );
-  });
-}
-
-
-/* =========================
-   STIMMEN
+   STIMMEN LADEN
 ========================= */
 
 function loadVoices(){
@@ -1282,9 +1389,7 @@ function loadVoices(){
 
 
   voices =
-    window
-      .speechSynthesis
-      .getVoices();
+    speechSynthesis.getVoices();
 
 
   voiceButtons.innerHTML =
@@ -1301,11 +1406,6 @@ function loadVoices(){
     return;
   }
 
-
-  /*
-    Deutschsprachige Stimmen
-    nach oben sortieren.
-  */
 
   voices.sort(
   function(a,b){
@@ -1325,7 +1425,6 @@ function loadVoices(){
       aGerman &&
       !bGerman
     ){
-
       return -1;
     }
 
@@ -1333,20 +1432,14 @@ function loadVoices(){
       !aGerman &&
       bGerman
     ){
-
       return 1;
     }
 
     return a.name.localeCompare(
       b.name
     );
-
   });
 
-
-  /*
-    Standardstimme festlegen
-  */
 
   if(!selectedVoiceName){
 
@@ -1388,10 +1481,6 @@ function loadVoices(){
   }
 
 
-  /*
-    Große Stimmenbuttons erstellen
-  */
-
   for(
     var v = 0;
     v < voices.length;
@@ -1411,12 +1500,10 @@ function loadVoices(){
 
 
 /* =========================
-   EIN GROSSER STIMMENBUTTON
+   GROSSER STIMMENBUTTON
 ========================= */
 
-function createVoiceButton(
-  voice
-){
+function createVoiceButton(voice){
 
   var button =
     document.createElement(
@@ -1427,10 +1514,8 @@ function createVoiceButton(
   button.type =
     "button";
 
-
   button.className =
     "voiceButton";
-
 
   button.setAttribute(
     "role",
@@ -1459,10 +1544,6 @@ function createVoiceButton(
   }
 
 
-  /*
-    STIMMENNAME
-  */
-
   var name =
     document.createElement(
       "span"
@@ -1471,25 +1552,11 @@ function createVoiceButton(
   name.className =
     "voiceName";
 
+  name.textContent =
+    selected
+      ? "✅ " + voice.name
+      : "🗣 " + voice.name;
 
-  if(selected){
-
-    name.textContent =
-      "✅ " +
-      voice.name;
-
-  }
-  else{
-
-    name.textContent =
-      "🗣 " +
-      voice.name;
-  }
-
-
-  /*
-    SPRACHE
-  */
 
   var language =
     document.createElement(
@@ -1513,32 +1580,24 @@ function createVoiceButton(
   );
 
 
-  /*
-    AUSGEWÄHLT
-  */
-
   if(selected){
 
-    var selectedText =
+    var selectedLabel =
       document.createElement(
         "span"
       );
 
-    selectedText.className =
+    selectedLabel.className =
       "voiceSelectedLabel";
 
-    selectedText.textContent =
+    selectedLabel.textContent =
       "✅ AUSGEWÄHLT";
 
     button.appendChild(
-      selectedText
+      selectedLabel
     );
   }
 
-
-  /*
-    SCREENREADER
-  */
 
   button.setAttribute(
     "aria-label",
@@ -1547,15 +1606,11 @@ function createVoiceButton(
     voice.lang +
     (
       selected
-      ? ", aktuell ausgewählt"
-      : ", Stimme auswählen und testen"
+      ? ", ausgewählt"
+      : ", auswählen"
     )
   );
 
-
-  /*
-    STIMME AUSWÄHLEN
-  */
 
   button.addEventListener(
   "click",
@@ -1567,25 +1622,12 @@ function createVoiceButton(
 
     localStorage.setItem(
       "tongueboxVoice",
-      voice.name
+      selectedVoiceName
     );
 
 
-    /*
-      Alle Buttons aktualisieren
-    */
-
     loadVoices();
 
-
-    voiceStatus.textContent =
-      "Stimme ausgewählt: " +
-      voice.name;
-
-
-    /*
-      Direkt testen
-    */
 
     setTimeout(
     function(){
@@ -1616,10 +1658,8 @@ if(
   window
 ){
 
-  window
-    .speechSynthesis
-    .onvoiceschanged =
-      loadVoices;
+  speechSynthesis.onvoiceschanged =
+    loadVoices;
 }
 
 
@@ -1649,7 +1689,7 @@ function getSelectedVoice(){
 
 
 /* =========================
-   TEST
+   STIMME TESTEN
 ========================= */
 
 document
@@ -1678,7 +1718,6 @@ function speakText(message){
       message || ""
     ).trim();
 
-
   if(!message){
     return;
   }
@@ -1699,9 +1738,7 @@ function speakText(message){
   }
 
 
-  window
-    .speechSynthesis
-    .cancel();
+  speechSynthesis.cancel();
 
 
   var speech =
@@ -1734,22 +1771,21 @@ function speakText(message){
     0.95;
 
 
-  window
-    .speechSynthesis
-    .speak(
-      speech
-    );
+  speechSynthesis.speak(
+    speech
+  );
 }
 
 
 /* =========================
-   JA / NEIN / SCHNELL
+   SCHNELLBUTTONS
 ========================= */
 
 var phraseButtons =
   document.querySelectorAll(
     ".speakPhrase"
   );
+
 
 for(
   var p = 0;
@@ -1795,6 +1831,7 @@ function(){
     return;
   }
 
+
   speakText(text);
 
 });
@@ -1818,9 +1855,7 @@ function(){
     window
   ){
 
-    window
-      .speechSynthesis
-      .cancel();
+    speechSynthesis.cancel();
   }
 
   statusBox.textContent =
@@ -1875,8 +1910,7 @@ function(){
   var greeting =
     getGreeting();
 
-  var list =
-    [];
+  var list = [];
 
 
   if(!text){
@@ -1884,12 +1918,12 @@ function(){
     list =
       getTimePhrases()
       .slice(0,3);
+
   }
 
 
   else if(
-    lower.includes("hallo") ||
-    lower.includes("grüß")
+    lower.includes("hallo")
   ){
 
     list = [
@@ -1897,6 +1931,7 @@ function(){
       greeting + ", schön Sie zu sehen.",
       greeting + ", wie geht es Ihnen?"
     ];
+
   }
 
 
@@ -1904,16 +1939,14 @@ function(){
     lower.includes("kaffee")
   ){
 
-    if(
-      time ===
-      "morgen"
-    ){
+    if(time === "morgen"){
 
       list = [
         "Guten Morgen, ich hätte gerne einen Kaffee.",
-        "Guten Morgen, könnten Sie mir bitte einen Kaffee bringen?",
-        "Ich möchte zum Frühstück gerne einen Kaffee."
+        "Könnten Sie mir bitte einen Kaffee bringen?",
+        "Ich möchte gerne einen Kaffee."
       ];
+
     }
 
     else{
@@ -1923,7 +1956,9 @@ function(){
         "Könnten Sie mir bitte einen Kaffee bringen?",
         "Ich möchte bitte einen Kaffee."
       ];
+
     }
+
   }
 
 
@@ -1932,28 +1967,24 @@ function(){
     lower.includes("hunger")
   ){
 
-    if(
-      time ===
-      "mittag"
-    ){
+    if(time === "mittag"){
 
       list = [
         "Guten Appetit.",
-        "Guten Appetit zusammen.",
+        "Ich möchte etwas essen.",
         "Bitte helfen Sie mir beim Essen."
       ];
+
     }
 
-    else if(
-      time ===
-      "abend"
-    ){
+    else if(time === "abend"){
 
       list = [
         "Guten Abend, ich möchte etwas essen.",
-        "Ich hätte gerne etwas zum Abendessen.",
-        "Bitte helfen Sie mir beim Abendessen."
+        "Ich hätte gerne Abendessen.",
+        "Bitte helfen Sie mir beim Essen."
       ];
+
     }
 
     else{
@@ -1963,20 +1994,22 @@ function(){
         "Ich habe Hunger.",
         "Bitte helfen Sie mir beim Essen."
       ];
+
     }
+
   }
 
 
   else if(
-    lower.includes("trinken") ||
-    lower.includes("wasser")
+    lower.includes("trinken")
   ){
 
     list = [
-      "Ich möchte bitte etwas trinken.",
+      "Ich möchte etwas trinken.",
       "Ich hätte gerne Wasser.",
       "Bitte helfen Sie mir beim Trinken."
     ];
+
   }
 
 
@@ -1987,8 +2020,9 @@ function(){
     list = [
       "Ich brauche Hilfe.",
       "Könnten Sie mir bitte helfen?",
-      "Bitte helfen Sie mir kurz."
+      "Bitte helfen Sie mir."
     ];
+
   }
 
 
@@ -1999,6 +2033,7 @@ function(){
       friendlyText(text),
       questionText(text)
     ];
+
   }
 
 
@@ -2061,6 +2096,7 @@ function createSuggestion(
     sentence
   );
 
+
   button.addEventListener(
   "click",
   function(){
@@ -2068,9 +2104,12 @@ function createSuggestion(
     textInput.value =
       sentence;
 
-    speakText(sentence);
+    speakText(
+      sentence
+    );
 
   });
+
 
   suggestionBox.appendChild(
     button
@@ -2099,10 +2138,12 @@ function cleanText(text){
       " "
     );
 
+
   text =
     text.charAt(0)
     .toUpperCase() +
     text.slice(1);
+
 
   if(
     !/[.!?]$/.test(text)
@@ -2145,6 +2186,7 @@ function friendlyText(text){
     return "";
   }
 
+
   if(
     !text
     .toLowerCase()
@@ -2176,6 +2218,7 @@ function questionText(text){
     return "";
   }
 
+
   return (
     "Könnten Sie bitte " +
     lowerFirst(text) +
@@ -2185,7 +2228,7 @@ function questionText(text){
 
 
 /* =========================
-   SPEICHERN
+   GESPEICHERTE SÄTZE
 ========================= */
 
 function getSaved(){
@@ -2202,6 +2245,7 @@ function getSaved(){
     return Array.isArray(result)
       ? result
       : [];
+
   }
 
   catch(error){
@@ -2219,6 +2263,8 @@ function saveSaved(list){
   );
 }
 
+
+/* SPEICHERN */
 
 document
 .getElementById(
@@ -2239,8 +2285,10 @@ function(){
     return;
   }
 
+
   var saved =
     getSaved();
+
 
   if(
     saved.indexOf(text) ===
@@ -2254,8 +2302,6 @@ function(){
     statusBox.textContent =
       "Satz gespeichert.";
 
-    savedStatus.textContent =
-      "Ein neuer Satz wurde gespeichert.";
   }
 
   showSaved();
@@ -2263,9 +2309,7 @@ function(){
 });
 
 
-/* =========================
-   GESPEICHERTE SÄTZE
-========================= */
+/* ANZEIGEN */
 
 function showSaved(){
 
@@ -2275,9 +2319,9 @@ function showSaved(){
   var saved =
     getSaved();
 
+
   if(
-    saved.length ===
-    0
+    saved.length === 0
   ){
 
     savedBox.innerHTML =
@@ -2321,11 +2365,14 @@ function createSavedItem(
     "🔊 " +
     sentence;
 
+
   speak.addEventListener(
   "click",
   function(){
 
-    speakText(sentence);
+    speakText(
+      sentence
+    );
 
   });
 
@@ -2353,6 +2400,7 @@ function createSavedItem(
   edit.textContent =
     "✏️ Bearbeiten";
 
+
   edit.addEventListener(
   "click",
   function(){
@@ -2360,13 +2408,22 @@ function createSavedItem(
     textInput.value =
       sentence;
 
-    var section =
+
+    var textButton =
       document.getElementById(
-        "textSection"
+        "textCategoryButton"
       );
 
-    section.open =
-      true;
+
+    if(
+      textButton.getAttribute(
+        "aria-expanded"
+      ) !== "true"
+    ){
+
+      textButton.click();
+    }
+
 
     setTimeout(
     function(){
@@ -2394,6 +2451,7 @@ function createSavedItem(
   remove.textContent =
     "🗑 Löschen";
 
+
   remove.addEventListener(
   "click",
   function(){
@@ -2406,7 +2464,9 @@ function createSavedItem(
       1
     );
 
-    saveSaved(saved);
+    saveSaved(
+      saved
+    );
 
     savedStatus.textContent =
       "Satz gelöscht.";
@@ -2416,11 +2476,21 @@ function createSavedItem(
   });
 
 
-  actions.appendChild(edit);
-  actions.appendChild(remove);
+  actions.appendChild(
+    edit
+  );
 
-  savedBox.appendChild(speak);
-  savedBox.appendChild(actions);
+  actions.appendChild(
+    remove
+  );
+
+  savedBox.appendChild(
+    speak
+  );
+
+  savedBox.appendChild(
+    actions
+  );
 }
 
 
