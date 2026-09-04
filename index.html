@@ -12,10 +12,6 @@
 
 <style>
 
-/* =========================
-   GRUNDLAYOUT
-========================= */
-
 *{
   box-sizing:border-box;
 }
@@ -52,11 +48,6 @@ h1{
   margin-bottom:12px;
 }
 
-
-/* =========================
-   SCREENREADER
-========================= */
-
 .visually-hidden{
   position:absolute !important;
   width:1px !important;
@@ -68,11 +59,6 @@ h1{
   white-space:nowrap !important;
   border:0 !important;
 }
-
-
-/* =========================
-   FOKUS
-========================= */
 
 button,
 textarea{
@@ -88,11 +74,6 @@ textarea:focus-visible{
   outline:7px solid #ff9800;
   outline-offset:4px;
 }
-
-
-/* =========================
-   ALLGEMEINE BUTTONS
-========================= */
 
 button{
   width:100%;
@@ -110,10 +91,7 @@ button{
   gap:10px;
 }
 
-
-/* =========================
-   JA / NEIN
-========================= */
+/* JA / NEIN */
 
 .yes{
   background:#2e7d32;
@@ -129,20 +107,12 @@ button{
   font-size:38px;
 }
 
-
-/* =========================
-   KATEGORIEN
-========================= */
+/* KATEGORIEN */
 
 .category{
   margin-top:10px;
   margin-bottom:10px;
 }
-
-
-/*
-  DIE GANZE KATEGORIE IST EIN BUTTON
-*/
 
 .categoryButton{
   width:100%;
@@ -166,15 +136,9 @@ button{
   text-align:left;
 }
 
-
-/*
-  Der ganze Bereich gehört zum Button.
-*/
-
 .categoryButton span{
   pointer-events:none;
 }
-
 
 .categoryButton.open{
   background:#c5d4e8;
@@ -184,12 +148,10 @@ button{
   border-bottom-right-radius:0;
 }
 
-
 .arrow{
   font-size:28px;
   margin-left:14px;
 }
-
 
 .categoryContent{
   display:none;
@@ -206,15 +168,11 @@ button{
   border-bottom-right-radius:20px;
 }
 
-
 .categoryContent.open{
   display:block;
 }
 
-
-/* =========================
-   TEXT
-========================= */
+/* TEXT */
 
 textarea{
   width:100%;
@@ -251,20 +209,14 @@ textarea{
   color:white;
 }
 
-
-/* =========================
-   TAGESZEIT
-========================= */
+/* TAGESZEIT */
 
 .timeButton{
   background:#fff8e1;
   border:4px solid #ffb300;
 }
 
-
-/* =========================
-   VORSCHLÄGE
-========================= */
+/* VORSCHLÄGE */
 
 .smart{
   background:#ede7f6;
@@ -278,10 +230,7 @@ textarea{
   margin-bottom:10px;
 }
 
-
-/* =========================
-   SCHNELLKOMMUNIKATION
-========================= */
+/* SCHNELLKOMMUNIKATION */
 
 .quick{
   background:#e3f2fd;
@@ -293,10 +242,7 @@ textarea{
   color:white;
 }
 
-
-/* =========================
-   STIMMEN
-========================= */
+/* STIMMEN */
 
 .voiceIntro{
   font-size:20px;
@@ -305,12 +251,9 @@ textarea{
 
 .voiceButton{
   width:100%;
-
-  min-height:155px;
-
+  min-height:165px;
   margin-bottom:14px;
-
-  padding:20px;
+  padding:22px;
 
   background:#fff;
 
@@ -318,52 +261,40 @@ textarea{
   border-radius:24px;
 
   color:#111;
-
   text-align:left;
 
   display:flex;
   flex-direction:column;
-
   justify-content:center;
   align-items:flex-start;
 
   gap:8px;
 }
 
-
 .voiceButton.selected{
   background:#dcedc8;
   border:7px solid #2e7d32;
 }
 
-
 .voiceName{
   display:block;
-
   width:100%;
-
   font-size:28px;
   font-weight:bold;
 }
 
-
 .voiceLang{
   display:block;
-
   font-size:21px;
   font-weight:normal;
 }
 
-
 .voiceSelectedLabel{
   display:block;
-
   font-size:21px;
   font-weight:bold;
-
   color:#1b5e20;
 }
-
 
 .voiceTest{
   min-height:130px;
@@ -375,10 +306,7 @@ textarea{
   font-size:25px;
 }
 
-
-/* =========================
-   STATUS
-========================= */
+/* STATUS */
 
 .status{
   min-height:32px;
@@ -387,10 +315,7 @@ textarea{
   font-weight:bold;
 }
 
-
-/* =========================
-   GESPEICHERT
-========================= */
+/* GESPEICHERT */
 
 .saved{
   background:#512da8;
@@ -417,10 +342,7 @@ textarea{
   min-height:75px;
 }
 
-
-/* =========================
-   IPHONE
-========================= */
+/* IPHONE */
 
 @media(max-width:500px){
 
@@ -448,10 +370,6 @@ textarea{
     font-size:26px;
   }
 
-  /*
-    KATEGORIEN EXTRA GROSS
-  */
-
   .categoryButton{
     min-height:120px;
     font-size:23px;
@@ -462,12 +380,8 @@ textarea{
     font-size:30px;
   }
 
-  /*
-    STIMMEN EXTRA GROSS
-  */
-
   .voiceButton{
-    min-height:165px;
+    min-height:175px;
     padding:22px;
   }
 
@@ -483,7 +397,6 @@ textarea{
 
 </style>
 </head>
-
 
 <body>
 
@@ -508,9 +421,7 @@ Tageszeit wird erkannt...
 </header>
 
 
-<!-- =========================
-     JA / NEIN
-========================= -->
+<!-- JA / NEIN -->
 
 <section>
 
@@ -541,9 +452,7 @@ Sofortantworten
 </section>
 
 
-<!-- =========================
-     TAGESZEIT
-========================= -->
+<!-- TAGESZEIT -->
 
 <section class="category">
 
@@ -563,7 +472,6 @@ Sofortantworten
 
 </button>
 
-
 <div
   id="timeCategory"
   class="categoryContent">
@@ -578,9 +486,7 @@ Sofortantworten
 </section>
 
 
-<!-- =========================
-     TEXT SCHREIBEN
-========================= -->
+<!-- TEXT SCHREIBEN -->
 
 <section class="category">
 
@@ -601,7 +507,6 @@ Sofortantworten
 
 </button>
 
-
 <div
   id="textCategory"
   class="categoryContent">
@@ -618,7 +523,6 @@ Text eingeben
   spellcheck="true"
   aria-label="Text eingeben">
 </textarea>
-
 
 <div
   class="grid2"
@@ -654,7 +558,6 @@ Text eingeben
 
 </div>
 
-
 <div
   id="status"
   class="status"
@@ -667,9 +570,7 @@ Text eingeben
 </section>
 
 
-<!-- =========================
-     INTELLIGENTE VORSCHLÄGE
-========================= -->
+<!-- INTELLIGENTE VORSCHLÄGE -->
 
 <section class="category">
 
@@ -689,7 +590,6 @@ Text eingeben
 
 </button>
 
-
 <div
   id="suggestionCategory"
   class="categoryContent">
@@ -701,7 +601,6 @@ Text eingeben
 ✨ Vorschläge erstellen
 </button>
 
-
 <div
   id="suggestionStatus"
   class="status"
@@ -709,19 +608,14 @@ Text eingeben
   aria-live="polite">
 </div>
 
-
-<div
-  id="suggestionBox">
-</div>
+<div id="suggestionBox"></div>
 
 </div>
 
 </section>
 
 
-<!-- =========================
-     SCHNELLKOMMUNIKATION
-========================= -->
+<!-- SCHNELLKOMMUNIKATION -->
 
 <section class="category">
 
@@ -741,13 +635,11 @@ Text eingeben
 
 </button>
 
-
 <div
   id="quickCategory"
   class="categoryContent">
 
 <div class="grid2">
-
 
 <button
   class="quick speakPhrase"
@@ -756,14 +648,12 @@ Text eingeben
 👋 Hallo
 </button>
 
-
 <button
   class="quick speakPhrase"
   data-text="Danke"
   type="button">
 🙏 Danke
 </button>
-
 
 <button
   class="quick speakPhrase"
@@ -772,14 +662,12 @@ Text eingeben
 ⏳ Warten
 </button>
 
-
 <button
   class="quick speakPhrase"
   data-text="Bitte sagen Sie das noch einmal."
   type="button">
 🔁 Nochmal
 </button>
-
 
 <button
   class="quick speakPhrase"
@@ -788,14 +676,12 @@ Text eingeben
 🆘 Hilfe
 </button>
 
-
 <button
   class="quick speakPhrase"
   data-text="Ich möchte etwas trinken."
   type="button">
 🥤 Trinken
 </button>
-
 
 <button
   class="quick speakPhrase"
@@ -804,14 +690,12 @@ Text eingeben
 🍽 Essen
 </button>
 
-
 <button
   class="quick speakPhrase"
   data-text="Ich muss auf die Toilette."
   type="button">
 🚻 WC
 </button>
-
 
 <button
   class="quick speakPhrase"
@@ -820,14 +704,12 @@ Text eingeben
 ❓ Nicht verstanden
 </button>
 
-
 <button
   class="quick speakPhrase"
   data-text="Bitte sprechen Sie langsamer."
   type="button">
 🐢 Langsamer
 </button>
-
 
 <button
   class="quick speakPhrase"
@@ -836,14 +718,12 @@ Text eingeben
 ⏳ Mehr Zeit
 </button>
 
-
 <button
   class="quick speakPhrase"
   data-text="Ich kommuniziere mit einer Augensteuerung."
   type="button">
 👁 Augensteuerung
 </button>
-
 
 <button
   class="quick speakPhrase"
@@ -852,14 +732,13 @@ Text eingeben
 🤕 Schmerzen
 </button>
 
-
 <button
   class="emergency speakPhrase"
   data-text="Das ist ein Notfall. Bitte holen Sie sofort Hilfe."
-  type="button">
+  type="button"
+  aria-label="Notfall. Sofort Hilfe holen">
 🚨 NOTFALL
 </button>
-
 
 </div>
 
@@ -868,9 +747,7 @@ Text eingeben
 </section>
 
 
-<!-- =========================
-     STIMMAUSWAHL
-========================= -->
+<!-- STIMMAUSWAHL -->
 
 <section class="category">
 
@@ -890,15 +767,13 @@ Text eingeben
 
 </button>
 
-
 <div
   id="voiceCategory"
   class="categoryContent">
 
 <p class="voiceIntro">
-Tippe auf eine Stimme. Die komplette große Schaltfläche ist auswählbar.
+Wähle eine Stimme aus. Die gesamte große Schaltfläche ist auswählbar.
 </p>
-
 
 <div
   id="voiceStatus"
@@ -907,13 +782,11 @@ Tippe auf eine Stimme. Die komplette große Schaltfläche ist auswählbar.
   aria-live="polite">
 </div>
 
-
 <div
   id="voiceButtons"
   role="radiogroup"
   aria-label="Stimmen auswählen">
 </div>
-
 
 <button
   id="voiceTestButton"
@@ -927,9 +800,7 @@ Tippe auf eine Stimme. Die komplette große Schaltfläche ist auswählbar.
 </section>
 
 
-<!-- =========================
-     GESPEICHERTE SÄTZE
-========================= -->
+<!-- GESPEICHERTE SÄTZE -->
 
 <section class="category">
 
@@ -949,7 +820,6 @@ Tippe auf eine Stimme. Die komplette große Schaltfläche ist auswählbar.
 
 </button>
 
-
 <div
   id="savedCategory"
   class="categoryContent">
@@ -966,7 +836,6 @@ Tippe auf eine Stimme. Die komplette große Schaltfläche ist auswählbar.
 </div>
 
 </section>
-
 
 </main>
 
@@ -1029,8 +898,7 @@ for(
   c++
 ){
 
-  categoryButtons[c]
-  .addEventListener(
+  categoryButtons[c].addEventListener(
   "click",
   function(){
 
@@ -1053,30 +921,23 @@ for(
       ) === "true";
 
 
-    /*
-      ALLE ANDEREN SCHLIESSEN
-    */
-
     for(
       var i = 0;
       i < categoryButtons.length;
       i++
     ){
 
-      categoryButtons[i]
-      .setAttribute(
+      categoryButtons[i].setAttribute(
         "aria-expanded",
         "false"
       );
 
-      categoryButtons[i]
-      .classList.remove(
+      categoryButtons[i].classList.remove(
         "open"
       );
 
       var otherId =
-        categoryButtons[i]
-        .getAttribute(
+        categoryButtons[i].getAttribute(
           "aria-controls"
         );
 
@@ -1087,63 +948,46 @@ for(
 
       if(otherContent){
 
-        otherContent
-        .classList.remove(
+        otherContent.classList.remove(
           "open"
         );
       }
 
       var arrow =
-        categoryButtons[i]
-        .querySelector(
+        categoryButtons[i].querySelector(
           ".arrow"
         );
 
       if(arrow){
-        arrow.textContent =
-          "▼";
+        arrow.textContent = "▼";
       }
     }
 
 
-    /*
-      WENN VORHER GESCHLOSSEN:
-      JETZT ÖFFNEN
-    */
-
     if(!isOpen){
 
-      currentButton
-      .setAttribute(
+      currentButton.setAttribute(
         "aria-expanded",
         "true"
       );
 
-      currentButton
-      .classList.add(
+      currentButton.classList.add(
         "open"
       );
 
-      target
-      .classList.add(
+      target.classList.add(
         "open"
       );
 
       var currentArrow =
-        currentButton
-        .querySelector(
+        currentButton.querySelector(
           ".arrow"
         );
 
       if(currentArrow){
-        currentArrow.textContent =
-          "▲";
+        currentArrow.textContent = "▲";
       }
 
-
-      /*
-        ZENTRIEREN
-      */
 
       setTimeout(
       function(){
@@ -1438,6 +1282,7 @@ function loadVoices(){
     return a.name.localeCompare(
       b.name
     );
+
   });
 
 
@@ -1718,6 +1563,7 @@ function speakText(message){
       message || ""
     ).trim();
 
+
   if(!message){
     return;
   }
@@ -1767,6 +1613,19 @@ function speakText(message){
   }
 
 
+  /*
+    WICHTIG:
+    Keine eigene Lautstärke festlegen.
+
+    Es gibt absichtlich KEIN:
+    speech.volume = ...
+
+    Dadurch richtet sich die Ausgabe
+    nach der Lautstärke des Geräts
+    bzw. Browsers.
+  */
+
+
   speech.rate =
     0.95;
 
@@ -1793,8 +1652,7 @@ for(
   p++
 ){
 
-  phraseButtons[p]
-  .addEventListener(
+  phraseButtons[p].addEventListener(
   "click",
   function(){
 
@@ -2302,7 +2160,16 @@ function(){
     statusBox.textContent =
       "Satz gespeichert.";
 
+    savedStatus.textContent =
+      "Ein neuer Satz wurde gespeichert.";
   }
+
+  else{
+
+    statusBox.textContent =
+      "Dieser Satz ist bereits gespeichert.";
+  }
+
 
   showSaved();
 
@@ -2321,7 +2188,8 @@ function showSaved(){
 
 
   if(
-    saved.length === 0
+    saved.length ===
+    0
   ){
 
     savedBox.innerHTML =
@@ -2366,6 +2234,13 @@ function createSavedItem(
     sentence;
 
 
+  speak.setAttribute(
+    "aria-label",
+    sentence +
+    " sprechen"
+  );
+
+
   speak.addEventListener(
   "click",
   function(){
@@ -2399,6 +2274,12 @@ function createSavedItem(
 
   edit.textContent =
     "✏️ Bearbeiten";
+
+
+  edit.setAttribute(
+    "aria-label",
+    "Gespeicherten Satz bearbeiten"
+  );
 
 
   edit.addEventListener(
@@ -2450,6 +2331,12 @@ function createSavedItem(
 
   remove.textContent =
     "🗑 Löschen";
+
+
+  remove.setAttribute(
+    "aria-label",
+    "Gespeicherten Satz löschen"
+  );
 
 
   remove.addEventListener(
