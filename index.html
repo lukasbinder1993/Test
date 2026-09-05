@@ -1,2389 +1,544 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
->
-
-<title>Tonguebox</title>
-
-<style>
-
-*{
-  box-sizing:border-box;
-}
-
-body{
-  margin:0;
-  padding:6px;
-  font-family:Arial,Helvetica,sans-serif;
-  background:#eef2f6;
-  color:#111;
-}
-
-.app{
-  max-width:700px;
-  margin:auto;
-}
-
-h1{
-  text-align:center;
-  font-size:30px;
-  margin:10px 0 4px;
-}
-
-.subtitle{
-  text-align:center;
-  font-size:18px;
-  margin:0 0 8px;
-}
-
-#timeInfo{
-  text-align:center;
-  font-size:21px;
-  font-weight:bold;
-  margin-bottom:12px;
-}
-
-.visually-hidden{
-  position:absolute !important;
-  width:1px !important;
-  height:1px !important;
-  padding:0 !important;
-  margin:-1px !important;
-  overflow:hidden !important;
-  clip:rect(0,0,0,0) !important;
-  white-space:nowrap !important;
-  border:0 !important;
-}
-
-button,
-textarea{
-  font-family:inherit;
-}
-
-button{
-  cursor:pointer;
-}
-
-button:focus-visible,
-textarea:focus-visible{
-  outline:7px solid #ff9800;
-  outline-offset:4px;
-}
-
-button{
-  width:100%;
-  min-height:100px;
-  padding:14px;
-  border:none;
-  border-radius:20px;
-  font-size:21px;
-  font-weight:bold;
-}
-
-.grid2{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-/* JA / NEIN */
-
-.yes{
-  background:#2e7d32;
-  color:white;
-  min-height:145px;
-  font-size:38px;
-}
-
-.no{
-  background:#c62828;
-  color:white;
-  min-height:145px;
-  font-size:38px;
-}
-
-/* KATEGORIEN */
-
-.category{
-  margin-top:10px;
-  margin-bottom:10px;
-}
-
-.categoryButton{
-  width:100%;
-  min-height:110px;
-
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  padding:18px 20px;
-
-  background:#dfe7f1;
-  color:#111;
-
-  border:4px solid #b0bec5;
-  border-radius:20px;
-
-  font-size:23px;
-  font-weight:bold;
-
-  text-align:left;
-}
-
-.categoryButton span{
-  pointer-events:none;
-}
-
-.categoryButton.open{
-  background:#c5d4e8;
-  border-color:#1565c0;
-
-  border-bottom-left-radius:0;
-  border-bottom-right-radius:0;
-}
-
-.arrow{
-  font-size:28px;
-  margin-left:14px;
-}
-
-.categoryContent{
-  display:none;
-
-  background:white;
-
-  padding:12px;
-
-  border-left:4px solid #b0bec5;
-  border-right:4px solid #b0bec5;
-  border-bottom:4px solid #b0bec5;
-
-  border-bottom-left-radius:20px;
-  border-bottom-right-radius:20px;
-}
-
-.categoryContent.open{
-  display:block;
-}
-
-/* TEXT */
-
-textarea{
-  width:100%;
-  min-height:230px;
-
-  padding:16px;
-
-  border:4px solid #222;
-  border-radius:18px;
-
-  font-size:27px;
-  line-height:1.4;
-
-  resize:none;
-}
-
-.speak{
-  background:#1565c0;
-  color:white;
-}
-
-.save{
-  background:#2e7d32;
-  color:white;
-}
-
-.clear{
-  background:#555;
-  color:white;
-}
-
-.stop{
-  background:#c62828;
-  color:white;
-}
-
-/* TAGESZEIT */
-
-.timeButton{
-  background:#fff8e1;
-  border:4px solid #ffb300;
-}
-
-/* VORSCHLÄGE */
-
-.smart{
-  background:#ede7f6;
-  border:4px solid #673ab7;
-}
-
-.suggestion{
-  background:#ede7f6;
-  border:4px solid #673ab7;
-  text-align:left;
-  margin-bottom:10px;
-}
-
-/* SCHNELLKOMMUNIKATION */
-
-.quick{
-  background:#e3f2fd;
-  border:4px solid #1976d2;
-}
-
-.emergency{
-  background:#b71c1c;
-  color:white;
-}
-
-/* STIMMEN */
-
-.voiceIntro{
-  font-size:20px;
-  line-height:1.4;
-}
-
-.voiceButton{
-  width:100%;
-  min-height:165px;
-  margin-bottom:14px;
-  padding:22px;
-
-  background:#fff;
-
-  border:5px solid #1976d2;
-  border-radius:24px;
-
-  color:#111;
-  text-align:left;
-
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:flex-start;
-
-  gap:8px;
-}
-
-.voiceButton.selected{
-  background:#dcedc8;
-  border:7px solid #2e7d32;
-}
-
-.voiceName{
-  display:block;
-  width:100%;
-  font-size:28px;
-  font-weight:bold;
-}
-
-.voiceLang{
-  display:block;
-  font-size:21px;
-  font-weight:normal;
-}
-
-.voiceSelectedLabel{
-  display:block;
-  font-size:21px;
-  font-weight:bold;
-  color:#1b5e20;
-}
-
-.voiceTest{
-  min-height:130px;
-  margin-top:10px;
-
-  background:#1565c0;
-  color:white;
-
-  font-size:25px;
-}
-
-/* STATUS */
-
-.status{
-  min-height:32px;
-  margin-top:9px;
-  font-size:19px;
-  font-weight:bold;
-}
-
-/* GESPEICHERT */
-
-.saved{
-  background:#512da8;
-  color:white;
-  text-align:left;
-  margin-bottom:8px;
-}
-
-.savedActions{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  margin-bottom:14px;
-}
-
-.edit{
-  background:#ffca28;
-  min-height:75px;
-}
-
-.delete{
-  background:#c62828;
-  color:white;
-  min-height:75px;
-}
-
-/* IPHONE */
-
-@media(max-width:500px){
-
-  body{
-    padding:5px;
-  }
-
-  h1{
-    font-size:27px;
-  }
-
-  button{
-    min-height:105px;
-    font-size:21px;
-  }
-
-  .yes,
-  .no{
-    min-height:150px;
-    font-size:36px;
-  }
-
-  textarea{
-    min-height:240px;
-    font-size:26px;
-  }
-
-  .categoryButton{
-    min-height:120px;
-    font-size:23px;
-    padding:20px;
-  }
-
-  .arrow{
-    font-size:30px;
-  }
-
-  .voiceButton{
-    min-height:175px;
-    padding:22px;
-  }
-
-  .voiceName{
-    font-size:28px;
-  }
-
-  .voiceLang{
-    font-size:21px;
-  }
-
-}
-
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Tonguebox – Sprich mit deinen Augen</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 15px;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f6f8;
+      color: #1a1a1a;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 1.3rem;
+      margin-bottom: 30px;
+    }
+
+    section {
+      background: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 18px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      font-size: 1.7rem;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 180px;
+      padding: 18px;
+      font-size: 1.5rem;
+      border: 3px solid #555;
+      border-radius: 15px;
+      resize: vertical;
+    }
+
+    button {
+      width: 100%;
+      min-height: 90px;
+      margin-top: 12px;
+      padding: 15px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 16px;
+      background: #0066cc;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #004f9e;
+    }
+
+    button:focus-visible,
+    textarea:focus-visible,
+    select:focus-visible {
+      outline: 6px solid #ffbf00;
+      outline-offset: 4px;
+    }
+
+    .yes-no {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .yes {
+      background: #18833b;
+      min-height: 130px;
+      font-size: 2rem;
+    }
+
+    .no {
+      background: #c62828;
+      min-height: 130px;
+      font-size: 2rem;
+    }
+
+    select {
+      width: 100%;
+      min-height: 75px;
+      padding: 15px;
+      font-size: 1.3rem;
+      border: 3px solid #555;
+      border-radius: 15px;
+      background: white;
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .saved-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .saved-button {
+      background: #5b3cc4;
+    }
+
+    .delete-button {
+      background: #b71c1c;
+      min-height: 65px;
+      font-size: 1.1rem;
+    }
+
+    .status {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    @media (max-width: 650px) {
+      body {
+        padding: 8px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      button {
+        min-height: 95px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<main class="app">
+<main>
 
-<header>
+  <h1>Tonguebox</h1>
+  <p class="subtitle">Sprich mit deinen Augen</p>
 
-<h1>
-👅 Tonguebox
-</h1>
+  <section>
+    <h2>Begrüßung</h2>
+    <button id="greetingButton">Begrüßung sprechen</button>
+  </section>
 
-<p class="subtitle">
-Unterstützte Kommunikation
-</p>
+  <section>
+    <h2>Text sprechen</h2>
 
-<div
-  id="timeInfo"
-  aria-live="polite">
-Tageszeit wird erkannt...
-</div>
+    <label for="speechText">Was möchtest du sagen?</label>
 
-</header>
+    <textarea
+      id="speechText"
+      placeholder="Hier deinen Text eingeben ...">
+    </textarea>
 
+    <button id="speakButton">🔊 Vorlesen</button>
+    <button id="stopButton">⏹ Stoppen</button>
+    <button id="clearButton">🗑 Text löschen</button>
+  </section>
 
-<!-- JA / NEIN -->
+  <section>
+    <h2>Stimme auswählen</h2>
 
-<section>
+    <label for="voiceSelect">Stimme</label>
 
-<h2 class="visually-hidden">
-Sofortantworten
-</h2>
+    <select id="voiceSelect">
+      <option>Stimmen werden geladen ...</option>
+    </select>
+  </section>
 
-<div class="grid2">
+  <section>
+    <h2>Ja / Nein</h2>
 
-<button
-  class="yes speakPhrase"
-  data-text="Ja"
-  type="button"
-  aria-label="Ja sprechen">
-✅ JA
-</button>
+    <div class="yes-no">
+      <button class="yes" id="yesButton">JA</button>
+      <button class="no" id="noButton">NEIN</button>
+    </div>
+  </section>
 
-<button
-  class="no speakPhrase"
-  data-text="Nein"
-  type="button"
-  aria-label="Nein sprechen">
-❌ NEIN
-</button>
+  <section>
+    <h2>Schnellkommunikation</h2>
 
-</div>
+    <div class="quick-grid">
 
-</section>
+      <button class="quick"
+        data-text="Bitte warten Sie einen Moment.">
+        Bitte warten
+      </button>
 
+      <button class="quick"
+        data-text="Ich kann nicht sprechen und kommuniziere über dieses Gerät.">
+        Ich kann nicht sprechen
+      </button>
 
-<!-- TAGESZEIT -->
+      <button class="quick"
+        data-text="Bitte stellen Sie mir Fragen, die ich mit Ja oder Nein beantworten kann.">
+        Ja/Nein-Fragen bitte
+      </button>
 
-<section class="category">
+      <button class="quick"
+        data-text="Bitte geben Sie mir etwas mehr Zeit zum Antworten.">
+        Mehr Zeit bitte
+      </button>
 
-<button
-  class="categoryButton"
-  type="button"
-  aria-expanded="false"
-  aria-controls="timeCategory">
+    </div>
+  </section>
 
-<span>
-🕒 Tageszeit
-</span>
+  <section>
+    <h2>Gespeicherte Sätze</h2>
 
-<span class="arrow">
-▼
-</span>
+    <button id="saveButton">💾 Aktuellen Satz speichern</button>
 
-</button>
+    <div id="savedSentences" class="saved-grid"></div>
+  </section>
 
-<div
-  id="timeCategory"
-  class="categoryContent">
-
-<div
-  id="timeButtons"
-  class="grid2">
-</div>
-
-</div>
-
-</section>
-
-
-<!-- TEXT SCHREIBEN -->
-
-<section class="category">
-
-<button
-  id="textCategoryButton"
-  class="categoryButton"
-  type="button"
-  aria-expanded="false"
-  aria-controls="textCategory">
-
-<span>
-⌨️ Text schreiben
-</span>
-
-<span class="arrow">
-▼
-</span>
-
-</button>
-
-<div
-  id="textCategory"
-  class="categoryContent">
-
-<label
-  class="visually-hidden"
-  for="textInput">
-Text eingeben
-</label>
-
-<textarea
-  id="textInput"
-  placeholder="Was möchtest du sagen?"
-  spellcheck="true"
-  aria-label="Text eingeben">
-</textarea>
-
-<div
-  class="grid2"
-  style="margin-top:10px;">
-
-<button
-  id="speakButton"
-  class="speak"
-  type="button">
-🔊 Sprechen
-</button>
-
-<button
-  id="saveButton"
-  class="save"
-  type="button">
-⭐ Speichern
-</button>
-
-<button
-  id="clearButton"
-  class="clear"
-  type="button">
-🗑 Leeren
-</button>
-
-<button
-  id="stopButton"
-  class="stop"
-  type="button">
-⏹ Stopp
-</button>
-
-</div>
-
-<div
-  id="status"
-  class="status"
-  role="status"
-  aria-live="polite">
-</div>
-
-</div>
-
-</section>
-
-
-<!-- INTELLIGENTE VORSCHLÄGE -->
-
-<section class="category">
-
-<button
-  class="categoryButton"
-  type="button"
-  aria-expanded="false"
-  aria-controls="suggestionCategory">
-
-<span>
-✨ Intelligente Vorschläge
-</span>
-
-<span class="arrow">
-▼
-</span>
-
-</button>
-
-<div
-  id="suggestionCategory"
-  class="categoryContent">
-
-<button
-  id="suggestionButton"
-  class="smart"
-  type="button">
-✨ Vorschläge erstellen
-</button>
-
-<div
-  id="suggestionStatus"
-  class="status"
-  role="status"
-  aria-live="polite">
-</div>
-
-<div id="suggestionBox"></div>
-
-</div>
-
-</section>
-
-
-<!-- SCHNELLKOMMUNIKATION -->
-
-<section class="category">
-
-<button
-  class="categoryButton"
-  type="button"
-  aria-expanded="false"
-  aria-controls="quickCategory">
-
-<span>
-⚡ Schnellkommunikation
-</span>
-
-<span class="arrow">
-▼
-</span>
-
-</button>
-
-<div
-  id="quickCategory"
-  class="categoryContent">
-
-<div class="grid2">
-
-<button
-  class="quick speakPhrase"
-  data-text="Hallo"
-  type="button">
-👋 Hallo
-</button>
-
-<button
-  class="quick speakPhrase"
-  data-text="Danke"
-  type="button">
-🙏 Danke
-</button>
-
-<button
-  class="quick speakPhrase"
-  data-text="Bitte warten Sie kurz."
-  type="button">
-⏳ Warten
-</button>
-
-<button
-  class="quick speakPhrase"
-  data-text="Bitte sagen Sie das noch einmal."
-  type="button">
-🔁 Nochmal
-</button>
-
-<button
-  class="quick speakPhrase"
-  data-text="Ich brauche Hilfe."
-  type="button">
-🆘 Hilfe
-</button>
-
-<button
-  class="quick speakPhrase"
-  data-text="Ich möchte etwas trinken."
-  type="button">
-🥤 Trinken
-</button>
-
-<button
-  class="quick speakPhrase"
-  data-text="Ich möchte etwas essen."
-  type="button">
-🍽 Essen
-</button>
-
-<button
-  class="quick speakPhrase"
-  data-text="Ich muss auf die Toilette."
-  type="button">
-🚻 WC
-</button>
-
-<button
-  class="quick speakPhrase"
-  data-text="Ich habe Sie nicht verstanden."
-  type="button">
-❓ Nicht verstanden
-</button>
-
-<button
-  class="quick speakPhrase"
-  data-text="Bitte sprechen Sie langsamer."
-  type="button">
-🐢 Langsamer
-</button>
-
-<button
-  class="quick speakPhrase"
-  data-text="Bitte geben Sie mir etwas Zeit zum Antworten."
-  type="button">
-⏳ Mehr Zeit
-</button>
-
-<button
-  class="quick speakPhrase"
-  data-text="Ich kommuniziere mit einer Augensteuerung."
-  type="button">
-👁 Augensteuerung
-</button>
-
-<button
-  class="quick speakPhrase"
-  data-text="Ich habe Schmerzen."
-  type="button">
-🤕 Schmerzen
-</button>
-
-<button
-  class="emergency speakPhrase"
-  data-text="Das ist ein Notfall. Bitte holen Sie sofort Hilfe."
-  type="button"
-  aria-label="Notfall. Sofort Hilfe holen">
-🚨 NOTFALL
-</button>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- STIMMAUSWAHL -->
-
-<section class="category">
-
-<button
-  class="categoryButton"
-  type="button"
-  aria-expanded="false"
-  aria-controls="voiceCategory">
-
-<span>
-🗣 Stimme auswählen
-</span>
-
-<span class="arrow">
-▼
-</span>
-
-</button>
-
-<div
-  id="voiceCategory"
-  class="categoryContent">
-
-<p class="voiceIntro">
-Wähle eine Stimme aus. Die gesamte große Schaltfläche ist auswählbar.
-</p>
-
-<div
-  id="voiceStatus"
-  class="status"
-  role="status"
-  aria-live="polite">
-</div>
-
-<div
-  id="voiceButtons"
-  role="radiogroup"
-  aria-label="Stimmen auswählen">
-</div>
-
-<button
-  id="voiceTestButton"
-  class="voiceTest"
-  type="button">
-🔊 Ausgewählte Stimme testen
-</button>
-
-</div>
-
-</section>
-
-
-<!-- GESPEICHERTE SÄTZE -->
-
-<section class="category">
-
-<button
-  class="categoryButton"
-  type="button"
-  aria-expanded="false"
-  aria-controls="savedCategory">
-
-<span>
-⭐ Gespeicherte Sätze
-</span>
-
-<span class="arrow">
-▼
-</span>
-
-</button>
-
-<div
-  id="savedCategory"
-  class="categoryContent">
-
-<div
-  id="savedStatus"
-  class="status"
-  role="status"
-  aria-live="polite">
-</div>
-
-<div id="savedBox"></div>
-
-</div>
-
-</section>
+  <div id="status" class="status" role="status" aria-live="polite"></div>
 
 </main>
 
-
 <script>
 
-document.addEventListener(
-"DOMContentLoaded",
-function(){
+  const speechText = document.getElementById("speechText");
+  const voiceSelect = document.getElementById("voiceSelect");
+  const status = document.getElementById("status");
 
+  let voices = [];
 
-var textInput =
-  document.getElementById("textInput");
+  function loadVoices() {
 
-var statusBox =
-  document.getElementById("status");
+    voices = speechSynthesis.getVoices();
 
-var suggestionBox =
-  document.getElementById("suggestionBox");
+    voiceSelect.innerHTML = "";
 
-var suggestionStatus =
-  document.getElementById("suggestionStatus");
+    voices.forEach((voice, index) => {
 
-var savedBox =
-  document.getElementById("savedBox");
+      const option = document.createElement("option");
 
-var savedStatus =
-  document.getElementById("savedStatus");
+      option.value = index;
+      option.textContent =
+        voice.name + " – " + voice.lang;
 
-var timeButtons =
-  document.getElementById("timeButtons");
+      voiceSelect.appendChild(option);
 
-var timeInfo =
-  document.getElementById("timeInfo");
+    });
 
-var voiceButtons =
-  document.getElementById("voiceButtons");
+    const savedVoice = localStorage.getItem("tongueboxVoice");
 
-var voiceStatus =
-  document.getElementById("voiceStatus");
-
-
-var voices = [];
-
-var selectedVoiceName =
-  localStorage.getItem("tongueboxVoice") || "";
-
-
-/* =========================
-   KATEGORIEN
-========================= */
-
-var categoryButtons =
-  document.querySelectorAll(".categoryButton");
-
-
-for(
-  var c = 0;
-  c < categoryButtons.length;
-  c++
-){
-
-  categoryButtons[c].addEventListener(
-  "click",
-  function(){
-
-    var currentButton =
-      this;
-
-    var targetId =
-      currentButton.getAttribute(
-        "aria-controls"
-      );
-
-    var target =
-      document.getElementById(
-        targetId
-      );
-
-    var isOpen =
-      currentButton.getAttribute(
-        "aria-expanded"
-      ) === "true";
-
-
-    for(
-      var i = 0;
-      i < categoryButtons.length;
-      i++
-    ){
-
-      categoryButtons[i].setAttribute(
-        "aria-expanded",
-        "false"
-      );
-
-      categoryButtons[i].classList.remove(
-        "open"
-      );
-
-      var otherId =
-        categoryButtons[i].getAttribute(
-          "aria-controls"
-        );
-
-      var otherContent =
-        document.getElementById(
-          otherId
-        );
-
-      if(otherContent){
-
-        otherContent.classList.remove(
-          "open"
-        );
-      }
-
-      var arrow =
-        categoryButtons[i].querySelector(
-          ".arrow"
-        );
-
-      if(arrow){
-        arrow.textContent = "▼";
-      }
+    if (savedVoice !== null) {
+      voiceSelect.value = savedVoice;
     }
 
-
-    if(!isOpen){
-
-      currentButton.setAttribute(
-        "aria-expanded",
-        "true"
-      );
-
-      currentButton.classList.add(
-        "open"
-      );
-
-      target.classList.add(
-        "open"
-      );
-
-      var currentArrow =
-        currentButton.querySelector(
-          ".arrow"
-        );
-
-      if(currentArrow){
-        currentArrow.textContent = "▲";
-      }
-
-
-      setTimeout(
-      function(){
-
-        currentButton.scrollIntoView({
-          behavior:"smooth",
-          block:"center"
-        });
-
-      },
-      180
-      );
-
-    }
-
-  });
-
-}
-
-
-/* =========================
-   TAGESZEIT
-========================= */
-
-function getDayTime(){
-
-  var hour =
-    new Date().getHours();
-
-  if(hour >= 5 && hour < 11){
-    return "morgen";
   }
 
-  if(hour >= 11 && hour < 15){
-    return "mittag";
-  }
+  speechSynthesis.onvoiceschanged = loadVoices;
 
-  if(hour >= 15 && hour < 18){
-    return "nachmittag";
-  }
+  loadVoices();
 
-  if(hour >= 18 && hour < 23){
-    return "abend";
-  }
 
-  return "nacht";
-}
-
-
-function getGreeting(){
-
-  var time =
-    getDayTime();
-
-  if(time === "morgen"){
-    return "Guten Morgen";
-  }
-
-  if(time === "mittag"){
-    return "Guten Appetit";
-  }
-
-  if(time === "nachmittag"){
-    return "Guten Nachmittag";
-  }
-
-  if(time === "abend"){
-    return "Guten Abend";
-  }
-
-  return "Gute Nacht";
-}
-
-
-function getTimePhrases(){
-
-  var time =
-    getDayTime();
-
-  if(time === "morgen"){
-
-    return [
-      "Guten Morgen.",
-      "Guten Morgen, wie geht es Ihnen?",
-      "Ich möchte frühstücken.",
-      "Ich hätte gerne einen Kaffee."
-    ];
-  }
-
-  if(time === "mittag"){
-
-    return [
-      "Guten Appetit.",
-      "Guten Appetit zusammen.",
-      "Ich möchte etwas essen.",
-      "Bitte helfen Sie mir beim Essen."
-    ];
-  }
-
-  if(time === "nachmittag"){
-
-    return [
-      "Guten Nachmittag.",
-      "Ich hätte gerne einen Kaffee.",
-      "Ich möchte etwas trinken.",
-      "Ich brauche eine Pause."
-    ];
-  }
-
-  if(time === "abend"){
-
-    return [
-      "Guten Abend.",
-      "Ich wünsche Ihnen einen schönen Abend.",
-      "Ich möchte mich ausruhen.",
-      "Danke für heute."
-    ];
-  }
-
-  return [
-    "Gute Nacht.",
-    "Ich möchte schlafen.",
-    "Ich brauche Hilfe.",
-    "Ich muss auf die Toilette."
-  ];
-}
-
-
-function updateTimeArea(){
-
-  var time =
-    getDayTime();
-
-  var labels = {
-
-    morgen:
-      "🌅 Guten Morgen",
-
-    mittag:
-      "🍽 Guten Appetit",
-
-    nachmittag:
-      "🌤 Guten Nachmittag",
-
-    abend:
-      "🌙 Guten Abend",
-
-    nacht:
-      "🌙 Gute Nacht"
-  };
-
-
-  timeInfo.textContent =
-    labels[time];
-
-
-  timeButtons.innerHTML =
-    "";
-
-
-  var phrases =
-    getTimePhrases();
-
-
-  for(
-    var i = 0;
-    i < phrases.length;
-    i++
-  ){
-
-    createTimeButton(
-      phrases[i]
-    );
-  }
-
-}
-
-
-function createTimeButton(sentence){
-
-  var button =
-    document.createElement(
-      "button"
-    );
-
-  button.type =
-    "button";
-
-  button.className =
-    "timeButton";
-
-  button.textContent =
-    sentence;
-
-  button.setAttribute(
-    "aria-label",
-    sentence + " sprechen"
-  );
-
-
-  button.addEventListener(
-  "click",
-  function(){
-
-    speakText(sentence);
-
-  });
-
-
-  timeButtons.appendChild(
-    button
-  );
-}
-
-
-updateTimeArea();
-
-setInterval(
-  updateTimeArea,
-  300000
-);
-
-
-/* =========================
-   STIMMEN LADEN
-========================= */
-
-function loadVoices(){
-
-  if(
-    !(
-      "speechSynthesis"
-      in
-      window
-    )
-  ){
-
-    voiceStatus.textContent =
-      "Sprachausgabe wird nicht unterstützt.";
-
-    return;
-  }
-
-
-  voices =
-    speechSynthesis.getVoices();
-
-
-  voiceButtons.innerHTML =
-    "";
-
-
-  if(
-    voices.length === 0
-  ){
-
-    voiceStatus.textContent =
-      "Stimmen werden geladen...";
-
-    return;
-  }
-
-
-  voices.sort(
-  function(a,b){
-
-    var aGerman =
-      a.lang
-      .toLowerCase()
-      .startsWith("de");
-
-    var bGerman =
-      b.lang
-      .toLowerCase()
-      .startsWith("de");
-
-
-    if(
-      aGerman &&
-      !bGerman
-    ){
-      return -1;
-    }
-
-    if(
-      !aGerman &&
-      bGerman
-    ){
-      return 1;
-    }
-
-    return a.name.localeCompare(
-      b.name
-    );
-
-  });
-
-
-  if(!selectedVoiceName){
-
-    for(
-      var i = 0;
-      i < voices.length;
-      i++
-    ){
-
-      if(
-        voices[i]
-        .lang
-        .toLowerCase()
-        .startsWith("de")
-      ){
-
-        selectedVoiceName =
-          voices[i].name;
-
-        break;
-      }
-    }
-
-
-    if(
-      !selectedVoiceName &&
-      voices[0]
-    ){
-
-      selectedVoiceName =
-        voices[0].name;
-    }
-
+  voiceSelect.addEventListener("change", function() {
 
     localStorage.setItem(
       "tongueboxVoice",
-      selectedVoiceName
-    );
-  }
-
-
-  for(
-    var v = 0;
-    v < voices.length;
-    v++
-  ){
-
-    createVoiceButton(
-      voices[v]
-    );
-  }
-
-
-  voiceStatus.textContent =
-    "Aktuelle Stimme: " +
-    selectedVoiceName;
-}
-
-
-/* =========================
-   GROSSER STIMMENBUTTON
-========================= */
-
-function createVoiceButton(voice){
-
-  var button =
-    document.createElement(
-      "button"
-    );
-
-
-  button.type =
-    "button";
-
-  button.className =
-    "voiceButton";
-
-  button.setAttribute(
-    "role",
-    "radio"
-  );
-
-
-  var selected =
-    voice.name ===
-    selectedVoiceName;
-
-
-  button.setAttribute(
-    "aria-checked",
-    selected
-      ? "true"
-      : "false"
-  );
-
-
-  if(selected){
-
-    button.classList.add(
-      "selected"
-    );
-  }
-
-
-  var name =
-    document.createElement(
-      "span"
-    );
-
-  name.className =
-    "voiceName";
-
-  name.textContent =
-    selected
-      ? "✅ " + voice.name
-      : "🗣 " + voice.name;
-
-
-  var language =
-    document.createElement(
-      "span"
-    );
-
-  language.className =
-    "voiceLang";
-
-  language.textContent =
-    "Sprache: " +
-    voice.lang;
-
-
-  button.appendChild(
-    name
-  );
-
-  button.appendChild(
-    language
-  );
-
-
-  if(selected){
-
-    var selectedLabel =
-      document.createElement(
-        "span"
-      );
-
-    selectedLabel.className =
-      "voiceSelectedLabel";
-
-    selectedLabel.textContent =
-      "✅ AUSGEWÄHLT";
-
-    button.appendChild(
-      selectedLabel
-    );
-  }
-
-
-  button.setAttribute(
-    "aria-label",
-    voice.name +
-    ", Sprache " +
-    voice.lang +
-    (
-      selected
-      ? ", ausgewählt"
-      : ", auswählen"
-    )
-  );
-
-
-  button.addEventListener(
-  "click",
-  function(){
-
-    selectedVoiceName =
-      voice.name;
-
-
-    localStorage.setItem(
-      "tongueboxVoice",
-      selectedVoiceName
-    );
-
-
-    loadVoices();
-
-
-    setTimeout(
-    function(){
-
-      speakText(
-        "Hallo. Das ist meine ausgewählte Stimme."
-      );
-
-    },
-    100
+      voiceSelect.value
     );
 
   });
 
 
-  voiceButtons.appendChild(
-    button
-  );
-}
+  function speak(text) {
 
-
-loadVoices();
-
-
-if(
-  "speechSynthesis"
-  in
-  window
-){
-
-  speechSynthesis.onvoiceschanged =
-    loadVoices;
-}
-
-
-/* =========================
-   AUSGEWÄHLTE STIMME
-========================= */
-
-function getSelectedVoice(){
-
-  for(
-    var i = 0;
-    i < voices.length;
-    i++
-  ){
-
-    if(
-      voices[i].name ===
-      selectedVoiceName
-    ){
-
-      return voices[i];
+    if (!text.trim()) {
+      status.textContent = "Bitte zuerst einen Text eingeben.";
+      return;
     }
-  }
-
-  return null;
-}
-
-
-/* =========================
-   STIMME TESTEN
-========================= */
-
-document
-.getElementById(
-  "voiceTestButton"
-)
-.addEventListener(
-"click",
-function(){
-
-  speakText(
-    "Hallo. Das ist die ausgewählte Stimme von Tonguebox."
-  );
-
-});
-
-
-/* =========================
-   SPRECHEN
-========================= */
-
-function speakText(message){
-
-  message =
-    String(
-      message || ""
-    ).trim();
-
-
-  if(!message){
-    return;
-  }
-
-
-  if(
-    !(
-      "speechSynthesis"
-      in
-      window
-    )
-  ){
-
-    statusBox.textContent =
-      "Sprachausgabe wird nicht unterstützt.";
-
-    return;
-  }
-
-
-  speechSynthesis.cancel();
-
-
-  var speech =
-    new SpeechSynthesisUtterance(
-      message
-    );
-
-
-  var selected =
-    getSelectedVoice();
-
-
-  if(selected){
-
-    speech.voice =
-      selected;
-
-    speech.lang =
-      selected.lang;
-  }
-
-  else{
-
-    speech.lang =
-      "de-DE";
-  }
-
-
-  /*
-    WICHTIG:
-    Keine eigene Lautstärke festlegen.
-
-    Es gibt absichtlich KEIN:
-    speech.volume = ...
-
-    Dadurch richtet sich die Ausgabe
-    nach der Lautstärke des Geräts
-    bzw. Browsers.
-  */
-
-
-  speech.rate =
-    0.95;
-
-
-  speechSynthesis.speak(
-    speech
-  );
-}
-
-
-/* =========================
-   SCHNELLBUTTONS
-========================= */
-
-var phraseButtons =
-  document.querySelectorAll(
-    ".speakPhrase"
-  );
-
-
-for(
-  var p = 0;
-  p < phraseButtons.length;
-  p++
-){
-
-  phraseButtons[p].addEventListener(
-  "click",
-  function(){
-
-    speakText(
-      this.getAttribute(
-        "data-text"
-      )
-    );
-
-  });
-}
-
-
-/* =========================
-   TEXT SPRECHEN
-========================= */
-
-document
-.getElementById(
-  "speakButton"
-)
-.addEventListener(
-"click",
-function(){
-
-  var text =
-    textInput.value.trim();
-
-  if(!text){
-
-    statusBox.textContent =
-      "Bitte zuerst Text eingeben.";
-
-    return;
-  }
-
-
-  speakText(text);
-
-});
-
-
-/* =========================
-   STOPP
-========================= */
-
-document
-.getElementById(
-  "stopButton"
-)
-.addEventListener(
-"click",
-function(){
-
-  if(
-    "speechSynthesis"
-    in
-    window
-  ){
 
     speechSynthesis.cancel();
-  }
 
-  statusBox.textContent =
-    "Sprachausgabe gestoppt.";
-});
+    const utterance =
+      new SpeechSynthesisUtterance(text);
 
+    const selectedVoice =
+      voices[voiceSelect.value];
 
-/* =========================
-   LEEREN
-========================= */
-
-document
-.getElementById(
-  "clearButton"
-)
-.addEventListener(
-"click",
-function(){
-
-  textInput.value =
-    "";
-
-  suggestionBox.innerHTML =
-    "";
-
-  statusBox.textContent =
-    "Text wurde geleert.";
-});
-
-
-/* =========================
-   INTELLIGENTE VORSCHLÄGE
-========================= */
-
-document
-.getElementById(
-  "suggestionButton"
-)
-.addEventListener(
-"click",
-function(){
-
-  var text =
-    textInput.value.trim();
-
-  var lower =
-    text.toLowerCase();
-
-  var time =
-    getDayTime();
-
-  var greeting =
-    getGreeting();
-
-  var list = [];
-
-
-  if(!text){
-
-    list =
-      getTimePhrases()
-      .slice(0,3);
-
-  }
-
-
-  else if(
-    lower.includes("hallo")
-  ){
-
-    list = [
-      greeting + ".",
-      greeting + ", schön Sie zu sehen.",
-      greeting + ", wie geht es Ihnen?"
-    ];
-
-  }
-
-
-  else if(
-    lower.includes("kaffee")
-  ){
-
-    if(time === "morgen"){
-
-      list = [
-        "Guten Morgen, ich hätte gerne einen Kaffee.",
-        "Könnten Sie mir bitte einen Kaffee bringen?",
-        "Ich möchte gerne einen Kaffee."
-      ];
-
+    if (selectedVoice) {
+      utterance.voice = selectedVoice;
     }
 
-    else{
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    utterance.volume = 1;
 
-      list = [
-        "Ich hätte gerne einen Kaffee.",
-        "Könnten Sie mir bitte einen Kaffee bringen?",
-        "Ich möchte bitte einen Kaffee."
-      ];
+    speechSynthesis.speak(utterance);
 
-    }
+    status.textContent = "Text wird gesprochen.";
 
   }
 
 
-  else if(
-    lower.includes("essen") ||
-    lower.includes("hunger")
-  ){
+  document.getElementById("speakButton")
+    .addEventListener("click", function() {
 
-    if(time === "mittag"){
+      speak(speechText.value);
 
-      list = [
-        "Guten Appetit.",
-        "Ich möchte etwas essen.",
-        "Bitte helfen Sie mir beim Essen."
-      ];
-
-    }
-
-    else if(time === "abend"){
-
-      list = [
-        "Guten Abend, ich möchte etwas essen.",
-        "Ich hätte gerne Abendessen.",
-        "Bitte helfen Sie mir beim Essen."
-      ];
-
-    }
-
-    else{
-
-      list = [
-        "Ich möchte etwas essen.",
-        "Ich habe Hunger.",
-        "Bitte helfen Sie mir beim Essen."
-      ];
-
-    }
-
-  }
+    });
 
 
-  else if(
-    lower.includes("trinken")
-  ){
+  document.getElementById("stopButton")
+    .addEventListener("click", function() {
 
-    list = [
-      "Ich möchte etwas trinken.",
-      "Ich hätte gerne Wasser.",
-      "Bitte helfen Sie mir beim Trinken."
-    ];
+      speechSynthesis.cancel();
 
-  }
+      status.textContent =
+        "Sprachausgabe gestoppt.";
+
+    });
 
 
-  else if(
-    lower.includes("hilfe")
-  ){
+  document.getElementById("clearButton")
+    .addEventListener("click", function() {
 
-    list = [
-      "Ich brauche Hilfe.",
-      "Könnten Sie mir bitte helfen?",
-      "Bitte helfen Sie mir."
-    ];
+      speechText.value = "";
 
-  }
+      speechText.focus();
 
+      status.textContent =
+        "Text wurde gelöscht.";
 
-  else{
-
-    list = [
-      cleanText(text),
-      friendlyText(text),
-      questionText(text)
-    ];
-
-  }
+    });
 
 
-  showSuggestions(
-    list
-  );
+  document.getElementById("yesButton")
+    .addEventListener("click", function() {
 
-});
+      speak("Ja");
 
-
-function showSuggestions(list){
-
-  suggestionBox.innerHTML =
-    "";
-
-  suggestionStatus.textContent =
-    list.length +
-    " Vorschläge verfügbar.";
+    });
 
 
-  for(
-    var i = 0;
-    i < list.length;
-    i++
-  ){
+  document.getElementById("noButton")
+    .addEventListener("click", function() {
 
-    createSuggestion(
-      list[i],
-      i
-    );
-  }
-}
+      speak("Nein");
+
+    });
 
 
-function createSuggestion(
-  sentence,
-  index
-){
+  document.querySelectorAll(".quick")
+    .forEach(button => {
 
-  var button =
-    document.createElement(
-      "button"
+      button.addEventListener("click", function() {
+
+        speak(button.dataset.text);
+
+      });
+
+    });
+
+
+  document.getElementById("greetingButton")
+    .addEventListener("click", function() {
+
+      const hour = new Date().getHours();
+
+      let greeting;
+
+      if (hour < 11) {
+
+        greeting = "Guten Morgen";
+
+      } else if (hour < 14) {
+
+        greeting = "Guten Appetit";
+
+      } else if (hour < 18) {
+
+        greeting = "Guten Nachmittag";
+
+      } else {
+
+        greeting = "Guten Abend";
+
+      }
+
+      speak(greeting);
+
+    });
+
+
+  function getSavedSentences() {
+
+    return JSON.parse(
+      localStorage.getItem("tongueboxSentences")
+      || "[]"
     );
 
-  button.type =
-    "button";
-
-  button.className =
-    "suggestion";
-
-  button.textContent =
-    "✨ " +
-    sentence;
-
-  button.setAttribute(
-    "aria-label",
-    "Vorschlag " +
-    (index + 1) +
-    ": " +
-    sentence
-  );
+  }
 
 
-  button.addEventListener(
-  "click",
-  function(){
+  function saveSentences(sentences) {
 
-    textInput.value =
-      sentence;
-
-    speakText(
-      sentence
+    localStorage.setItem(
+      "tongueboxSentences",
+      JSON.stringify(sentences)
     );
 
-  });
-
-
-  suggestionBox.appendChild(
-    button
-  );
-}
-
-
-/* =========================
-   TEXTHILFEN
-========================= */
-
-function cleanText(text){
-
-  text =
-    String(
-      text || ""
-    ).trim();
-
-  if(!text){
-    return "";
-  }
-
-  text =
-    text.replace(
-      /\s+/g,
-      " "
-    );
-
-
-  text =
-    text.charAt(0)
-    .toUpperCase() +
-    text.slice(1);
-
-
-  if(
-    !/[.!?]$/.test(text)
-  ){
-
-    text += ".";
-  }
-
-  return text;
-}
-
-
-function lowerFirst(text){
-
-  if(!text){
-    return "";
-  }
-
-  return (
-    text.charAt(0)
-    .toLowerCase() +
-    text.slice(1)
-  );
-}
-
-
-function friendlyText(text){
-
-  text =
-    String(
-      text || ""
-    )
-    .trim()
-    .replace(
-      /[.!?]+$/,
-      ""
-    );
-
-  if(!text){
-    return "";
   }
 
 
-  if(
-    !text
-    .toLowerCase()
-    .includes("bitte")
-  ){
+  function showSavedSentences() {
 
-    text =
-      "Bitte " +
-      lowerFirst(text);
-  }
+    const container =
+      document.getElementById("savedSentences");
 
-  return cleanText(text);
-}
+    container.innerHTML = "";
 
+    const sentences = getSavedSentences();
 
-function questionText(text){
+    sentences.forEach((sentence, index) => {
 
-  text =
-    String(
-      text || ""
-    )
-    .trim()
-    .replace(
-      /[.!?]+$/,
-      ""
-    );
+      const wrapper =
+        document.createElement("div");
 
-  if(!text){
-    return "";
-  }
+      const speakButton =
+        document.createElement("button");
 
+      speakButton.textContent = sentence;
+      speakButton.className = "saved-button";
 
-  return (
-    "Könnten Sie bitte " +
-    lowerFirst(text) +
-    "?"
-  );
-}
+      speakButton.addEventListener(
+        "click",
+        function() {
 
+          speak(sentence);
 
-/* =========================
-   GESPEICHERTE SÄTZE
-========================= */
-
-function getSaved(){
-
-  try{
-
-    var result =
-      JSON.parse(
-        localStorage.getItem(
-          "tongueboxSaved"
-        ) || "[]"
-      );
-
-    return Array.isArray(result)
-      ? result
-      : [];
-
-  }
-
-  catch(error){
-
-    return [];
-  }
-}
-
-
-function saveSaved(list){
-
-  localStorage.setItem(
-    "tongueboxSaved",
-    JSON.stringify(list)
-  );
-}
-
-
-/* SPEICHERN */
-
-document
-.getElementById(
-  "saveButton"
-)
-.addEventListener(
-"click",
-function(){
-
-  var text =
-    textInput.value.trim();
-
-  if(!text){
-
-    statusBox.textContent =
-      "Bitte zuerst Text eingeben.";
-
-    return;
-  }
-
-
-  var saved =
-    getSaved();
-
-
-  if(
-    saved.indexOf(text) ===
-    -1
-  ){
-
-    saved.push(text);
-
-    saveSaved(saved);
-
-    statusBox.textContent =
-      "Satz gespeichert.";
-
-    savedStatus.textContent =
-      "Ein neuer Satz wurde gespeichert.";
-  }
-
-  else{
-
-    statusBox.textContent =
-      "Dieser Satz ist bereits gespeichert.";
-  }
-
-
-  showSaved();
-
-});
-
-
-/* ANZEIGEN */
-
-function showSaved(){
-
-  savedBox.innerHTML =
-    "";
-
-  var saved =
-    getSaved();
-
-
-  if(
-    saved.length ===
-    0
-  ){
-
-    savedBox.innerHTML =
-      "<p>Noch keine Sätze gespeichert.</p>";
-
-    return;
-  }
-
-
-  for(
-    var i = 0;
-    i < saved.length;
-    i++
-  ){
-
-    createSavedItem(
-      saved[i],
-      i
-    );
-  }
-}
-
-
-function createSavedItem(
-  sentence,
-  index
-){
-
-  var speak =
-    document.createElement(
-      "button"
-    );
-
-  speak.type =
-    "button";
-
-  speak.className =
-    "saved";
-
-  speak.textContent =
-    "🔊 " +
-    sentence;
-
-
-  speak.setAttribute(
-    "aria-label",
-    sentence +
-    " sprechen"
-  );
-
-
-  speak.addEventListener(
-  "click",
-  function(){
-
-    speakText(
-      sentence
-    );
-
-  });
-
-
-  var actions =
-    document.createElement(
-      "div"
-    );
-
-  actions.className =
-    "savedActions";
-
-
-  var edit =
-    document.createElement(
-      "button"
-    );
-
-  edit.type =
-    "button";
-
-  edit.className =
-    "edit";
-
-  edit.textContent =
-    "✏️ Bearbeiten";
-
-
-  edit.setAttribute(
-    "aria-label",
-    "Gespeicherten Satz bearbeiten"
-  );
-
-
-  edit.addEventListener(
-  "click",
-  function(){
-
-    textInput.value =
-      sentence;
-
-
-    var textButton =
-      document.getElementById(
-        "textCategoryButton"
+        }
       );
 
 
-    if(
-      textButton.getAttribute(
-        "aria-expanded"
-      ) !== "true"
-    ){
+      const deleteButton =
+        document.createElement("button");
 
-      textButton.click();
-    }
+      deleteButton.textContent =
+        "🗑 Löschen";
 
+      deleteButton.className =
+        "delete-button";
 
-    setTimeout(
-    function(){
+      deleteButton.addEventListener(
+        "click",
+        function() {
 
-      textInput.focus();
+          const sentences =
+            getSavedSentences();
 
-    },
-    200
-    );
+          sentences.splice(index, 1);
 
-  });
+          saveSentences(sentences);
 
+          showSavedSentences();
 
-  var remove =
-    document.createElement(
-      "button"
-    );
+          status.textContent =
+            "Gespeicherter Satz gelöscht.";
 
-  remove.type =
-    "button";
+        }
+      );
 
-  remove.className =
-    "delete";
+      wrapper.appendChild(speakButton);
+      wrapper.appendChild(deleteButton);
 
-  remove.textContent =
-    "🗑 Löschen";
+      container.appendChild(wrapper);
 
+    });
 
-  remove.setAttribute(
-    "aria-label",
-    "Gespeicherten Satz löschen"
-  );
+  }
 
 
-  remove.addEventListener(
-  "click",
-  function(){
+  document.getElementById("saveButton")
+    .addEventListener("click", function() {
 
-    var saved =
-      getSaved();
+      const text =
+        speechText.value.trim();
 
-    saved.splice(
-      index,
-      1
-    );
+      if (!text) {
 
-    saveSaved(
-      saved
-    );
+        status.textContent =
+          "Bitte zuerst einen Satz eingeben.";
 
-    savedStatus.textContent =
-      "Satz gelöscht.";
+        return;
 
-    showSaved();
+      }
 
-  });
+      const sentences =
+        getSavedSentences();
 
+      if (!sentences.includes(text)) {
 
-  actions.appendChild(
-    edit
-  );
+        sentences.push(text);
 
-  actions.appendChild(
-    remove
-  );
+        saveSentences(sentences);
 
-  savedBox.appendChild(
-    speak
-  );
+        showSavedSentences();
 
-  savedBox.appendChild(
-    actions
-  );
-}
+        status.textContent =
+          "Satz wurde gespeichert.";
+
+      } else {
+
+        status.textContent =
+          "Dieser Satz ist bereits gespeichert.";
+
+      }
+
+    });
 
 
-showSaved();
-
-});
+  showSavedSentences();
 
 </script>
 
