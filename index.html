@@ -1,546 +1,1374 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Tonguebox – Sprich mit deinen Augen</title>
+<meta charset="UTF-8">
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Tonguebox – Sprich mit deinen Augen</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 15px;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    background: #f4f7fa;
+    color: #17212b;
+}
+
+main {
+    max-width: 1050px;
+    margin: auto;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2.6rem;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 1.3rem;
+    margin-bottom: 25px;
+}
+
+section {
+    background: white;
+
+    margin-bottom: 22px;
+    padding: 22px;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 3px 12px rgba(0,0,0,0.08);
+}
+
+h2 {
+    font-size: 1.7rem;
+}
+
+
+/* Texteingabe */
+
+textarea {
+
+    width: 100%;
+    min-height: 190px;
+
+    padding: 18px;
+
+    font-size: 1.6rem;
+
+    border: 3px solid #555;
+    border-radius: 15px;
+
+}
+
+
+/* Buttons */
+
+button {
+
+    min-height: 85px;
+
+    padding: 16px;
+
+    font-size: 1.35rem;
+    font-weight: bold;
+
+    border: none;
+    border-radius: 16px;
+
+    cursor: pointer;
+
+    background: #0066cc;
+    color: white;
+}
+
+
+button:hover {
+
+    filter: brightness(90%);
+
+}
+
+
+/* Augensteuerung */
+
+button:focus,
+textarea:focus,
+select:focus {
+
+    outline: 7px solid #ffc400;
+    outline-offset: 5px;
+
+}
+
+
+/* Hauptbuttons */
+
+.big-button {
+
+    width: 100%;
+    min-height: 105px;
+
+    margin-top: 12px;
+
+    font-size: 1.7rem;
+
+}
+
+
+/* Raster */
+
+.grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(220px, 1fr));
+
+    gap: 14px;
+
+    margin-top: 15px;
+
+}
+
+
+/* Ja Nein */
+
+.yes-no {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 20px;
+
+}
+
+
+.yes {
+
+    background: #198754;
+
+    min-height: 140px;
+
+    font-size: 2.2rem;
+
+}
+
+
+.no {
+
+    background: #c62828;
+
+    min-height: 140px;
+
+    font-size: 2.2rem;
+
+}
+
+
+/* Vorschläge */
+
+.suggestion {
+
+    background: #5b3cc4;
+
+}
+
+
+/* Kontext */
+
+.context-button {
+
+    background: #087f8c;
+
+}
+
+
+/* Gespeicherte Sätze */
+
+.saved {
+
+    background: #7349c6;
+
+}
+
+
+/* Löschen */
+
+.delete {
+
+    background: #b71c1c;
+
+    min-height: 60px;
+
+    margin-top: 5px;
+
+}
+
+
+/* Stimmen */
+
+select {
+
+    width: 100%;
+
+    min-height: 75px;
+
+    padding: 15px;
+
+    font-size: 1.3rem;
+
+    border-radius: 15px;
+
+    border: 3px solid #555;
+
+    background: white;
+
+}
+
+
+/* Status */
+
+#status {
+
+    font-size: 1.2rem;
+
+    font-weight: bold;
+
+    padding: 15px;
+
+}
+
+
+/* Smartphone */
+
+@media(max-width:650px) {
 
     body {
-      margin: 0;
-      padding: 15px;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f4f6f8;
-      color: #1a1a1a;
-    }
-
-    main {
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    h1 {
-      text-align: center;
-      font-size: 2.5rem;
-      margin-bottom: 5px;
-    }
-
-    .subtitle {
-      text-align: center;
-      font-size: 1.3rem;
-      margin-bottom: 30px;
-    }
-
-    section {
-      background: white;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-radius: 18px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-    }
-
-    h2 {
-      font-size: 1.7rem;
-    }
-
-    textarea {
-      width: 100%;
-      min-height: 180px;
-      padding: 18px;
-      font-size: 1.5rem;
-      border: 3px solid #555;
-      border-radius: 15px;
-      resize: vertical;
+        padding: 8px;
     }
 
     button {
-      width: 100%;
-      min-height: 90px;
-      margin-top: 12px;
-      padding: 15px;
-      font-size: 1.5rem;
-      font-weight: bold;
-      border: none;
-      border-radius: 16px;
-      background: #0066cc;
-      color: white;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #004f9e;
-    }
-
-    button:focus-visible,
-    textarea:focus-visible,
-    select:focus-visible {
-      outline: 6px solid #ffbf00;
-      outline-offset: 4px;
-    }
-
-    .yes-no {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-    }
-
-    .yes {
-      background: #18833b;
-      min-height: 130px;
-      font-size: 2rem;
-    }
-
-    .no {
-      background: #c62828;
-      min-height: 130px;
-      font-size: 2rem;
-    }
-
-    select {
-      width: 100%;
-      min-height: 75px;
-      padding: 15px;
-      font-size: 1.3rem;
-      border: 3px solid #555;
-      border-radius: 15px;
-      background: white;
-    }
-
-    .quick-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 12px;
-    }
-
-    .saved-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 12px;
-      margin-top: 15px;
-    }
-
-    .saved-button {
-      background: #5b3cc4;
-    }
-
-    .delete-button {
-      background: #b71c1c;
-      min-height: 65px;
-      font-size: 1.1rem;
-    }
-
-    .status {
-      margin-top: 15px;
-      font-weight: bold;
-      font-size: 1.1rem;
-    }
-
-    @media (max-width: 650px) {
-      body {
-        padding: 8px;
-      }
-
-      h1 {
-        font-size: 2rem;
-      }
-
-      button {
         min-height: 95px;
-      }
     }
-  </style>
+
+    .yes,
+    .no {
+
+        min-height: 135px;
+
+    }
+
+}
+
+</style>
+
 </head>
+
 
 <body>
 
 <main>
 
-  <h1>Tonguebox</h1>
-  <p class="subtitle">Sprich mit deinen Augen</p>
 
-  <section>
-    <h2>Begrüßung</h2>
-    <button id="greetingButton">Begrüßung sprechen</button>
-  </section>
+<h1>🤖 Tonguebox</h1>
 
-  <section>
-    <h2>Text sprechen</h2>
+<p class="subtitle">
+Sprich mit deinen Augen
+</p>
 
-    <label for="speechText">Was möchtest du sagen?</label>
 
-    <textarea
-      id="speechText"
-      placeholder="Hier deinen Text eingeben ...">
-    </textarea>
 
-    <button id="speakButton">🔊 Vorlesen</button>
-    <button id="stopButton">⏹ Stoppen</button>
-    <button id="clearButton">🗑 Text löschen</button>
-  </section>
+<!-- TEXT -->
 
-  <section>
-    <h2>Stimme auswählen</h2>
 
-    <label for="voiceSelect">Stimme</label>
+<section>
 
-    <select id="voiceSelect">
-      <option>Stimmen werden geladen ...</option>
-    </select>
-  </section>
+<h2>💬 Was möchtest du sagen?</h2>
 
-  <section>
-    <h2>Ja / Nein</h2>
+<textarea
+id="speechText"
+placeholder="Hier deinen Text schreiben ..."
+aria-label="Text zum Sprechen">
+</textarea>
 
-    <div class="yes-no">
-      <button class="yes" id="yesButton">JA</button>
-      <button class="no" id="noButton">NEIN</button>
-    </div>
-  </section>
 
-  <section>
-    <h2>Schnellkommunikation</h2>
+<button
+class="big-button"
+id="speakButton">
 
-    <div class="quick-grid">
+🔊 Vorlesen
 
-      <button class="quick"
-        data-text="Bitte warten Sie einen Moment.">
-        Bitte warten
-      </button>
+</button>
 
-      <button class="quick"
-        data-text="Ich kann nicht sprechen und kommuniziere über dieses Gerät.">
-        Ich kann nicht sprechen
-      </button>
 
-      <button class="quick"
-        data-text="Bitte stellen Sie mir Fragen, die ich mit Ja oder Nein beantworten kann.">
-        Ja/Nein-Fragen bitte
-      </button>
+<div class="grid">
 
-      <button class="quick"
-        data-text="Bitte geben Sie mir etwas mehr Zeit zum Antworten.">
-        Mehr Zeit bitte
-      </button>
+<button id="stopButton">
+⏹ Stoppen
+</button>
 
-    </div>
-  </section>
+<button id="clearButton">
+🗑 Text löschen
+</button>
 
-  <section>
-    <h2>Gespeicherte Sätze</h2>
+<button id="saveButton">
+💾 Satz speichern
+</button>
 
-    <button id="saveButton">💾 Aktuellen Satz speichern</button>
+</div>
 
-    <div id="savedSentences" class="saved-grid"></div>
-  </section>
+</section>
 
-  <div id="status" class="status" role="status" aria-live="polite"></div>
+
+
+<!-- INTELLIGENTE VORSCHLÄGE -->
+
+
+<section>
+
+<h2>✨ Intelligente Vorschläge</h2>
+
+<p>
+Während du schreibst, schlägt Tonguebox passende Sätze vor.
+</p>
+
+<div
+id="suggestions"
+class="grid">
+</div>
+
+</section>
+
+
+
+<!-- KONTEXT -->
+
+
+<section>
+
+<h2>🧠 Kommunikation nach Situation</h2>
+
+<p>
+Wähle aus, wo oder in welcher Situation du dich befindest.
+</p>
+
+<div class="grid">
+
+<button
+class="context-button"
+onclick="setContext('home')">
+
+🏠 Zuhause
+
+</button>
+
+
+<button
+class="context-button"
+onclick="setContext('hospital')">
+
+🏥 Krankenhaus
+
+</button>
+
+
+<button
+class="context-button"
+onclick="setContext('food')">
+
+🍽 Essen & Trinken
+
+</button>
+
+
+<button
+class="context-button"
+onclick="setContext('phone')">
+
+📞 Telefon
+
+</button>
+
+
+<button
+class="context-button"
+onclick="setContext('general')">
+
+💬 Allgemein
+
+</button>
+
+</div>
+
+<div
+id="contextSuggestions"
+class="grid">
+</div>
+
+</section>
+
+
+
+<!-- JA NEIN -->
+
+
+<section>
+
+<h2>✅ Schnelle Antwort</h2>
+
+<div class="yes-no">
+
+<button
+class="yes"
+onclick="speak('Ja')">
+
+JA
+
+</button>
+
+
+<button
+class="no"
+onclick="speak('Nein')">
+
+NEIN
+
+</button>
+
+</div>
+
+</section>
+
+
+
+<!-- SCHNELLKOMMUNIKATION -->
+
+
+<section>
+
+<h2>⚡ Schnellkommunikation</h2>
+
+<div class="grid">
+
+<button onclick="speak('Bitte warten Sie einen Moment.')">
+
+⏳ Bitte warten
+
+</button>
+
+
+<button onclick="speak('Bitte geben Sie mir mehr Zeit zum Antworten.')">
+
+⏱ Mehr Zeit
+
+</button>
+
+
+<button onclick="speak('Ich kann nicht sprechen und kommuniziere über dieses Gerät.')">
+
+🗣 Ich kommuniziere über dieses Gerät
+
+</button>
+
+
+<button onclick="speak('Bitte stellen Sie mir Fragen, die ich mit Ja oder Nein beantworten kann.')">
+
+❓ Ja/Nein-Fragen
+
+</button>
+
+
+<button onclick="speak('Ich habe Sie verstanden.')">
+
+👍 Verstanden
+
+</button>
+
+
+<button onclick="speak('Ich habe Sie nicht verstanden. Bitte wiederholen Sie das.')">
+
+🔁 Bitte wiederholen
+
+</button>
+
+</div>
+
+</section>
+
+
+
+<!-- STIMMEN -->
+
+
+<section>
+
+<h2>🎙 Stimme auswählen</h2>
+
+<select
+id="voiceSelect"
+aria-label="Stimme auswählen">
+
+<option>
+Stimmen werden geladen ...
+</option>
+
+</select>
+
+</section>
+
+
+
+<!-- PERSÖNLICHE SÄTZE -->
+
+
+<section>
+
+<h2>❤️ Meine Sätze</h2>
+
+<p>
+Deine gespeicherten Sätze bleiben auf diesem Gerät erhalten.
+</p>
+
+<div
+id="savedSentences"
+class="grid">
+</div>
+
+</section>
+
+
+
+<!-- HÄUFIG VERWENDET -->
+
+
+<section>
+
+<h2>🧠 Häufig verwendet</h2>
+
+<p>
+Tonguebox merkt sich lokal, welche Sätze du häufig verwendest.
+</p>
+
+<div
+id="frequentSentences"
+class="grid">
+</div>
+
+</section>
+
+
+
+<!-- AUDITIVE HILFE -->
+
+
+<section>
+
+<h2>🔈 Akustische Hilfe</h2>
+
+<button
+class="big-button"
+onclick="speakHelp()">
+
+🔊 Seite erklären
+
+</button>
+
+</section>
+
+
+
+<div
+id="status"
+role="status"
+aria-live="polite">
+</div>
+
 
 </main>
 
+
+
 <script>
 
-  const speechText = document.getElementById("speechText");
-  const voiceSelect = document.getElementById("voiceSelect");
-  const status = document.getElementById("status");
+/* ===========================
+   GRUNDLAGEN
+=========================== */
 
-  let voices = [];
+const textField =
+document.getElementById("speechText");
 
-  function loadVoices() {
+const voiceSelect =
+document.getElementById("voiceSelect");
 
-    voices = speechSynthesis.getVoices();
+const status =
+document.getElementById("status");
+
+
+let voices = [];
+
+
+
+/* ===========================
+   STIMMEN LADEN
+=========================== */
+
+function loadVoices() {
+
+    voices =
+        window.speechSynthesis.getVoices();
+
 
     voiceSelect.innerHTML = "";
 
-    voices.forEach((voice, index) => {
 
-      const option = document.createElement("option");
+    voices.forEach((voice,index)=>{
 
-      option.value = index;
-      option.textContent =
-        voice.name + " – " + voice.lang;
+        const option =
+            document.createElement("option");
 
-      voiceSelect.appendChild(option);
+        option.value =
+            voice.voiceURI;
+
+        option.textContent =
+            voice.name + " – " + voice.lang;
+
+        voiceSelect.appendChild(option);
 
     });
 
-    const savedVoice = localStorage.getItem("tongueboxVoice");
 
-    if (savedVoice !== null) {
-      voiceSelect.value = savedVoice;
+    const savedVoice =
+        localStorage.getItem(
+            "tongueboxVoice"
+        );
+
+
+    if(savedVoice) {
+
+        voiceSelect.value =
+            savedVoice;
+
     }
 
-  }
-
-  speechSynthesis.onvoiceschanged = loadVoices;
-
-  loadVoices();
+}
 
 
-  voiceSelect.addEventListener("change", function() {
+speechSynthesis.onvoiceschanged =
+loadVoices;
+
+
+loadVoices();
+
+
+
+voiceSelect.addEventListener(
+"change",
+()=>{
 
     localStorage.setItem(
-      "tongueboxVoice",
-      voiceSelect.value
+        "tongueboxVoice",
+        voiceSelect.value
     );
 
-  });
+});
 
 
-  function speak(text) {
 
-    if (!text.trim()) {
-      status.textContent = "Bitte zuerst einen Text eingeben.";
-      return;
-    }
+/* ===========================
+   SPRECHEN
+=========================== */
 
-    speechSynthesis.cancel();
+function speak(text) {
 
-    const utterance =
-      new SpeechSynthesisUtterance(text);
-
-    const selectedVoice =
-      voices[voiceSelect.value];
-
-    if (selectedVoice) {
-      utterance.voice = selectedVoice;
-    }
-
-    utterance.rate = 1;
-    utterance.pitch = 1;
-    utterance.volume = 1;
-
-    speechSynthesis.speak(utterance);
-
-    status.textContent = "Text wird gesprochen.";
-
-  }
-
-
-  document.getElementById("speakButton")
-    .addEventListener("click", function() {
-
-      speak(speechText.value);
-
-    });
-
-
-  document.getElementById("stopButton")
-    .addEventListener("click", function() {
-
-      speechSynthesis.cancel();
-
-      status.textContent =
-        "Sprachausgabe gestoppt.";
-
-    });
-
-
-  document.getElementById("clearButton")
-    .addEventListener("click", function() {
-
-      speechText.value = "";
-
-      speechText.focus();
-
-      status.textContent =
-        "Text wurde gelöscht.";
-
-    });
-
-
-  document.getElementById("yesButton")
-    .addEventListener("click", function() {
-
-      speak("Ja");
-
-    });
-
-
-  document.getElementById("noButton")
-    .addEventListener("click", function() {
-
-      speak("Nein");
-
-    });
-
-
-  document.querySelectorAll(".quick")
-    .forEach(button => {
-
-      button.addEventListener("click", function() {
-
-        speak(button.dataset.text);
-
-      });
-
-    });
-
-
-  document.getElementById("greetingButton")
-    .addEventListener("click", function() {
-
-      const hour = new Date().getHours();
-
-      let greeting;
-
-      if (hour < 11) {
-
-        greeting = "Guten Morgen";
-
-      } else if (hour < 14) {
-
-        greeting = "Guten Appetit";
-
-      } else if (hour < 18) {
-
-        greeting = "Guten Nachmittag";
-
-      } else {
-
-        greeting = "Guten Abend";
-
-      }
-
-      speak(greeting);
-
-    });
-
-
-  function getSavedSentences() {
-
-    return JSON.parse(
-      localStorage.getItem("tongueboxSentences")
-      || "[]"
-    );
-
-  }
-
-
-  function saveSentences(sentences) {
-
-    localStorage.setItem(
-      "tongueboxSentences",
-      JSON.stringify(sentences)
-    );
-
-  }
-
-
-  function showSavedSentences() {
-
-    const container =
-      document.getElementById("savedSentences");
-
-    container.innerHTML = "";
-
-    const sentences = getSavedSentences();
-
-    sentences.forEach((sentence, index) => {
-
-      const wrapper =
-        document.createElement("div");
-
-      const speakButton =
-        document.createElement("button");
-
-      speakButton.textContent = sentence;
-      speakButton.className = "saved-button";
-
-      speakButton.addEventListener(
-        "click",
-        function() {
-
-          speak(sentence);
-
-        }
-      );
-
-
-      const deleteButton =
-        document.createElement("button");
-
-      deleteButton.textContent =
-        "🗑 Löschen";
-
-      deleteButton.className =
-        "delete-button";
-
-      deleteButton.addEventListener(
-        "click",
-        function() {
-
-          const sentences =
-            getSavedSentences();
-
-          sentences.splice(index, 1);
-
-          saveSentences(sentences);
-
-          showSavedSentences();
-
-          status.textContent =
-            "Gespeicherter Satz gelöscht.";
-
-        }
-      );
-
-      wrapper.appendChild(speakButton);
-      wrapper.appendChild(deleteButton);
-
-      container.appendChild(wrapper);
-
-    });
-
-  }
-
-
-  document.getElementById("saveButton")
-    .addEventListener("click", function() {
-
-      const text =
-        speechText.value.trim();
-
-      if (!text) {
+    if(!text || !text.trim()) {
 
         status.textContent =
-          "Bitte zuerst einen Satz eingeben.";
+        "Bitte zuerst einen Text eingeben.";
 
         return;
 
-      }
+    }
 
-      const sentences =
-        getSavedSentences();
 
-      if (!sentences.includes(text)) {
+    speechSynthesis.cancel();
 
-        sentences.push(text);
 
-        saveSentences(sentences);
+    const utterance =
+        new SpeechSynthesisUtterance(text);
 
-        showSavedSentences();
 
-        status.textContent =
-          "Satz wurde gespeichert.";
+    const selectedVoice =
+        voices.find(
+            voice =>
+            voice.voiceURI ===
+            voiceSelect.value
+        );
 
-      } else {
 
-        status.textContent =
-          "Dieser Satz ist bereits gespeichert.";
+    if(selectedVoice) {
 
-      }
+        utterance.voice =
+            selectedVoice;
+
+    }
+
+
+    utterance.rate = 1;
+
+    utterance.pitch = 1;
+
+    utterance.volume = 1;
+
+
+    speechSynthesis.speak(
+        utterance
+    );
+
+
+    rememberSentence(text);
+
+
+    status.textContent =
+        "🔊 Tonguebox spricht.";
+
+}
+
+
+
+/* Vorlesen */
+
+document.getElementById(
+"speakButton"
+).onclick = ()=>{
+
+    speak(
+        textField.value
+    );
+
+};
+
+
+
+/* Stoppen */
+
+document.getElementById(
+"stopButton"
+).onclick = ()=>{
+
+    speechSynthesis.cancel();
+
+    status.textContent =
+        "Sprachausgabe gestoppt.";
+
+};
+
+
+
+/* Löschen */
+
+document.getElementById(
+"clearButton"
+).onclick = ()=>{
+
+    textField.value = "";
+
+    updateSuggestions();
+
+};
+
+
+
+/* ===========================
+   INTELLIGENTE TEXTVORSCHLÄGE
+=========================== */
+
+const predictionLibrary = [
+
+"Hallo",
+
+"Guten Morgen",
+
+"Guten Abend",
+
+"Wie geht es dir?",
+
+"Danke",
+
+"Bitte",
+
+"Ich brauche Hilfe.",
+
+"Bitte warten Sie einen Moment.",
+
+"Ich möchte etwas sagen.",
+
+"Bitte geben Sie mir etwas mehr Zeit.",
+
+"Ich habe Sie verstanden.",
+
+"Bitte wiederholen Sie das.",
+
+"Ich möchte etwas trinken.",
+
+"Ich möchte etwas essen.",
+
+"Mir geht es gut.",
+
+"Das ist in Ordnung.",
+
+"Ich weiß es nicht.",
+
+"Können Sie mir bitte helfen?"
+
+];
+
+
+function updateSuggestions() {
+
+    const value =
+        textField.value
+        .toLowerCase()
+        .trim();
+
+
+    const box =
+        document.getElementById(
+            "suggestions"
+        );
+
+
+    box.innerHTML = "";
+
+
+    let matches;
+
+
+    if(!value) {
+
+        matches =
+            predictionLibrary.slice(0,4);
+
+    }
+
+    else {
+
+        matches =
+            predictionLibrary
+            .filter(
+                text =>
+                text.toLowerCase()
+                .includes(value)
+            )
+            .slice(0,6);
+
+    }
+
+
+    matches.forEach(text=>{
+
+        const button =
+            document.createElement(
+                "button"
+            );
+
+        button.className =
+            "suggestion";
+
+        button.textContent =
+            text;
+
+
+        button.onclick = ()=>{
+
+            textField.value =
+                text;
+
+            speak(text);
+
+        };
+
+
+        box.appendChild(
+            button
+        );
+
+    });
+
+}
+
+
+textField.addEventListener(
+"input",
+updateSuggestions
+);
+
+
+updateSuggestions();
+
+
+
+/* ===========================
+   KONTEXTABHÄNGIGE KOMMUNIKATION
+=========================== */
+
+const contexts = {
+
+
+hospital:[
+
+"Ich kann nicht sprechen und kommuniziere über dieses Gerät.",
+
+"Bitte geben Sie mir Zeit zum Antworten.",
+
+"Ich habe Schmerzen.",
+
+"Ich brauche Hilfe.",
+
+"Bitte erklären Sie mir, was Sie machen.",
+
+"Bitte stellen Sie mir Ja- oder Nein-Fragen."
+
+],
+
+
+food:[
+
+"Ich möchte etwas essen.",
+
+"Ich möchte etwas trinken.",
+
+"Bitte noch etwas.",
+
+"Nein danke.",
+
+"Das schmeckt gut.",
+
+"Ich bin fertig."
+
+],
+
+
+phone:[
+
+"Hallo, ich kommuniziere über eine Sprachausgabe.",
+
+"Bitte warten Sie einen Moment, während ich meine Antwort schreibe.",
+
+"Bitte sprechen Sie etwas langsamer.",
+
+"Können Sie das bitte wiederholen?",
+
+"Danke für Ihre Geduld."
+
+],
+
+
+home:[
+
+"Hallo.",
+
+"Wie geht es dir?",
+
+"Kannst du mir bitte helfen?",
+
+"Ich möchte etwas trinken.",
+
+"Ich möchte mich ausruhen.",
+
+"Danke."
+
+],
+
+
+general:[
+
+"Ja.",
+
+"Nein.",
+
+"Danke.",
+
+"Bitte.",
+
+"Ich weiß es nicht.",
+
+"Bitte wiederholen."
+
+]
+
+};
+
+
+
+function setContext(context) {
+
+    const area =
+        document.getElementById(
+            "contextSuggestions"
+        );
+
+
+    area.innerHTML = "";
+
+
+    contexts[context]
+    .forEach(text=>{
+
+        const button =
+            document.createElement(
+                "button"
+            );
+
+
+        button.className =
+            "suggestion";
+
+
+        button.textContent =
+            text;
+
+
+        button.onclick =
+            ()=>speak(text);
+
+
+        area.appendChild(
+            button
+        );
 
     });
 
 
-  showSavedSentences();
+    localStorage.setItem(
+        "tongueboxContext",
+        context
+    );
+
+}
+
+
+
+/* ===========================
+   SÄTZE SPEICHERN
+=========================== */
+
+function getSavedSentences() {
+
+    return JSON.parse(
+        localStorage.getItem(
+            "tongueboxSentences"
+        ) || "[]"
+    );
+
+}
+
+
+
+document.getElementById(
+"saveButton"
+).onclick = ()=>{
+
+    const text =
+        textField.value.trim();
+
+
+    if(!text) {
+
+        status.textContent =
+            "Bitte zuerst einen Satz eingeben.";
+
+        return;
+
+    }
+
+
+    const sentences =
+        getSavedSentences();
+
+
+    if(
+        !sentences.includes(text)
+    ) {
+
+        sentences.push(text);
+
+
+        localStorage.setItem(
+            "tongueboxSentences",
+            JSON.stringify(
+                sentences
+            )
+        );
+
+    }
+
+
+    showSavedSentences();
+
+
+    status.textContent =
+        "💾 Satz gespeichert.";
+
+};
+
+
+
+function showSavedSentences() {
+
+    const area =
+        document.getElementById(
+            "savedSentences"
+        );
+
+
+    area.innerHTML = "";
+
+
+    const sentences =
+        getSavedSentences();
+
+
+    sentences.forEach(
+    (sentence,index)=>{
+
+
+        const wrapper =
+            document.createElement(
+                "div"
+            );
+
+
+        const button =
+            document.createElement(
+                "button"
+            );
+
+
+        button.className =
+            "saved";
+
+
+        button.textContent =
+            sentence;
+
+
+        button.onclick =
+            ()=>speak(sentence);
+
+
+
+        const deleteButton =
+            document.createElement(
+                "button"
+            );
+
+
+        deleteButton.className =
+            "delete";
+
+
+        deleteButton.textContent =
+            "🗑 Löschen";
+
+
+        deleteButton.onclick =
+            ()=>{
+
+                const list =
+                    getSavedSentences();
+
+                list.splice(
+                    index,
+                    1
+                );
+
+
+                localStorage.setItem(
+                    "tongueboxSentences",
+                    JSON.stringify(list)
+                );
+
+
+                showSavedSentences();
+
+            };
+
+
+        wrapper.appendChild(
+            button
+        );
+
+
+        wrapper.appendChild(
+            deleteButton
+        );
+
+
+        area.appendChild(
+            wrapper
+        );
+
+    });
+
+}
+
+
+
+/* ===========================
+   LERNENDES SPRACHPROFIL
+=========================== */
+
+function rememberSentence(text) {
+
+    let history =
+        JSON.parse(
+            localStorage.getItem(
+                "tongueboxUsage"
+            ) || "{}"
+        );
+
+
+    history[text] =
+        (history[text] || 0) + 1;
+
+
+    localStorage.setItem(
+        "tongueboxUsage",
+        JSON.stringify(history)
+    );
+
+
+    showFrequent();
+
+}
+
+
+
+function showFrequent() {
+
+    const area =
+        document.getElementById(
+            "frequentSentences"
+        );
+
+
+    area.innerHTML = "";
+
+
+    const history =
+        JSON.parse(
+            localStorage.getItem(
+                "tongueboxUsage"
+            ) || "{}"
+        );
+
+
+    const sorted =
+        Object.entries(history)
+        .sort(
+            (a,b)=>b[1]-a[1]
+        )
+        .slice(0,6);
+
+
+    sorted.forEach(
+    ([text,count])=>{
+
+
+        const button =
+            document.createElement(
+                "button"
+            );
+
+
+        button.className =
+            "suggestion";
+
+
+        button.textContent =
+            text;
+
+
+        button.title =
+            count +
+            " mal verwendet";
+
+
+        button.onclick =
+            ()=>speak(text);
+
+
+        area.appendChild(
+            button
+        );
+
+    });
+
+}
+
+
+
+/* ===========================
+   AUDITIVE HILFE
+=========================== */
+
+function speakHelp() {
+
+    speak(
+    "Willkommen bei Tonguebox. " +
+    "Oben kannst du einen Text schreiben und vorlesen lassen. " +
+    "Darunter findest du intelligente Satzvorschläge. " +
+    "Du kannst eine Kommunikationssituation auswählen, " +
+    "zum Beispiel Krankenhaus, Zuhause oder Telefon. " +
+    "Außerdem stehen Ja und Nein, Schnellkommunikation " +
+    "und deine persönlichen gespeicherten Sätze zur Verfügung."
+    );
+
+}
+
+
+
+/* ===========================
+   START
+=========================== */
+
+showSavedSentences();
+
+showFrequent();
+
+
+const savedContext =
+    localStorage.getItem(
+        "tongueboxContext"
+    );
+
+
+if(savedContext) {
+
+    setContext(
+        savedContext
+    );
+
+}
 
 </script>
+
 
 </body>
 </html>
