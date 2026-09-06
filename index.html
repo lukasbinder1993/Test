@@ -1,1 +1,1287 @@
+<!DOCTYPE html>
+<html lang="de">
 
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Tonguebox – Sprich mit deinen Augen</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #eef2f5;
+    color: #17212b;
+}
+
+main {
+    max-width: 1000px;
+    margin: auto;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2.4rem;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 1.25rem;
+    margin-bottom: 25px;
+}
+
+
+/* =========================
+   HAUPTBEREICH TEXT
+========================= */
+
+.text-section {
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+textarea {
+    width: 100%;
+    min-height: 180px;
+    padding: 18px;
+    font-size: 1.5rem;
+    border: 3px solid #555;
+    border-radius: 16px;
+}
+
+button {
+    cursor: pointer;
+    font-family: inherit;
+}
+
+
+/* =========================
+   GROSSE BUTTONS
+========================= */
+
+.big-button {
+    width: 100%;
+    min-height: 100px;
+    margin-top: 14px;
+    padding: 18px;
+    font-size: 1.6rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 16px;
+    background: #0066cc;
+    color: white;
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.action-grid button {
+    min-height: 90px;
+    padding: 15px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 15px;
+    background: #0066cc;
+    color: white;
+}
+
+
+/* =========================
+   KLARE AUFKLAPP-BEREICHE
+========================= */
+
+.accordion {
+    margin-bottom: 18px;
+    border-radius: 20px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+
+/* großer sichtbarer Balken */
+
+.accordion-toggle {
+    width: 100%;
+    min-height: 125px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 22px;
+
+    border: none;
+
+    background: #087f8c;
+    color: white;
+
+    font-size: 1.6rem;
+    font-weight: bold;
+
+    text-align: left;
+}
+
+
+/* linker Bereich mit Symbol + Text */
+
+.accordion-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.accordion-icon {
+    font-size: 2.4rem;
+}
+
+.accordion-title {
+    font-size: 1.55rem;
+}
+
+
+/* rechter Pfeil */
+
+.accordion-arrow {
+    font-size: 2rem;
+    min-width: 40px;
+    text-align: center;
+}
+
+
+/* geöffneter Bereich */
+
+.accordion-toggle.open {
+    background: #065f69;
+}
+
+.accordion-toggle.open .accordion-arrow {
+    transform: rotate(180deg);
+}
+
+
+/* Inhalt wirklich verstecken */
+
+.accordion-content {
+    display: none;
+    padding: 20px;
+    border-top: 4px solid #d9e3e8;
+}
+
+
+/* nur wenn offen sichtbar */
+
+.accordion-content.open {
+    display: block;
+}
+
+
+/* =========================
+   BUTTONS INNERHALB DER BEREICHE
+========================= */
+
+.phrase-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(230px, 1fr));
+
+    gap: 16px;
+}
+
+.phrase-button {
+    min-height: 110px;
+
+    padding: 18px;
+
+    border: none;
+    border-radius: 16px;
+
+    background: #5b3cc4;
+    color: white;
+
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+
+/* =========================
+   JA / NEIN
+========================= */
+
+.yes-no {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.yes {
+    min-height: 150px;
+    border: none;
+    border-radius: 18px;
+    background: #198754;
+    color: white;
+    font-size: 2.4rem;
+    font-weight: bold;
+}
+
+.no {
+    min-height: 150px;
+    border: none;
+    border-radius: 18px;
+    background: #c62828;
+    color: white;
+    font-size: 2.4rem;
+    font-weight: bold;
+}
+
+
+/* =========================
+   STIMME
+========================= */
+
+select {
+    width: 100%;
+    min-height: 80px;
+    padding: 15px;
+    font-size: 1.3rem;
+    border: 3px solid #555;
+    border-radius: 15px;
+    background: white;
+}
+
+
+/* =========================
+   GESPEICHERTE SÄTZE
+========================= */
+
+.saved-button {
+    background: #7349c6;
+}
+
+.delete-button {
+    width: 100%;
+    min-height: 70px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 14px;
+    background: #b71c1c;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+
+/* =========================
+   FOKUS / BLICKERFASSUNG
+========================= */
+
+button:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: 7px solid #ffd400;
+    outline-offset: 5px;
+}
+
+
+/* =========================
+   STATUS
+========================= */
+
+#status {
+    padding: 15px;
+    font-size: 1.15rem;
+    font-weight: bold;
+}
+
+
+/* =========================
+   IPHONE
+========================= */
+
+@media(max-width:650px) {
+
+    body {
+        padding: 8px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .accordion-toggle {
+        min-height: 135px;
+        padding: 18px;
+    }
+
+    .accordion-title {
+        font-size: 1.35rem;
+    }
+
+    .accordion-icon {
+        font-size: 2.2rem;
+    }
+
+    .phrase-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<main>
+
+<h1>🤖 Tonguebox</h1>
+
+<p class="subtitle">
+Sprich mit deinen Augen
+</p>
+
+
+<!-- TEXT -->
+
+<section class="text-section">
+
+<h2>💬 Text sprechen</h2>
+
+<textarea
+id="speechText"
+placeholder="Hier deinen Text schreiben ...">
+</textarea>
+
+<button
+id="speakButton"
+class="big-button">
+
+🔊 Vorlesen
+
+</button>
+
+<div class="action-grid">
+
+<button id="stopButton">
+⏹ Stoppen
+</button>
+
+<button id="clearButton">
+🗑 Text löschen
+</button>
+
+<button id="saveButton">
+💾 Satz speichern
+</button>
+
+</div>
+
+</section>
+
+
+
+<!-- ZUHAUSE -->
+
+<section class="accordion">
+
+<button
+class="accordion-toggle"
+data-target="home">
+
+<span class="accordion-left">
+
+<span class="accordion-icon">
+🏠
+</span>
+
+<span class="accordion-title">
+Zuhause
+</span>
+
+</span>
+
+<span class="accordion-arrow">
+▼
+</span>
+
+</button>
+
+<div
+id="home"
+class="accordion-content">
+
+<div class="phrase-grid">
+
+<button class="phrase-button"
+onclick="speak('Hallo.')">
+Hallo
+</button>
+
+<button class="phrase-button"
+onclick="speak('Wie geht es dir?')">
+Wie geht es dir?
+</button>
+
+<button class="phrase-button"
+onclick="speak('Kannst du mir bitte helfen?')">
+Bitte helfen
+</button>
+
+<button class="phrase-button"
+onclick="speak('Ich möchte etwas trinken.')">
+Ich möchte trinken
+</button>
+
+<button class="phrase-button"
+onclick="speak('Ich möchte mich ausruhen.')">
+Ich möchte mich ausruhen
+</button>
+
+<button class="phrase-button"
+onclick="speak('Danke.')">
+Danke
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- KRANKENHAUS -->
+
+<section class="accordion">
+
+<button
+class="accordion-toggle"
+data-target="hospital">
+
+<span class="accordion-left">
+
+<span class="accordion-icon">
+🏥
+</span>
+
+<span class="accordion-title">
+Krankenhaus
+</span>
+
+</span>
+
+<span class="accordion-arrow">
+▼
+</span>
+
+</button>
+
+<div
+id="hospital"
+class="accordion-content">
+
+<div class="phrase-grid">
+
+<button class="phrase-button"
+onclick="speak('Ich kann nicht sprechen und kommuniziere über dieses Gerät.')">
+Ich kann nicht sprechen
+</button>
+
+<button class="phrase-button"
+onclick="speak('Bitte geben Sie mir Zeit zum Antworten.')">
+Bitte geben Sie mir Zeit
+</button>
+
+<button class="phrase-button"
+onclick="speak('Ich brauche Hilfe.')">
+Ich brauche Hilfe
+</button>
+
+<button class="phrase-button"
+onclick="speak('Ich habe Schmerzen.')">
+Ich habe Schmerzen
+</button>
+
+<button class="phrase-button"
+onclick="speak('Bitte erklären Sie mir, was Sie machen.')">
+Bitte erklären
+</button>
+
+<button class="phrase-button"
+onclick="speak('Bitte stellen Sie mir Fragen, die ich mit Ja oder Nein beantworten kann.')">
+Ja/Nein-Fragen bitte
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ESSEN -->
+
+<section class="accordion">
+
+<button
+class="accordion-toggle"
+data-target="food">
+
+<span class="accordion-left">
+
+<span class="accordion-icon">
+🍽️
+</span>
+
+<span class="accordion-title">
+Essen & Trinken
+</span>
+
+</span>
+
+<span class="accordion-arrow">
+▼
+</span>
+
+</button>
+
+<div
+id="food"
+class="accordion-content">
+
+<div class="phrase-grid">
+
+<button class="phrase-button"
+onclick="speak('Ich möchte etwas essen.')">
+Ich möchte essen
+</button>
+
+<button class="phrase-button"
+onclick="speak('Ich möchte etwas trinken.')">
+Ich möchte trinken
+</button>
+
+<button class="phrase-button"
+onclick="speak('Bitte noch etwas.')">
+Bitte noch etwas
+</button>
+
+<button class="phrase-button"
+onclick="speak('Nein danke.')">
+Nein danke
+</button>
+
+<button class="phrase-button"
+onclick="speak('Das schmeckt gut.')">
+Das schmeckt gut
+</button>
+
+<button class="phrase-button"
+onclick="speak('Ich bin fertig.')">
+Ich bin fertig
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- TELEFON -->
+
+<section class="accordion">
+
+<button
+class="accordion-toggle"
+data-target="phone">
+
+<span class="accordion-left">
+
+<span class="accordion-icon">
+📞
+</span>
+
+<span class="accordion-title">
+Telefon
+</span>
+
+</span>
+
+<span class="accordion-arrow">
+▼
+</span>
+
+</button>
+
+<div
+id="phone"
+class="accordion-content">
+
+<div class="phrase-grid">
+
+<button class="phrase-button"
+onclick="speak('Hallo, ich kommuniziere über eine Sprachausgabe.')">
+Ich nutze eine Sprachausgabe
+</button>
+
+<button class="phrase-button"
+onclick="speak('Bitte warten Sie einen Moment, während ich meine Antwort schreibe.')">
+Bitte warten
+</button>
+
+<button class="phrase-button"
+onclick="speak('Bitte sprechen Sie etwas langsamer.')">
+Bitte langsamer
+</button>
+
+<button class="phrase-button"
+onclick="speak('Können Sie das bitte wiederholen?')">
+Bitte wiederholen
+</button>
+
+<button class="phrase-button"
+onclick="speak('Danke für Ihre Geduld.')">
+Danke für Ihre Geduld
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- JA NEIN -->
+
+<section class="accordion">
+
+<button
+class="accordion-toggle"
+data-target="yesno">
+
+<span class="accordion-left">
+
+<span class="accordion-icon">
+✅
+</span>
+
+<span class="accordion-title">
+Ja / Nein
+</span>
+
+</span>
+
+<span class="accordion-arrow">
+▼
+</span>
+
+</button>
+
+<div
+id="yesno"
+class="accordion-content">
+
+<div class="yes-no">
+
+<button class="yes"
+onclick="speak('Ja')">
+JA
+</button>
+
+<button class="no"
+onclick="speak('Nein')">
+NEIN
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- SCHNELLKOMMUNIKATION -->
+
+<section class="accordion">
+
+<button
+class="accordion-toggle"
+data-target="quick">
+
+<span class="accordion-left">
+
+<span class="accordion-icon">
+⚡
+</span>
+
+<span class="accordion-title">
+Schnellkommunikation
+</span>
+
+</span>
+
+<span class="accordion-arrow">
+▼
+</span>
+
+</button>
+
+<div
+id="quick"
+class="accordion-content">
+
+<div class="phrase-grid">
+
+<button class="phrase-button"
+onclick="speak('Bitte warten Sie einen Moment.')">
+⏳ Bitte warten
+</button>
+
+<button class="phrase-button"
+onclick="speak('Bitte geben Sie mir mehr Zeit zum Antworten.')">
+⏱ Mehr Zeit
+</button>
+
+<button class="phrase-button"
+onclick="speak('Ich habe Sie verstanden.')">
+👍 Verstanden
+</button>
+
+<button class="phrase-button"
+onclick="speak('Ich habe Sie nicht verstanden. Bitte wiederholen Sie das.')">
+🔁 Bitte wiederholen
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- STIMME -->
+
+<section class="accordion">
+
+<button
+class="accordion-toggle"
+data-target="voice">
+
+<span class="accordion-left">
+
+<span class="accordion-icon">
+🎙️
+</span>
+
+<span class="accordion-title">
+Stimme auswählen
+</span>
+
+</span>
+
+<span class="accordion-arrow">
+▼
+</span>
+
+</button>
+
+<div
+id="voice"
+class="accordion-content">
+
+<select id="voiceSelect">
+
+<option>
+Stimmen werden geladen ...
+</option>
+
+</select>
+
+</div>
+
+</section>
+
+
+
+<!-- MEINE SÄTZE -->
+
+<section class="accordion">
+
+<button
+class="accordion-toggle"
+data-target="saved">
+
+<span class="accordion-left">
+
+<span class="accordion-icon">
+❤️
+</span>
+
+<span class="accordion-title">
+Meine Sätze
+</span>
+
+</span>
+
+<span class="accordion-arrow">
+▼
+</span>
+
+</button>
+
+<div
+id="saved"
+class="accordion-content">
+
+<div
+id="savedSentences"
+class="phrase-grid">
+</div>
+
+</div>
+
+</section>
+
+
+<div
+id="status"
+role="status"
+aria-live="polite">
+</div>
+
+
+</main>
+
+
+<script>
+
+/* =====================================
+   ELEMENTE
+===================================== */
+
+const textField =
+document.getElementById("speechText");
+
+const voiceSelect =
+document.getElementById("voiceSelect");
+
+const status =
+document.getElementById("status");
+
+let voices = [];
+
+
+/* =====================================
+   AUFKLAPPEN
+   NUR EIN BEREICH GLEICHZEITIG
+===================================== */
+
+document
+.querySelectorAll(".accordion-toggle")
+.forEach(function(button) {
+
+    button.addEventListener("click", function() {
+
+        const targetId =
+            button.dataset.target;
+
+        const target =
+            document.getElementById(targetId);
+
+        const alreadyOpen =
+            target.classList.contains("open");
+
+
+        /* zuerst alle schließen */
+
+        document
+        .querySelectorAll(".accordion-content")
+        .forEach(function(content) {
+
+            content.classList.remove("open");
+
+        });
+
+
+        document
+        .querySelectorAll(".accordion-toggle")
+        .forEach(function(toggle) {
+
+            toggle.classList.remove("open");
+
+        });
+
+
+        /* wenn vorher geschlossen:
+           jetzt öffnen */
+
+        if(!alreadyOpen) {
+
+            target.classList.add("open");
+
+            button.classList.add("open");
+
+            setTimeout(function() {
+
+                button.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+
+            },100);
+
+        }
+
+    });
+
+});
+
+
+/* =====================================
+   STIMMEN
+===================================== */
+
+function loadVoices() {
+
+    voices =
+        speechSynthesis.getVoices();
+
+    voiceSelect.innerHTML = "";
+
+    voices.forEach(function(voice) {
+
+        const option =
+            document.createElement("option");
+
+        option.value =
+            voice.voiceURI;
+
+        option.textContent =
+            voice.name +
+            " – " +
+            voice.lang;
+
+        voiceSelect.appendChild(option);
+
+    });
+
+
+    const savedVoice =
+        localStorage.getItem(
+            "tongueboxVoice"
+        );
+
+
+    if(savedVoice) {
+
+        voiceSelect.value =
+            savedVoice;
+
+    }
+
+}
+
+
+speechSynthesis.onvoiceschanged =
+loadVoices;
+
+loadVoices();
+
+
+voiceSelect.addEventListener(
+"change",
+function() {
+
+    localStorage.setItem(
+        "tongueboxVoice",
+        voiceSelect.value
+    );
+
+});
+
+
+/* =====================================
+   SPRECHEN
+===================================== */
+
+function speak(text) {
+
+    if(!text || !text.trim()) {
+
+        status.textContent =
+            "Bitte zuerst einen Text eingeben.";
+
+        return;
+
+    }
+
+
+    speechSynthesis.cancel();
+
+
+    const utterance =
+        new SpeechSynthesisUtterance(text);
+
+
+    const selectedVoice =
+        voices.find(function(voice) {
+
+            return (
+                voice.voiceURI ===
+                voiceSelect.value
+            );
+
+        });
+
+
+    if(selectedVoice) {
+
+        utterance.voice =
+            selectedVoice;
+
+    }
+
+
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    utterance.volume = 1;
+
+
+    speechSynthesis.speak(
+        utterance
+    );
+
+
+    status.textContent =
+        "🔊 Tonguebox spricht.";
+
+}
+
+
+/* =====================================
+   TEXTBUTTONS
+===================================== */
+
+document
+.getElementById("speakButton")
+.addEventListener(
+"click",
+function() {
+
+    speak(
+        textField.value
+    );
+
+});
+
+
+document
+.getElementById("stopButton")
+.addEventListener(
+"click",
+function() {
+
+    speechSynthesis.cancel();
+
+    status.textContent =
+        "Sprachausgabe gestoppt.";
+
+});
+
+
+document
+.getElementById("clearButton")
+.addEventListener(
+"click",
+function() {
+
+    textField.value = "";
+
+    status.textContent =
+        "Text gelöscht.";
+
+});
+
+
+/* =====================================
+   SÄTZE SPEICHERN
+===================================== */
+
+function getSavedSentences() {
+
+    return JSON.parse(
+        localStorage.getItem(
+            "tongueboxSentences"
+        ) || "[]"
+    );
+
+}
+
+
+document
+.getElementById("saveButton")
+.addEventListener(
+"click",
+function() {
+
+    const text =
+        textField.value.trim();
+
+
+    if(!text) {
+
+        status.textContent =
+            "Bitte zuerst einen Satz eingeben.";
+
+        return;
+
+    }
+
+
+    const sentences =
+        getSavedSentences();
+
+
+    if(!sentences.includes(text)) {
+
+        sentences.push(text);
+
+
+        localStorage.setItem(
+            "tongueboxSentences",
+            JSON.stringify(sentences)
+        );
+
+    }
+
+
+    showSavedSentences();
+
+
+    status.textContent =
+        "💾 Satz gespeichert.";
+
+});
+
+
+function showSavedSentences() {
+
+    const area =
+        document.getElementById(
+            "savedSentences"
+        );
+
+
+    area.innerHTML = "";
+
+
+    const sentences =
+        getSavedSentences();
+
+
+    sentences.forEach(
+    function(sentence,index) {
+
+        const wrapper =
+            document.createElement("div");
+
+
+        const speakButton =
+            document.createElement("button");
+
+        speakButton.className =
+            "phrase-button saved-button";
+
+        speakButton.textContent =
+            sentence;
+
+        speakButton.onclick =
+            function() {
+
+                speak(sentence);
+
+            };
+
+
+        const deleteButton =
+            document.createElement("button");
+
+        deleteButton.className =
+            "delete-button";
+
+        deleteButton.textContent =
+            "🗑 Löschen";
+
+
+        deleteButton.onclick =
+            function() {
+
+                const list =
+                    getSavedSentences();
+
+                list.splice(
+                    index,
+                    1
+                );
+
+                localStorage.setItem(
+                    "tongueboxSentences",
+                    JSON.stringify(list)
+                );
+
+                showSavedSentences();
+
+            };
+
+
+        wrapper.appendChild(
+            speakButton
+        );
+
+        wrapper.appendChild(
+            deleteButton
+        );
+
+        area.appendChild(
+            wrapper
+        );
+
+    });
+
+}
+
+
+showSavedSentences();
+
+</script>
+
+</body>
+</html>
