@@ -15,6 +15,10 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     margin: 0;
     padding: 12px;
@@ -52,9 +56,9 @@ button {
 }
 
 
-/* =========================
-   ACCORDION
-========================= */
+/* =========================================
+   AUF- UND ZUKLAPPBARE BEREICHE
+========================================= */
 
 .accordion {
     margin-bottom: 18px;
@@ -62,6 +66,14 @@ button {
     overflow: hidden;
     background: white;
     box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+
+    scroll-margin-top: 20vh;
+    scroll-margin-bottom: 20vh;
+}
+
+.accordion.active-section {
+    box-shadow:
+        0 5px 20px rgba(0,0,0,0.18);
 }
 
 .accordion-toggle {
@@ -105,6 +117,7 @@ button {
 
 .accordion-arrow {
     font-size: 2rem;
+    transition: transform 0.2s ease;
 }
 
 .accordion-toggle.open .accordion-arrow {
@@ -122,9 +135,9 @@ button {
 }
 
 
-/* =========================
+/* =========================================
    JA / NEIN
-========================= */
+========================================= */
 
 .yes-no {
     display: grid;
@@ -151,9 +164,9 @@ button {
 }
 
 
-/* =========================
+/* =========================================
    TEXT
-========================= */
+========================================= */
 
 textarea {
     width: 100%;
@@ -208,9 +221,9 @@ textarea {
 }
 
 
-/* =========================
+/* =========================================
    VORSCHLÄGE
-========================= */
+========================================= */
 
 .phrase-grid {
     display: grid;
@@ -254,9 +267,9 @@ textarea {
 }
 
 
-/* =========================
+/* =========================================
    STIMME
-========================= */
+========================================= */
 
 select {
     width: 100%;
@@ -272,9 +285,9 @@ select {
 }
 
 
-/* =========================
+/* =========================================
    GESPEICHERTE SÄTZE
-========================= */
+========================================= */
 
 .saved-button {
     background: #7349c6;
@@ -297,21 +310,22 @@ select {
 }
 
 
-/* =========================
-   FOKUS
-========================= */
+/* =========================================
+   FOKUS / BLICKERFASSUNG
+========================================= */
 
 button:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
+
     outline: 7px solid #ffd400;
     outline-offset: 5px;
 }
 
 
-/* =========================
+/* =========================================
    STATUS
-========================= */
+========================================= */
 
 #status {
     padding: 15px;
@@ -323,9 +337,9 @@ select:focus-visible {
 }
 
 
-/* =========================
+/* =========================================
    MOBILE
-========================= */
+========================================= */
 
 @media(max-width:650px) {
 
@@ -436,16 +450,14 @@ aria-expanded="false">
 
 </button>
 
-<div
-id="textbereich"
-class="accordion-content">
+<div id="textbereich" class="accordion-content">
 
 <textarea
 id="speechText"
 placeholder="Hier deinen Text schreiben ...">
 </textarea>
 
-<h3>✨ Passende Vorschläge</h3>
+<h3>✨ Intelligente Vorschläge</h3>
 
 <div
 id="inlinePredictions"
@@ -456,7 +468,9 @@ class="phrase-grid">
 type="button"
 id="speakButton"
 class="big-button">
+
 🔊 Vorlesen
+
 </button>
 
 <div class="action-grid">
@@ -486,7 +500,7 @@ id="saveButton">
 </section>
 
 
-<!-- INTELLIGENTE VORSCHLÄGE -->
+<!-- INTELLIGENTE PHRASENVORSCHLÄGE -->
 
 <section class="accordion">
 
@@ -497,7 +511,7 @@ data-target="ai"
 aria-expanded="false">
 
 <span class="accordion-left">
-<span class="accordion-icon">✨</span>
+<span class="accordion-icon">🧠</span>
 <span class="accordion-title">
 Intelligente Phrasenvorschläge
 </span>
@@ -507,13 +521,13 @@ Intelligente Phrasenvorschläge
 
 </button>
 
-<div
-id="ai"
-class="accordion-content">
+<div id="ai" class="accordion-content">
 
 <div class="ai-box">
 
-Schreibe zum Beispiel:
+Schreibe im Bereich „Text sprechen“
+zum Beispiel:
+
 <strong>Kaffee</strong>,
 <strong>Durst</strong>,
 <strong>Hunger</strong>,
@@ -522,6 +536,9 @@ Schreibe zum Beispiel:
 <strong>Telefon</strong>
 oder
 <strong>Hilfe</strong>.
+
+Tonguebox erkennt das Thema
+und zeigt passende Aussagen.
 
 </div>
 
@@ -558,32 +575,44 @@ aria-expanded="false">
 
 <div class="phrase-grid">
 
-<button class="phrase-button"
+<button
+type="button"
+class="phrase-button"
 onclick="speak('Hallo.')">
 Hallo
 </button>
 
-<button class="phrase-button"
+<button
+type="button"
+class="phrase-button"
 onclick="speak('Wie geht es dir?')">
 Wie geht es dir?
 </button>
 
-<button class="phrase-button"
+<button
+type="button"
+class="phrase-button"
 onclick="speak('Kannst du mir bitte helfen?')">
 Bitte helfen
 </button>
 
-<button class="phrase-button"
+<button
+type="button"
+class="phrase-button"
 onclick="speak('Ich möchte etwas trinken.')">
 Ich möchte trinken
 </button>
 
-<button class="phrase-button"
+<button
+type="button"
+class="phrase-button"
 onclick="speak('Ich möchte mich ausruhen.')">
 Ich möchte mich ausruhen
 </button>
 
-<button class="phrase-button"
+<button
+type="button"
+class="phrase-button"
 onclick="speak('Danke.')">
 Danke
 </button>
@@ -607,47 +636,55 @@ aria-expanded="false">
 
 <span class="accordion-left">
 <span class="accordion-icon">🏥</span>
-<span class="accordion-title">
-Krankenhaus
-</span>
+<span class="accordion-title">Krankenhaus</span>
 </span>
 
 <span class="accordion-arrow">▼</span>
 
 </button>
 
-<div
-id="hospital"
-class="accordion-content">
+<div id="hospital" class="accordion-content">
 
 <div class="phrase-grid">
 
-<button class="phrase-button"
+<button
+type="button"
+class="phrase-button"
 onclick="speak('Ich kann nicht sprechen und kommuniziere über dieses Gerät.')">
 Ich kann nicht sprechen
 </button>
 
-<button class="phrase-button"
+<button
+type="button"
+class="phrase-button"
 onclick="speak('Bitte geben Sie mir Zeit zum Antworten.')">
 Bitte geben Sie mir Zeit
 </button>
 
-<button class="phrase-button"
+<button
+type="button"
+class="phrase-button"
 onclick="speak('Ich brauche Hilfe.')">
 Ich brauche Hilfe
 </button>
 
-<button class="phrase-button"
+<button
+type="button"
+class="phrase-button"
 onclick="speak('Ich habe Schmerzen.')">
 Ich habe Schmerzen
 </button>
 
-<button class="phrase-button"
+<button
+type="button"
+class="phrase-button"
 onclick="speak('Bitte erklären Sie mir, was Sie machen.')">
 Bitte erklären
 </button>
 
-<button class="phrase-button"
+<button
+type="button"
+class="phrase-button"
 onclick="speak('Bitte stellen Sie mir Fragen, die ich mit Ja oder Nein beantworten kann.')">
 Ja/Nein-Fragen bitte
 </button>
@@ -680,38 +717,48 @@ Essen & Trinken
 
 </button>
 
-<div
-id="food"
-class="accordion-content">
+<div id="food" class="accordion-content">
 
 <div class="phrase-grid">
 
-<button class="phrase-button"
+<button
+type="button"
+class="phrase-button"
 onclick="speak('Ich möchte etwas essen.')">
 Ich möchte essen
 </button>
 
-<button class="phrase-button"
+<button
+type="button"
+class="phrase-button"
 onclick="speak('Ich möchte etwas trinken.')">
 Ich möchte trinken
 </button>
 
-<button class="phrase-button"
+<button
+type="button"
+class="phrase-button"
 onclick="speak('Ich habe Hunger.')">
 Ich habe Hunger
 </button>
 
-<button class="phrase-button"
+<button
+type="button"
+class="phrase-button"
 onclick="speak('Ich habe Durst.')">
 Ich habe Durst
 </button>
 
-<button class="phrase-button"
+<button
+type="button"
+class="phrase-button"
 onclick="speak('Bitte noch etwas.')">
 Bitte noch etwas
 </button>
 
-<button class="phrase-button"
+<button
+type="button"
+class="phrase-button"
 onclick="speak('Ich bin fertig.')">
 Ich bin fertig
 </button>
@@ -735,42 +782,48 @@ aria-expanded="false">
 
 <span class="accordion-left">
 <span class="accordion-icon">📞</span>
-<span class="accordion-title">
-Telefon
-</span>
+<span class="accordion-title">Telefon</span>
 </span>
 
 <span class="accordion-arrow">▼</span>
 
 </button>
 
-<div
-id="phone"
-class="accordion-content">
+<div id="phone" class="accordion-content">
 
 <div class="phrase-grid">
 
-<button class="phrase-button"
+<button
+type="button"
+class="phrase-button"
 onclick="speak('Hallo, ich kommuniziere über eine Sprachausgabe.')">
 Ich nutze eine Sprachausgabe
 </button>
 
-<button class="phrase-button"
+<button
+type="button"
+class="phrase-button"
 onclick="speak('Bitte warten Sie einen Moment, während ich meine Antwort schreibe.')">
 Bitte warten
 </button>
 
-<button class="phrase-button"
+<button
+type="button"
+class="phrase-button"
 onclick="speak('Bitte sprechen Sie etwas langsamer.')">
 Bitte langsamer
 </button>
 
-<button class="phrase-button"
+<button
+type="button"
+class="phrase-button"
 onclick="speak('Können Sie das bitte wiederholen?')">
 Bitte wiederholen
 </button>
 
-<button class="phrase-button"
+<button
+type="button"
+class="phrase-button"
 onclick="speak('Danke für Ihre Geduld.')">
 Danke für Ihre Geduld
 </button>
@@ -803,9 +856,7 @@ Stimme auswählen
 
 </button>
 
-<div
-id="voice"
-class="accordion-content">
+<div id="voice" class="accordion-content">
 
 <select id="voiceSelect">
 
@@ -841,9 +892,7 @@ Meine Sätze
 
 </button>
 
-<div
-id="saved"
-class="accordion-content">
+<div id="saved" class="accordion-content">
 
 <div
 id="savedSentences"
@@ -859,7 +908,9 @@ class="phrase-grid">
 id="status"
 role="status"
 aria-live="polite">
+
 Bereit.
+
 </div>
 
 </main>
@@ -867,9 +918,9 @@ Bereit.
 
 <script>
 
-/* =========================
+/* =========================================
    ELEMENTE
-========================= */
+========================================= */
 
 const textField =
     document.getElementById("speechText");
@@ -889,9 +940,51 @@ const aiSuggestions =
 let voices = [];
 
 
-/* =========================
+/* =========================================
+   BEREICH IN DIE BILDSCHIRMMITTE HOLEN
+========================================= */
+
+function centerSection(section) {
+
+    setTimeout(function() {
+
+        const rect =
+            section.getBoundingClientRect();
+
+        const sectionCenter =
+            rect.top +
+            window.scrollY +
+            (rect.height / 2);
+
+        const viewportCenter =
+            window.innerHeight / 2;
+
+        const targetScroll =
+            sectionCenter -
+            viewportCenter;
+
+
+        window.scrollTo({
+
+            top:
+                Math.max(
+                    0,
+                    targetScroll
+                ),
+
+            behavior:
+                "smooth"
+
+        });
+
+    }, 180);
+
+}
+
+
+/* =========================================
    ACCORDION
-========================= */
+========================================= */
 
 document
 .querySelectorAll(".accordion-toggle")
@@ -906,24 +999,39 @@ document
                     button.dataset.target
                 );
 
-            const alreadyOpen =
-                target.classList.contains("open");
+            const section =
+                button.closest(".accordion");
 
+            const alreadyOpen =
+                target.classList.contains(
+                    "open"
+                );
+
+
+            /* alle schließen */
 
             document
-            .querySelectorAll(".accordion-content")
+            .querySelectorAll(
+                ".accordion-content"
+            )
             .forEach(function(content) {
 
-                content.classList.remove("open");
+                content.classList.remove(
+                    "open"
+                );
 
             });
 
 
             document
-            .querySelectorAll(".accordion-toggle")
+            .querySelectorAll(
+                ".accordion-toggle"
+            )
             .forEach(function(toggle) {
 
-                toggle.classList.remove("open");
+                toggle.classList.remove(
+                    "open"
+                );
 
                 toggle.setAttribute(
                     "aria-expanded",
@@ -933,15 +1041,47 @@ document
             });
 
 
+            document
+            .querySelectorAll(
+                ".accordion"
+            )
+            .forEach(function(item) {
+
+                item.classList.remove(
+                    "active-section"
+                );
+
+            });
+
+
+            /* gewünschten Bereich öffnen */
+
             if(!alreadyOpen) {
 
-                target.classList.add("open");
+                target.classList.add(
+                    "open"
+                );
 
-                button.classList.add("open");
+                button.classList.add(
+                    "open"
+                );
+
+                section.classList.add(
+                    "active-section"
+                );
 
                 button.setAttribute(
                     "aria-expanded",
                     "true"
+                );
+
+
+                /* NEU:
+                   geöffneten Bereich
+                   automatisch zentrieren */
+
+                centerSection(
+                    section
                 );
 
             }
@@ -952,9 +1092,9 @@ document
 });
 
 
-/* =========================
+/* =========================================
    STIMMEN
-========================= */
+========================================= */
 
 function loadVoices() {
 
@@ -967,12 +1107,16 @@ function loadVoices() {
     if(voices.length === 0) {
 
         const option =
-            document.createElement("option");
+            document.createElement(
+                "option"
+            );
 
         option.textContent =
             "Noch keine Stimmen verfügbar";
 
-        voiceSelect.appendChild(option);
+        voiceSelect.appendChild(
+            option
+        );
 
         return;
 
@@ -982,15 +1126,21 @@ function loadVoices() {
     voices.forEach(function(voice) {
 
         const option =
-            document.createElement("option");
+            document.createElement(
+                "option"
+            );
 
         option.value =
             voice.voiceURI;
 
         option.textContent =
-            voice.name + " – " + voice.lang;
+            voice.name +
+            " – " +
+            voice.lang;
 
-        voiceSelect.appendChild(option);
+        voiceSelect.appendChild(
+            option
+        );
 
     });
 
@@ -1032,13 +1182,16 @@ function() {
 });
 
 
-/* =========================
+/* =========================================
    SPRECHEN
-========================= */
+========================================= */
 
 function speak(text) {
 
-    if(!text || !text.trim()) {
+    if(
+        !text ||
+        !text.trim()
+    ) {
 
         status.textContent =
             "Bitte zuerst einen Text eingeben.";
@@ -1052,7 +1205,9 @@ function speak(text) {
 
 
     const utterance =
-        new SpeechSynthesisUtterance(text);
+        new SpeechSynthesisUtterance(
+            text
+        );
 
 
     const selectedVoice =
@@ -1093,9 +1248,9 @@ function speak(text) {
 }
 
 
-/* =========================
+/* =========================================
    TEXTBUTTONS
-========================= */
+========================================= */
 
 document
 .getElementById("speakButton")
@@ -1140,9 +1295,9 @@ function() {
 });
 
 
-/* =========================
-   THEMEN
-========================= */
+/* =========================================
+   INTELLIGENTE THEMEN-ERKENNUNG
+========================================= */
 
 const topicGroups = {
 
@@ -1166,6 +1321,7 @@ const topicGroups = {
             "Der Kaffee ist zu heiß.",
             "Der Kaffee ist zu kalt."
         ]
+
     },
 
 
@@ -1189,6 +1345,7 @@ const topicGroups = {
             "Bitte noch etwas zu trinken.",
             "Nein danke, ich habe genug."
         ]
+
     },
 
 
@@ -1211,6 +1368,7 @@ const topicGroups = {
             "Das schmeckt gut.",
             "Ich bin fertig."
         ]
+
     },
 
 
@@ -1230,6 +1388,7 @@ const topicGroups = {
             "Bitte helfen Sie mir.",
             "Bitte fragen Sie mich, wo es weh tut."
         ]
+
     },
 
 
@@ -1248,6 +1407,7 @@ const topicGroups = {
             "Ich brauche Hilfe beim WC.",
             "Bitte warten Sie einen Moment."
         ]
+
     },
 
 
@@ -1255,9 +1415,9 @@ const topicGroups = {
 
         keywords: [
             "telefon",
+            "telefonieren",
             "anrufen",
-            "anruf",
-            "telefonieren"
+            "anruf"
         ],
 
         suggestions: [
@@ -1268,6 +1428,7 @@ const topicGroups = {
             "Bitte wiederholen Sie das.",
             "Danke für Ihre Geduld."
         ]
+
     },
 
 
@@ -1286,14 +1447,34 @@ const topicGroups = {
             "Ich brauche Unterstützung.",
             "Bitte warten Sie einen Moment."
         ]
+
+    },
+
+
+    rollstuhl: {
+
+        keywords: [
+            "rollstuhl",
+            "stuhl",
+            "fahren"
+        ],
+
+        suggestions: [
+            "Ich brauche meinen Rollstuhl.",
+            "Bitte stellen Sie meinen Rollstuhl näher.",
+            "Bitte helfen Sie mir beim Rollstuhl.",
+            "Ich möchte mit dem Rollstuhl fahren.",
+            "Bitte stellen Sie meinen Rollstuhl richtig hin."
+        ]
+
     }
 
 };
 
 
-/* =========================
-   ALLGEMEINE SÄTZE
-========================= */
+/* =========================================
+   ALLGEMEINE VORSCHLÄGE
+========================================= */
 
 const generalSuggestions = [
 
@@ -1311,20 +1492,27 @@ const generalSuggestions = [
 ];
 
 
-/* =========================
+/* =========================================
    THEMA ERKENNEN
-========================= */
+========================================= */
 
 function detectTopic(input) {
 
     const text =
-        input.toLowerCase().trim();
+        input
+        .toLowerCase()
+        .trim();
 
 
-    for(const topicName in topicGroups) {
+    for(
+        const topicName
+        in topicGroups
+    ) {
 
         const topic =
-            topicGroups[topicName];
+            topicGroups[
+                topicName
+            ];
 
 
         const found =
@@ -1353,9 +1541,9 @@ function detectTopic(input) {
 }
 
 
-/* =========================
-   BUTTON ERZEUGEN
-========================= */
+/* =========================================
+   VORSCHLAGS-BUTTON
+========================================= */
 
 function createSuggestionButton(
     text,
@@ -1363,7 +1551,9 @@ function createSuggestionButton(
 ) {
 
     const button =
-        document.createElement("button");
+        document.createElement(
+            "button"
+        );
 
 
     button.type =
@@ -1396,9 +1586,9 @@ function createSuggestionButton(
 }
 
 
-/* =========================
-   VORSCHLÄGE AKTUALISIEREN
-========================= */
+/* =========================================
+   INTELLIGENTE VORSCHLÄGE
+========================================= */
 
 function updateSuggestions() {
 
@@ -1412,10 +1602,12 @@ function updateSuggestions() {
 
 
     const topic =
-        detectTopic(input);
+        detectTopic(
+            input
+        );
 
 
-    let suggestions = [];
+    let suggestions;
 
 
     if(topic) {
@@ -1461,17 +1653,15 @@ function updateSuggestions() {
 }
 
 
-/* Vorschläge beim Schreiben */
-
 textField.addEventListener(
     "input",
     updateSuggestions
 );
 
 
-/* =========================
+/* =========================================
    SÄTZE SPEICHERN
-========================= */
+========================================= */
 
 function getSavedSentences() {
 
@@ -1518,14 +1708,18 @@ function() {
         getSavedSentences();
 
 
-    if(!sentences.includes(text)) {
+    if(
+        !sentences.includes(text)
+    ) {
 
         sentences.push(text);
 
 
         localStorage.setItem(
             "tongueboxSentences",
-            JSON.stringify(sentences)
+            JSON.stringify(
+                sentences
+            )
         );
 
 
@@ -1562,15 +1756,21 @@ function showSavedSentences() {
         getSavedSentences();
 
 
-    if(sentences.length === 0) {
+    if(
+        sentences.length === 0
+    ) {
 
         const info =
-            document.createElement("p");
+            document.createElement(
+                "p"
+            );
 
         info.textContent =
             "Noch keine eigenen Sätze gespeichert.";
 
-        area.appendChild(info);
+        area.appendChild(
+            info
+        );
 
         return;
 
@@ -1581,11 +1781,15 @@ function showSavedSentences() {
     function(sentence,index) {
 
         const wrapper =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
 
         const speakButton =
-            document.createElement("button");
+            document.createElement(
+                "button"
+            );
 
 
         speakButton.type =
@@ -1602,13 +1806,17 @@ function showSavedSentences() {
         "click",
         function() {
 
-            speak(sentence);
+            speak(
+                sentence
+            );
 
         });
 
 
         const deleteButton =
-            document.createElement("button");
+            document.createElement(
+                "button"
+            );
 
 
         deleteButton.type =
@@ -1627,6 +1835,7 @@ function showSavedSentences() {
 
             const list =
                 getSavedSentences();
+
 
             list.splice(
                 index,
@@ -1662,9 +1871,9 @@ function showSavedSentences() {
 }
 
 
-/* =========================
+/* =========================================
    START
-========================= */
+========================================= */
 
 showSavedSentences();
 
