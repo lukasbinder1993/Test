@@ -1,1 +1,2273 @@
+<!DOCTYPE html>
+<html lang="de">
 
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>Tonguebox – Sprich mit deinen Augen</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #eef2f5;
+    color: #17212b;
+}
+
+main {
+    max-width: 1000px;
+    margin: auto;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 1.3rem;
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+button,
+textarea,
+select {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+/* =====================================
+   AUF- UND ZUKLAPPEN
+===================================== */
+
+.accordion {
+    margin-bottom: 18px;
+    border-radius: 20px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.accordion-toggle {
+    width: 100%;
+    min-height: 120px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 22px;
+
+    border: none;
+
+    background: #087f8c;
+    color: white;
+
+    font-size: 1.55rem;
+    font-weight: bold;
+
+    text-align: left;
+}
+
+.accordion-toggle.open {
+    background: #065f69;
+}
+
+.accordion-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.accordion-icon {
+    font-size: 2.4rem;
+}
+
+.accordion-arrow {
+    font-size: 2rem;
+}
+
+.accordion-toggle.open
+.accordion-arrow {
+    transform: rotate(180deg);
+}
+
+.accordion-content {
+    display: none;
+    padding: 20px;
+    background: white;
+}
+
+.accordion-content.open {
+    display: block;
+}
+
+
+/* =====================================
+   JA / NEIN
+===================================== */
+
+.yes-no {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.yes,
+.no {
+    min-height: 150px;
+
+    border: none;
+    border-radius: 20px;
+
+    color: white;
+
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.yes {
+    background: #198754;
+}
+
+.no {
+    background: #c62828;
+}
+
+
+/* =====================================
+   TEXTEINGABE
+===================================== */
+
+textarea {
+    width: 100%;
+    min-height: 170px;
+
+    padding: 18px;
+
+    border: 3px solid #555;
+    border-radius: 16px;
+
+    font-size: 1.5rem;
+}
+
+
+/* =====================================
+   LIVE KI-VORSCHLÄGE
+===================================== */
+
+.live-ai-box {
+    margin-top: 18px;
+    padding: 18px;
+
+    border-radius: 18px;
+
+    background: #f3edff;
+
+    border: 3px solid #7b2cbf;
+}
+
+.live-ai-title {
+    margin-top: 0;
+    margin-bottom: 8px;
+
+    font-size: 1.35rem;
+}
+
+.topic-status {
+    margin-bottom: 15px;
+
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.ai-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(220px,1fr));
+
+    gap: 15px;
+}
+
+.ai-suggestion {
+    min-height: 105px;
+
+    padding: 18px;
+
+    border: none;
+    border-radius: 16px;
+
+    background: #7b2cbf;
+    color: white;
+
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+
+/* =====================================
+   BUTTONS
+===================================== */
+
+.big-button {
+    width: 100%;
+    min-height: 100px;
+
+    margin-top: 16px;
+
+    padding: 18px;
+
+    border: none;
+    border-radius: 16px;
+
+    background: #0066cc;
+    color: white;
+
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.action-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit,minmax(200px,1fr));
+
+    gap: 15px;
+
+    margin-top: 15px;
+}
+
+.action-grid button {
+    min-height: 85px;
+
+    border: none;
+    border-radius: 15px;
+
+    background: #0066cc;
+    color: white;
+
+    font-size: 1.15rem;
+    font-weight: bold;
+}
+
+
+/* =====================================
+   PHRASE BUTTONS
+===================================== */
+
+.phrase-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit,minmax(220px,1fr));
+
+    gap: 16px;
+}
+
+.phrase-button {
+    min-height: 105px;
+
+    padding: 18px;
+
+    border: none;
+    border-radius: 16px;
+
+    background: #5b3cc4;
+    color: white;
+
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+
+/* =====================================
+   STIMME
+===================================== */
+
+select {
+    width: 100%;
+    min-height: 75px;
+
+    padding: 15px;
+
+    font-size: 1.2rem;
+
+    border: 3px solid #555;
+    border-radius: 15px;
+
+    background: white;
+}
+
+
+/* =====================================
+   GESPEICHERTE SÄTZE
+===================================== */
+
+.saved-button {
+    background: #7349c6;
+}
+
+.delete-button {
+    width: 100%;
+    min-height: 65px;
+
+    margin-top: 8px;
+
+    border: none;
+    border-radius: 14px;
+
+    background: #b71c1c;
+    color: white;
+
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+
+/* =====================================
+   FOKUS / BLICKERFASSUNG
+===================================== */
+
+button:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+
+    outline: 7px solid #ffd400;
+    outline-offset: 5px;
+}
+
+
+/* =====================================
+   STATUS
+===================================== */
+
+#status {
+    padding: 15px;
+
+    margin-top: 15px;
+
+    font-size: 1.1rem;
+    font-weight: bold;
+
+    text-align: center;
+}
+
+
+/* =====================================
+   IPHONE
+===================================== */
+
+@media(max-width:650px) {
+
+    body {
+        padding: 8px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .accordion-toggle {
+        min-height: 125px;
+        padding: 18px;
+    }
+
+    .accordion-icon {
+        font-size: 2.2rem;
+    }
+
+    .ai-grid,
+    .phrase-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .yes,
+    .no {
+        min-height: 135px;
+        font-size: 2.2rem;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<main>
+
+<h1>🤖 Tonguebox</h1>
+
+<p class="subtitle">
+Sprich mit deinen Augen
+</p>
+
+
+<!-- =====================================
+     JA / NEIN
+===================================== -->
+
+<section class="accordion">
+
+<button
+type="button"
+class="accordion-toggle"
+data-target="yesno"
+aria-expanded="false">
+
+<span class="accordion-left">
+
+<span class="accordion-icon">
+✅
+</span>
+
+<span>
+Ja / Nein
+</span>
+
+</span>
+
+<span class="accordion-arrow">
+▼
+</span>
+
+</button>
+
+
+<div
+id="yesno"
+class="accordion-content">
+
+<div class="yes-no">
+
+<button
+type="button"
+class="yes"
+onclick="speak('Ja')">
+
+JA
+
+</button>
+
+<button
+type="button"
+class="no"
+onclick="speak('Nein')">
+
+NEIN
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================
+     TEXT SPRECHEN
+===================================== -->
+
+<section class="accordion">
+
+<button
+type="button"
+class="accordion-toggle"
+data-target="textbereich"
+aria-expanded="false">
+
+<span class="accordion-left">
+
+<span class="accordion-icon">
+💬
+</span>
+
+<span>
+Text sprechen
+</span>
+
+</span>
+
+<span class="accordion-arrow">
+▼
+</span>
+
+</button>
+
+
+<div
+id="textbereich"
+class="accordion-content">
+
+
+<textarea
+id="speechText"
+placeholder="Schreibe zum Beispiel Kaffee, Durst, Hunger, Schmerzen, WC, Rollstuhl ..."
+aria-label="Text zum Sprechen">
+</textarea>
+
+
+<!-- =====================================
+     LIVE INTELLIGENTE VORSCHLÄGE
+===================================== -->
+
+<div class="live-ai-box">
+
+<h3 class="live-ai-title">
+🧠 Intelligente Phrasenvorschläge
+</h3>
+
+<div
+id="topicStatus"
+class="topic-status">
+
+Schreibe ein Wort – Tonguebox sucht passende Themen.
+
+</div>
+
+
+<div
+id="inlinePredictions"
+class="ai-grid">
+</div>
+
+</div>
+
+
+<button
+type="button"
+id="speakButton"
+class="big-button">
+
+🔊 Vorlesen
+
+</button>
+
+
+<div class="action-grid">
+
+<button
+type="button"
+id="stopButton">
+
+⏹ Stoppen
+
+</button>
+
+
+<button
+type="button"
+id="clearButton">
+
+🗑 Text löschen
+
+</button>
+
+
+<button
+type="button"
+id="saveButton">
+
+💾 Satz speichern
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================
+     GROSSE KI-VORSCHLÄGE
+===================================== -->
+
+<section class="accordion">
+
+<button
+type="button"
+class="accordion-toggle"
+data-target="aiArea"
+aria-expanded="false">
+
+<span class="accordion-left">
+
+<span class="accordion-icon">
+🧠
+</span>
+
+<span>
+Intelligente Phrasenvorschläge
+</span>
+
+</span>
+
+<span class="accordion-arrow">
+▼
+</span>
+
+</button>
+
+
+<div
+id="aiArea"
+class="accordion-content">
+
+<p>
+Tonguebox erkennt Themen aus deiner Eingabe
+und zeigt passende Kommunikationssätze.
+</p>
+
+<div
+id="aiSuggestions"
+class="ai-grid">
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================
+     ZUHAUSE
+===================================== -->
+
+<section class="accordion">
+
+<button
+type="button"
+class="accordion-toggle"
+data-target="home"
+aria-expanded="false">
+
+<span class="accordion-left">
+
+<span class="accordion-icon">
+🏠
+</span>
+
+<span>
+Zuhause
+</span>
+
+</span>
+
+<span class="accordion-arrow">
+▼
+</span>
+
+</button>
+
+
+<div
+id="home"
+class="accordion-content">
+
+<div class="phrase-grid">
+
+<button
+type="button"
+class="phrase-button"
+onclick="speak('Hallo.')">
+Hallo
+</button>
+
+<button
+type="button"
+class="phrase-button"
+onclick="speak('Wie geht es dir?')">
+Wie geht es dir?
+</button>
+
+<button
+type="button"
+class="phrase-button"
+onclick="speak('Kannst du mir bitte helfen?')">
+Bitte helfen
+</button>
+
+<button
+type="button"
+class="phrase-button"
+onclick="speak('Ich möchte etwas trinken.')">
+Ich möchte trinken
+</button>
+
+<button
+type="button"
+class="phrase-button"
+onclick="speak('Ich möchte mich ausruhen.')">
+Ich möchte mich ausruhen
+</button>
+
+<button
+type="button"
+class="phrase-button"
+onclick="speak('Danke.')">
+Danke
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================
+     KRANKENHAUS
+===================================== -->
+
+<section class="accordion">
+
+<button
+type="button"
+class="accordion-toggle"
+data-target="hospital"
+aria-expanded="false">
+
+<span class="accordion-left">
+
+<span class="accordion-icon">
+🏥
+</span>
+
+<span>
+Krankenhaus
+</span>
+
+</span>
+
+<span class="accordion-arrow">
+▼
+</span>
+
+</button>
+
+
+<div
+id="hospital"
+class="accordion-content">
+
+<div class="phrase-grid">
+
+<button
+type="button"
+class="phrase-button"
+onclick="speak('Ich kann nicht sprechen und kommuniziere über dieses Gerät.')">
+
+Ich kann nicht sprechen
+
+</button>
+
+<button
+type="button"
+class="phrase-button"
+onclick="speak('Bitte geben Sie mir Zeit zum Antworten.')">
+
+Bitte geben Sie mir Zeit
+
+</button>
+
+<button
+type="button"
+class="phrase-button"
+onclick="speak('Ich brauche Hilfe.')">
+
+Ich brauche Hilfe
+
+</button>
+
+<button
+type="button"
+class="phrase-button"
+onclick="speak('Ich habe Schmerzen.')">
+
+Ich habe Schmerzen
+
+</button>
+
+<button
+type="button"
+class="phrase-button"
+onclick="speak('Bitte erklären Sie mir, was Sie machen.')">
+
+Bitte erklären
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================
+     ESSEN / TRINKEN
+===================================== -->
+
+<section class="accordion">
+
+<button
+type="button"
+class="accordion-toggle"
+data-target="food"
+aria-expanded="false">
+
+<span class="accordion-left">
+
+<span class="accordion-icon">
+🍽️
+</span>
+
+<span>
+Essen & Trinken
+</span>
+
+</span>
+
+<span class="accordion-arrow">
+▼
+</span>
+
+</button>
+
+
+<div
+id="food"
+class="accordion-content">
+
+<div class="phrase-grid">
+
+<button
+type="button"
+class="phrase-button"
+onclick="speak('Ich möchte etwas essen.')">
+Ich möchte essen
+</button>
+
+<button
+type="button"
+class="phrase-button"
+onclick="speak('Ich möchte etwas trinken.')">
+Ich möchte trinken
+</button>
+
+<button
+type="button"
+class="phrase-button"
+onclick="speak('Ich habe Hunger.')">
+Ich habe Hunger
+</button>
+
+<button
+type="button"
+class="phrase-button"
+onclick="speak('Ich habe Durst.')">
+Ich habe Durst
+</button>
+
+<button
+type="button"
+class="phrase-button"
+onclick="speak('Ich bin fertig.')">
+Ich bin fertig
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================
+     TELEFON
+===================================== -->
+
+<section class="accordion">
+
+<button
+type="button"
+class="accordion-toggle"
+data-target="phone"
+aria-expanded="false">
+
+<span class="accordion-left">
+
+<span class="accordion-icon">
+📞
+</span>
+
+<span>
+Telefon
+</span>
+
+</span>
+
+<span class="accordion-arrow">
+▼
+</span>
+
+</button>
+
+
+<div
+id="phone"
+class="accordion-content">
+
+<div class="phrase-grid">
+
+<button
+type="button"
+class="phrase-button"
+onclick="speak('Ich kommuniziere über eine Sprachausgabe.')">
+
+Ich nutze eine Sprachausgabe
+
+</button>
+
+<button
+type="button"
+class="phrase-button"
+onclick="speak('Bitte warten Sie, während ich meine Antwort schreibe.')">
+
+Bitte warten
+
+</button>
+
+<button
+type="button"
+class="phrase-button"
+onclick="speak('Bitte sprechen Sie langsamer.')">
+
+Bitte langsamer
+
+</button>
+
+<button
+type="button"
+class="phrase-button"
+onclick="speak('Bitte wiederholen Sie das.')">
+
+Bitte wiederholen
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================
+     STIMME
+===================================== -->
+
+<section class="accordion">
+
+<button
+type="button"
+class="accordion-toggle"
+data-target="voice"
+aria-expanded="false">
+
+<span class="accordion-left">
+
+<span class="accordion-icon">
+🎙️
+</span>
+
+<span>
+Stimme auswählen
+</span>
+
+</span>
+
+<span class="accordion-arrow">
+▼
+</span>
+
+</button>
+
+
+<div
+id="voice"
+class="accordion-content">
+
+<select
+id="voiceSelect"
+aria-label="Stimme auswählen">
+
+<option>
+Stimmen werden geladen ...
+</option>
+
+</select>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================
+     MEINE SÄTZE
+===================================== -->
+
+<section class="accordion">
+
+<button
+type="button"
+class="accordion-toggle"
+data-target="saved"
+aria-expanded="false">
+
+<span class="accordion-left">
+
+<span class="accordion-icon">
+❤️
+</span>
+
+<span>
+Meine Sätze
+</span>
+
+</span>
+
+<span class="accordion-arrow">
+▼
+</span>
+
+</button>
+
+
+<div
+id="saved"
+class="accordion-content">
+
+<div
+id="savedSentences"
+class="phrase-grid">
+</div>
+
+</div>
+
+</section>
+
+
+<div
+id="status"
+role="status"
+aria-live="polite">
+
+Bereit.
+
+</div>
+
+
+</main>
+
+
+
+<script>
+
+/* =====================================
+   ELEMENTE
+===================================== */
+
+const textField =
+    document.getElementById("speechText");
+
+const voiceSelect =
+    document.getElementById("voiceSelect");
+
+const status =
+    document.getElementById("status");
+
+const inlinePredictions =
+    document.getElementById("inlinePredictions");
+
+const aiSuggestions =
+    document.getElementById("aiSuggestions");
+
+const topicStatus =
+    document.getElementById("topicStatus");
+
+let voices = [];
+
+
+/* =====================================
+   BEREICH IN DIE MITTE HOLEN
+===================================== */
+
+function centerSection(section) {
+
+    setTimeout(function() {
+
+        section.scrollIntoView({
+
+            behavior: "smooth",
+            block: "center"
+
+        });
+
+    },150);
+
+}
+
+
+/* =====================================
+   AUF- UND ZUKLAPPEN
+===================================== */
+
+document
+.querySelectorAll(".accordion-toggle")
+.forEach(function(button) {
+
+    button.addEventListener(
+        "click",
+        function() {
+
+            const target =
+                document.getElementById(
+                    button.dataset.target
+                );
+
+            const section =
+                button.closest(
+                    ".accordion"
+                );
+
+            const alreadyOpen =
+                target.classList.contains(
+                    "open"
+                );
+
+
+            document
+            .querySelectorAll(
+                ".accordion-content"
+            )
+            .forEach(function(content) {
+
+                content.classList.remove(
+                    "open"
+                );
+
+            });
+
+
+            document
+            .querySelectorAll(
+                ".accordion-toggle"
+            )
+            .forEach(function(toggle) {
+
+                toggle.classList.remove(
+                    "open"
+                );
+
+                toggle.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+            });
+
+
+            if(!alreadyOpen) {
+
+                target.classList.add(
+                    "open"
+                );
+
+                button.classList.add(
+                    "open"
+                );
+
+                button.setAttribute(
+                    "aria-expanded",
+                    "true"
+                );
+
+
+                centerSection(
+                    section
+                );
+
+            }
+
+        }
+    );
+
+});
+
+
+/* =====================================
+   STIMMEN
+===================================== */
+
+function loadVoices() {
+
+    voices =
+        window.speechSynthesis.getVoices();
+
+
+    voiceSelect.innerHTML = "";
+
+
+    if(voices.length === 0) {
+
+        const option =
+            document.createElement(
+                "option"
+            );
+
+        option.textContent =
+            "Noch keine Stimmen verfügbar";
+
+        voiceSelect.appendChild(
+            option
+        );
+
+        return;
+
+    }
+
+
+    voices.forEach(
+    function(voice) {
+
+        const option =
+            document.createElement(
+                "option"
+            );
+
+        option.value =
+            voice.voiceURI;
+
+        option.textContent =
+            voice.name +
+            " – " +
+            voice.lang;
+
+        voiceSelect.appendChild(
+            option
+        );
+
+    });
+
+
+    const saved =
+        localStorage.getItem(
+            "tongueboxVoice"
+        );
+
+
+    if(saved) {
+
+        voiceSelect.value =
+            saved;
+
+    }
+
+}
+
+
+window.speechSynthesis.onvoiceschanged =
+    loadVoices;
+
+loadVoices();
+
+setTimeout(loadVoices,500);
+setTimeout(loadVoices,1500);
+
+
+voiceSelect.addEventListener(
+"change",
+function() {
+
+    localStorage.setItem(
+        "tongueboxVoice",
+        voiceSelect.value
+    );
+
+});
+
+
+/* =====================================
+   SPRECHEN
+===================================== */
+
+function speak(text) {
+
+    if(!text || !text.trim()) {
+
+        status.textContent =
+            "Bitte zuerst Text eingeben.";
+
+        return;
+
+    }
+
+
+    window.speechSynthesis.cancel();
+
+
+    const utterance =
+        new SpeechSynthesisUtterance(
+            text
+        );
+
+
+    const selectedVoice =
+        voices.find(
+        function(voice) {
+
+            return (
+                voice.voiceURI ===
+                voiceSelect.value
+            );
+
+        });
+
+
+    if(selectedVoice) {
+
+        utterance.voice =
+            selectedVoice;
+
+        utterance.lang =
+            selectedVoice.lang;
+
+    }
+
+
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    utterance.volume = 1;
+
+
+    window.speechSynthesis.speak(
+        utterance
+    );
+
+
+    status.textContent =
+        "🔊 Tonguebox spricht.";
+
+}
+
+
+/* =====================================
+   THEMEN-DATENBANK
+===================================== */
+
+const topics = [
+
+{
+
+name: "☕ Kaffee",
+
+keywords: [
+    "kaffee",
+    "cappuccino",
+    "espresso",
+    "latte",
+    "milchkaffee"
+],
+
+suggestions: [
+
+    "Ich möchte einen Kaffee.",
+    "Bitte mit Milch.",
+    "Bitte ohne Milch.",
+    "Bitte mit Zucker.",
+    "Bitte ohne Zucker.",
+    "Noch einen Kaffee bitte.",
+    "Der Kaffee ist zu heiß.",
+    "Der Kaffee ist zu kalt."
+
+]
+
+},
+
+
+{
+
+name: "🥤 Trinken",
+
+keywords: [
+
+    "trinken",
+    "durst",
+    "wasser",
+    "saft",
+    "tee",
+    "cola",
+    "limonade",
+    "getränk"
+
+],
+
+suggestions: [
+
+    "Ich möchte etwas trinken.",
+    "Ich habe Durst.",
+    "Ich möchte Wasser.",
+    "Ich möchte einen Saft.",
+    "Ich möchte einen Tee.",
+    "Bitte noch etwas zu trinken.",
+    "Nein danke, ich habe genug."
+
+]
+
+},
+
+
+{
+
+name: "🍽️ Essen",
+
+keywords: [
+
+    "essen",
+    "hunger",
+    "frühstück",
+    "mittagessen",
+    "abendessen",
+    "mahlzeit"
+
+],
+
+suggestions: [
+
+    "Ich möchte etwas essen.",
+    "Ich habe Hunger.",
+    "Was gibt es zu essen?",
+    "Bitte noch etwas.",
+    "Das schmeckt gut.",
+    "Nein danke.",
+    "Ich bin fertig."
+
+]
+
+},
+
+
+{
+
+name: "🏥 Schmerzen",
+
+keywords: [
+
+    "schmerz",
+    "schmerzen",
+    "weh",
+    "aua"
+
+],
+
+suggestions: [
+
+    "Ich habe Schmerzen.",
+    "Die Schmerzen sind stark.",
+    "Die Schmerzen sind leicht.",
+    "Bitte helfen Sie mir.",
+    "Bitte fragen Sie mich, wo es weh tut.",
+    "Ich brauche eine Pause."
+
+]
+
+},
+
+
+{
+
+name: "🚻 Toilette",
+
+keywords: [
+
+    "wc",
+    "toilette",
+    "klo",
+    "toiletten"
+
+],
+
+suggestions: [
+
+    "Ich muss auf die Toilette.",
+    "Bitte helfen Sie mir zur Toilette.",
+    "Ich brauche Hilfe beim WC.",
+    "Wo ist die Toilette?",
+    "Bitte warten Sie einen Moment."
+
+]
+
+},
+
+
+{
+
+name: "🆘 Hilfe",
+
+keywords: [
+
+    "hilfe",
+    "helfen",
+    "unterstützung",
+    "assistenz"
+
+],
+
+suggestions: [
+
+    "Ich brauche Hilfe.",
+    "Kannst du mir bitte helfen?",
+    "Bitte komm zu mir.",
+    "Ich brauche Unterstützung.",
+    "Bitte warten Sie einen Moment."
+
+]
+
+},
+
+
+{
+
+name: "📞 Telefon",
+
+keywords: [
+
+    "telefon",
+    "telefonieren",
+    "anrufen",
+    "anruf",
+    "handy"
+
+],
+
+suggestions: [
+
+    "Ich möchte telefonieren.",
+    "Ich kommuniziere über eine Sprachausgabe.",
+    "Bitte warten Sie, während ich meine Antwort schreibe.",
+    "Bitte sprechen Sie langsamer.",
+    "Bitte wiederholen Sie das.",
+    "Danke für Ihre Geduld."
+
+]
+
+},
+
+
+{
+
+name: "♿ Rollstuhl",
+
+keywords: [
+
+    "rollstuhl",
+    "fahren",
+    "stuhl",
+    "position"
+
+],
+
+suggestions: [
+
+    "Ich brauche meinen Rollstuhl.",
+    "Bitte stellen Sie meinen Rollstuhl näher.",
+    "Bitte helfen Sie mir beim Rollstuhl.",
+    "Ich möchte mit dem Rollstuhl fahren.",
+    "Bitte ändern Sie meine Position."
+
+]
+
+},
+
+
+{
+
+name: "😴 Ruhe",
+
+keywords: [
+
+    "müde",
+    "ruhe",
+    "pause",
+    "ausruhen",
+    "schlafen"
+
+],
+
+suggestions: [
+
+    "Ich bin müde.",
+    "Ich brauche eine Pause.",
+    "Ich möchte mich ausruhen.",
+    "Bitte lassen Sie mich kurz in Ruhe.",
+    "Ich möchte schlafen."
+
+]
+
+},
+
+
+{
+
+name: "💊 Medikamente",
+
+keywords: [
+
+    "medikament",
+    "medikamente",
+    "tablette",
+    "medizin"
+
+],
+
+suggestions: [
+
+    "Ich brauche meine Medikamente.",
+    "Wann bekomme ich meine Medikamente?",
+    "Bitte erklären Sie mir dieses Medikament.",
+    "Habe ich meine Medikamente schon bekommen?",
+    "Bitte warten Sie einen Moment."
+
+]
+
+}
+
+];
+
+
+/* =====================================
+   TEXTE NORMALISIEREN
+===================================== */
+
+function normalizeText(text) {
+
+    return text
+        .toLowerCase()
+        .trim()
+        .replace(/ä/g,"ae")
+        .replace(/ö/g,"oe")
+        .replace(/ü/g,"ue")
+        .replace(/ß/g,"ss");
+
+}
+
+
+/* =====================================
+   THEMA ERKENNEN
+===================================== */
+
+function detectTopic(input) {
+
+    const cleanedInput =
+        normalizeText(input);
+
+
+    if(!cleanedInput) {
+
+        return null;
+
+    }
+
+
+    for(
+        let i = 0;
+        i < topics.length;
+        i++
+    ) {
+
+        const topic =
+            topics[i];
+
+
+        for(
+            let x = 0;
+            x < topic.keywords.length;
+            x++
+        ) {
+
+            const keyword =
+                normalizeText(
+                    topic.keywords[x]
+                );
+
+
+            if(
+                cleanedInput.includes(
+                    keyword
+                )
+            ) {
+
+                return topic;
+
+            }
+
+
+            /*
+            Auch Teilwörter erkennen:
+
+            z.B.
+            "Kaff" -> Kaffee
+            "Schmerz" -> Schmerzen
+            */
+
+            if(
+                cleanedInput.length >= 3 &&
+                keyword.startsWith(
+                    cleanedInput
+                )
+            ) {
+
+                return topic;
+
+            }
+
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =====================================
+   ALLGEMEINE VORSCHLÄGE
+===================================== */
+
+const generalSuggestions = [
+
+    "Hallo.",
+    "Guten Morgen.",
+    "Guten Tag.",
+    "Wie geht es dir?",
+    "Ich möchte etwas sagen.",
+    "Ich möchte etwas fragen.",
+    "Ich brauche Hilfe.",
+    "Bitte warten Sie einen Moment."
+
+];
+
+
+/* =====================================
+   VORSCHLAGS-BUTTON
+===================================== */
+
+function addSuggestion(
+    sentence,
+    container
+) {
+
+    const button =
+        document.createElement(
+            "button"
+        );
+
+
+    button.type =
+        "button";
+
+    button.className =
+        "ai-suggestion";
+
+
+    button.textContent =
+        sentence;
+
+
+    button.addEventListener(
+        "click",
+        function() {
+
+            textField.value =
+                sentence;
+
+
+            speak(
+                sentence
+            );
+
+
+            updateSuggestions();
+
+        }
+    );
+
+
+    container.appendChild(
+        button
+    );
+
+}
+
+
+/* =====================================
+   VORSCHLÄGE LIVE AKTUALISIEREN
+===================================== */
+
+function updateSuggestions() {
+
+    const text =
+        textField.value;
+
+
+    const topic =
+        detectTopic(
+            text
+        );
+
+
+    inlinePredictions.innerHTML =
+        "";
+
+    aiSuggestions.innerHTML =
+        "";
+
+
+    let suggestions;
+
+
+    if(topic) {
+
+        topicStatus.textContent =
+            "✨ Erkanntes Thema: " +
+            topic.name;
+
+
+        suggestions =
+            topic.suggestions;
+
+
+        status.textContent =
+            "🧠 Passende Vorschläge zu " +
+            topic.name +
+            " gefunden.";
+
+    }
+
+    else if(text.trim()) {
+
+        topicStatus.textContent =
+            "🔎 Noch kein bestimmtes Thema erkannt.";
+
+
+        suggestions =
+            generalSuggestions;
+
+    }
+
+    else {
+
+        topicStatus.textContent =
+            "Schreibe ein Wort – Tonguebox sucht passende Themen.";
+
+
+        suggestions =
+            generalSuggestions;
+
+    }
+
+
+    /*
+    Direkt unter Textfeld:
+    6 Vorschläge
+    */
+
+    suggestions
+    .slice(0,6)
+    .forEach(
+    function(sentence) {
+
+        addSuggestion(
+            sentence,
+            inlinePredictions
+        );
+
+    });
+
+
+    /*
+    Im großen KI-Bereich:
+    bis zu 8 Vorschläge
+    */
+
+    suggestions
+    .slice(0,8)
+    .forEach(
+    function(sentence) {
+
+        addSuggestion(
+            sentence,
+            aiSuggestions
+        );
+
+    });
+
+}
+
+
+/* =====================================
+   WICHTIG:
+   JEDER TASTENDRUCK AKTUALISIERT
+   DIE VORSCHLÄGE
+===================================== */
+
+textField.addEventListener(
+    "input",
+    updateSuggestions
+);
+
+textField.addEventListener(
+    "keyup",
+    updateSuggestions
+);
+
+textField.addEventListener(
+    "change",
+    updateSuggestions
+);
+
+
+/* =====================================
+   TEXT VORLESEN
+===================================== */
+
+document
+.getElementById("speakButton")
+.addEventListener(
+"click",
+function() {
+
+    speak(
+        textField.value
+    );
+
+});
+
+
+/* =====================================
+   STOPPEN
+===================================== */
+
+document
+.getElementById("stopButton")
+.addEventListener(
+"click",
+function() {
+
+    window.speechSynthesis.cancel();
+
+    status.textContent =
+        "⏹ Sprachausgabe gestoppt.";
+
+});
+
+
+/* =====================================
+   TEXT LÖSCHEN
+===================================== */
+
+document
+.getElementById("clearButton")
+.addEventListener(
+"click",
+function() {
+
+    textField.value =
+        "";
+
+    updateSuggestions();
+
+    status.textContent =
+        "🗑 Text gelöscht.";
+
+});
+
+
+/* =====================================
+   SÄTZE SPEICHERN
+===================================== */
+
+function getSavedSentences() {
+
+    try {
+
+        return JSON.parse(
+
+            localStorage.getItem(
+                "tongueboxSentences"
+            ) || "[]"
+
+        );
+
+    }
+
+    catch(error) {
+
+        return [];
+
+    }
+
+}
+
+
+document
+.getElementById("saveButton")
+.addEventListener(
+"click",
+function() {
+
+    const text =
+        textField.value.trim();
+
+
+    if(!text) {
+
+        status.textContent =
+            "Bitte zuerst einen Satz eingeben.";
+
+        return;
+
+    }
+
+
+    const sentences =
+        getSavedSentences();
+
+
+    if(
+        !sentences.includes(text)
+    ) {
+
+        sentences.push(
+            text
+        );
+
+
+        localStorage.setItem(
+            "tongueboxSentences",
+            JSON.stringify(
+                sentences
+            )
+        );
+
+
+        status.textContent =
+            "💾 Satz gespeichert.";
+
+    }
+
+    else {
+
+        status.textContent =
+            "Dieser Satz ist bereits gespeichert.";
+
+    }
+
+
+    showSavedSentences();
+
+});
+
+
+/* =====================================
+   GESPEICHERTE SÄTZE ANZEIGEN
+===================================== */
+
+function showSavedSentences() {
+
+    const area =
+        document.getElementById(
+            "savedSentences"
+        );
+
+
+    area.innerHTML =
+        "";
+
+
+    const sentences =
+        getSavedSentences();
+
+
+    if(
+        sentences.length === 0
+    ) {
+
+        const info =
+            document.createElement(
+                "p"
+            );
+
+
+        info.textContent =
+            "Noch keine eigenen Sätze gespeichert.";
+
+
+        area.appendChild(
+            info
+        );
+
+
+        return;
+
+    }
+
+
+    sentences.forEach(
+    function(sentence,index) {
+
+        const wrapper =
+            document.createElement(
+                "div"
+            );
+
+
+        const speakButton =
+            document.createElement(
+                "button"
+            );
+
+
+        speakButton.type =
+            "button";
+
+        speakButton.className =
+            "phrase-button saved-button";
+
+        speakButton.textContent =
+            sentence;
+
+
+        speakButton.addEventListener(
+        "click",
+        function() {
+
+            speak(
+                sentence
+            );
+
+        });
+
+
+        const deleteButton =
+            document.createElement(
+                "button"
+            );
+
+
+        deleteButton.type =
+            "button";
+
+        deleteButton.className =
+            "delete-button";
+
+        deleteButton.textContent =
+            "🗑 Löschen";
+
+
+        deleteButton.addEventListener(
+        "click",
+        function() {
+
+            const list =
+                getSavedSentences();
+
+
+            list.splice(
+                index,
+                1
+            );
+
+
+            localStorage.setItem(
+                "tongueboxSentences",
+                JSON.stringify(
+                    list
+                )
+            );
+
+
+            showSavedSentences();
+
+        });
+
+
+        wrapper.appendChild(
+            speakButton
+        );
+
+        wrapper.appendChild(
+            deleteButton
+        );
+
+
+        area.appendChild(
+            wrapper
+        );
+
+    });
+
+}
+
+
+/* =====================================
+   START
+===================================== */
+
+showSavedSentences();
+
+updateSuggestions();
+
+</script>
+
+</body>
+
+</html>
