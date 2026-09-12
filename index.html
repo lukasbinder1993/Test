@@ -58,6 +58,104 @@ button:focus-visible,textarea:focus-visible,select:focus-visible{outline:7px sol
 body{padding:8px}h1{font-size:2rem}.accordion-toggle{min-height:125px;padding:18px}
 .phrase-grid,.topic-grid{grid-template-columns:1fr}.yes,.no{min-height:135px;font-size:2.2rem}
 }
+
+/* ===== Einfacher Telefon-Modus für Blickerfassung ===== */
+.phone-simple { display:flex; flex-direction:column; gap:18px; }
+.phone-yesno { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.phone-answer {
+  min-height:88px;
+  font-size:1.35rem;
+  font-weight:800;
+  border-radius:18px;
+  border:0;
+  padding:16px;
+  cursor:pointer;
+}
+.phone-yes { background:#198754; color:white; font-size:1.7rem; }
+.phone-no { background:#c62828; color:white; font-size:1.7rem; }
+.phone-big-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.ai-box, .own-reply-box {
+  padding:16px;
+  border:3px solid #087f8c;
+  border-radius:18px;
+}
+.ai-title {
+  font-size:1.35rem;
+  font-weight:800;
+  margin-bottom:12px;
+  text-align:center;
+}
+#aiPhoneInput, #phoneText {
+  min-height:125px;
+  font-size:1.25rem;
+}
+#aiPhoneReplies { margin-top:14px; }
+#aiPhoneReplies button {
+  min-height:82px;
+  font-size:1.2rem;
+  font-weight:700;
+}
+@media (max-width:650px){
+  .phone-big-grid { grid-template-columns:1fr; }
+  .phone-answer { min-height:96px; }
+}
+
+
+/* ===== KI-Telefon-Demo ===== */
+.call-demo { display:flex; flex-direction:column; gap:18px; }
+.call-status {
+  padding:16px;
+  border-radius:16px;
+  text-align:center;
+  font-size:1.2rem;
+  font-weight:800;
+  background:#eef7f8;
+  border:3px solid #087f8c;
+}
+.caller-card, .ai-response-card, .manual-reply-card {
+  padding:16px;
+  border-radius:18px;
+  border:3px solid #087f8c;
+}
+.caller-label, .ai-title {
+  font-size:1.3rem;
+  font-weight:800;
+  margin-bottom:12px;
+  text-align:center;
+}
+#callerSpeech, #phoneText {
+  min-height:120px;
+  font-size:1.2rem;
+}
+#liveAiReplies {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+#liveAiReplies button {
+  min-height:90px;
+  font-size:1.2rem;
+  font-weight:800;
+}
+.call-controls {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+#demoCallButton, #hangupButton {
+  min-height:90px;
+  font-size:1.3rem;
+  font-weight:800;
+  border-radius:18px;
+}
+#hangupButton {
+  background:#c62828;
+  color:white;
+}
+@media (max-width:650px){
+  #liveAiReplies, .call-controls { grid-template-columns:1fr; }
+}
+
 </style>
 </head>
 <body>
@@ -126,47 +224,44 @@ body{padding:8px}h1{font-size:2rem}.accordion-toggle{min-height:125px;padding:18
 <div id="food" class="accordion-content"><div id="foodPhrases" class="phrase-grid"></div></div>
 </section>
 
+
+
 <section class="accordion">
-<button class="accordion-toggle" data-target="phone"><span class="accordion-left"><span class="accordion-icon">📞</span><span data-i18n="phone"></span></span><span class="accordion-arrow">▼</span></button>
+<button class="accordion-toggle" data-target="phone">
+  <span class="accordion-left"><span class="accordion-icon">📞</span><span data-i18n="phone"></span></span>
+  <span class="accordion-arrow">▼</span>
+</button>
+
 <div id="phone" class="accordion-content">
-  <div class="phone-panel">
-    <p class="phone-note" id="phoneNote">
-      Tonguebox kann – wenn der Browser Spracherkennung unterstützt – Gesprochenes über das Mikrofon erkennen
-      und dazu passende Schnellantworten vorschlagen.
-    </p>
+  <div class="call-demo">
+    <div class="call-status" id="callStatus">📞 Telefon-Demo bereit</div>
 
-    <div class="suggestion-heading" id="listenHeading">🎧 Was sagt die andere Person?</div>
-
-    <div class="action-grid">
-      <button id="listenButton">🎧 Mithören & Vorschläge</button>
-      <button id="stopListenButton">⏹ Mithören stoppen</button>
+    <div class="caller-card">
+      <div class="caller-label">👤 Andere Person sagt:</div>
+      <textarea id="callerSpeech" placeholder="Hier erscheint später automatisch die erkannte Frage. Für die Demo kannst du sie eintippen."></textarea>
+      <button id="analyzeCallerButton" class="big-button">✨ Intelligente Antworten erzeugen</button>
     </div>
 
-    <textarea id="heardText" placeholder="Erkannter Text erscheint hier. Du kannst ihn auch selbst eingeben."></textarea>
-    <button id="analyzeButton" class="big-button">🧠 Passende Antworten anzeigen</button>
-
-    <div class="suggestion-area">
-      <div class="suggestion-heading" id="phoneQuickHeading">⚡ Passende Schnellantworten</div>
-      <div id="phoneSmartReplies" class="phrase-grid"></div>
+    <div class="ai-response-card">
+      <div class="ai-title">🤖 Passende Antworten</div>
+      <div id="liveAiReplies" class="phrase-grid"></div>
     </div>
 
-    <div class="suggestion-area">
-      <div class="suggestion-heading" id="myPhoneReplyHeading">✍️ Eigene Antwort</div>
-      <textarea id="phoneText" placeholder="Eigene Antwort eingeben ..."></textarea>
-      <button id="phoneSpeakButton" class="big-button">📞 Antwort sprechen</button>
-      <div class="action-grid">
-        <button id="phoneStopButton">⏹ Stoppen</button>
-        <button id="phoneClearButton">🗑 Text löschen</button>
-      </div>
+    <div class="manual-reply-card">
+      <div class="suggestion-heading">✍️ Eigene Antwort</div>
+      <textarea id="phoneText" placeholder="Eigene Antwort eingeben …"></textarea>
+      <button id="phoneSpeakButton" class="big-button">🔊 Antwort sprechen</button>
     </div>
 
-    <div class="suggestion-area">
-      <div class="suggestion-heading" id="phoneQuickFixedHeading">☎️ Allgemeine Telefonsätze</div>
-      <div id="phonePhrases" class="phrase-grid"></div>
+    <div class="call-controls">
+      <button id="demoCallButton">☎️ Demo-Anruf starten</button>
+      <button id="hangupButton">🔴 Auflegen</button>
     </div>
   </div>
 </div>
 </section>
+
+
 
 <section class="accordion">
 <button class="accordion-toggle" data-target="voice"><span class="accordion-left"><span class="accordion-icon">🎙️</span><span data-i18n="voice"></span></span><span class="accordion-arrow">▼</span></button>
@@ -232,7 +327,7 @@ let currentLang=localStorage.getItem("tongueboxLanguage")||"de";
 if(!UI[currentLang]) currentLang="de";
 let voices=[];
 const qs=s=>document.querySelector(s), qsa=s=>document.querySelectorAll(s);
-const status=qs("#status"), textField=qs("#speechText"), voiceSelect=qs("#voiceSelect"), phoneText=qs("#phoneText"), heardText=qs("#heardText");
+const status=qs("#status"), textField=qs("#speechText"), voiceSelect=qs("#voiceSelect"), phoneText=qs("#phoneText");
 
 function applyLanguage(){
  const t=ui(currentLang), d=phraseData(currentLang);
@@ -245,40 +340,9 @@ function applyLanguage(){
  textField.placeholder=t.placeholder; qs("#speakButton").textContent=t.speak;
  qs("#stopButton").textContent=t.stop; qs("#clearButton").textContent=t.clear; qs("#saveButton").textContent=t.save;
  status.textContent=t.ready; qs("#suggestionHeading").textContent=t.chooseTopic; qs("#phraseSuggestions").innerHTML="";
- if(qs("#phoneNote")){
-   const ptxt = {
-     de:{
-       note:"Tonguebox kann – wenn der Browser Spracherkennung unterstützt – Gesprochenes über das Mikrofon erkennen und dazu passende Schnellantworten vorschlagen.",
-       listen:"🎧 Was sagt die andere Person?", start:"🎧 Mithören & Vorschläge", stopListen:"⏹ Mithören stoppen",
-       heard:"Erkannter Text erscheint hier. Du kannst ihn auch selbst eingeben.", analyze:"🧠 Passende Antworten anzeigen",
-       smart:"⚡ Passende Schnellantworten", own:"✍️ Eigene Antwort", ownph:"Eigene Antwort eingeben ...",
-       speak:"📞 Antwort sprechen", fixed:"☎️ Allgemeine Telefonsätze"
-     },
-     en:{
-       note:"If your browser supports speech recognition, Tonguebox can listen through the microphone and suggest quick replies that match what was said.",
-       listen:"🎧 What is the other person saying?", start:"🎧 Listen & suggest replies", stopListen:"⏹ Stop listening",
-       heard:"Recognized speech appears here. You can also type it yourself.", analyze:"🧠 Show matching replies",
-       smart:"⚡ Matching quick replies", own:"✍️ My reply", ownph:"Type your own reply ...",
-       speak:"📞 Speak reply", fixed:"☎️ General phone phrases"
-     }
-   };
-   const p=ptxt[currentLang]||ptxt.en;
-   qs("#phoneNote").textContent=p.note;
-   qs("#listenHeading").textContent=p.listen;
-   qs("#listenButton").textContent=p.start;
-   qs("#stopListenButton").textContent=p.stopListen;
-   heardText.placeholder=p.heard;
-   qs("#analyzeButton").textContent=p.analyze;
-   qs("#phoneQuickHeading").textContent=p.smart;
-   qs("#myPhoneReplyHeading").textContent=p.own;
-   phoneText.placeholder=p.ownph;
-   qs("#phoneSpeakButton").textContent=p.speak;
-   qs("#phoneStopButton").textContent=t.stop;
-   qs("#phoneClearButton").textContent=t.clear;
-   qs("#phoneQuickFixedHeading").textContent=p.fixed;
- }
  renderTopics(d.topics); renderGroup("homePhrases",d.home); renderGroup("hospitalPhrases",d.hospital); renderGroup("foodPhrases",d.food); renderGroup("phonePhrases",d.phone);
  loadVoices(); showSavedSentences();
+if(qs("#aiPhoneInput")) renderPhoneSuggestions();
 }
 function renderGroup(id,arr){
  const area=qs("#"+id);area.innerHTML="";
@@ -329,137 +393,205 @@ function showSavedSentences(){
  d.onclick=()=>{const x=getSaved();x.splice(i,1);localStorage.setItem("tongueboxSentences",JSON.stringify(x));showSavedSentences()};w.append(b,d);area.appendChild(w);});
 }
 
-const CALL_REPLIES = {
- de:{
-   generic:["Ja.","Nein.","Einen Moment bitte, ich schreibe gerade.","Bitte wiederholen.","Bitte sprich etwas langsamer.","Das habe ich verstanden."],
-   greeting:["Hallo!","Mir geht es gut, danke.","Danke, und dir?","Schön, von dir zu hören."],
-   appointment:["Ja, das passt für mich.","Nein, dieser Termin passt leider nicht.","Welche Uhrzeit genau?","Kannst du mir das Datum noch einmal sagen?"],
-   question:["Einen Moment bitte, ich schreibe meine Antwort.","Kannst du die Frage bitte wiederholen?","Ja.","Nein.","Das muss ich kurz überlegen."],
-   food:["Ja, gerne.","Nein, danke.","Ich möchte etwas trinken.","Ich möchte etwas essen.","Was gibt es genau?"],
-   health:["Ja, ich habe Schmerzen.","Nein, im Moment nicht.","Bitte erklären Sie mir das noch einmal.","Ich brauche einen Moment.","Bitte helfen Sie mir."],
-   place:["Wo genau?","Ja, dort können wir uns treffen.","Kannst du mir die Adresse schicken?","Wann soll ich dort sein?"],
-   thanks:["Gerne.","Bitte.","Danke dir auch.","Kein Problem."],
-   call:["Ja, ich höre dich.","Bitte sprich langsamer.","Bitte wiederholen.","Einen Moment, ich schreibe gerade."]
- },
- en:{
-   generic:["Yes.","No.","One moment please, I am typing.","Please repeat that.","Please speak a little more slowly.","I understood that."],
-   greeting:["Hello!","I am fine, thank you.","Thank you, and you?","Nice to hear from you."],
-   appointment:["Yes, that works for me.","No, that time does not work for me.","What time exactly?","Can you tell me the date again?"],
-   question:["One moment please, I am typing my answer.","Could you repeat the question?","Yes.","No.","I need a moment to think."],
-   food:["Yes, please.","No, thank you.","I would like something to drink.","I would like something to eat.","What exactly is available?"],
-   health:["Yes, I am in pain.","No, not at the moment.","Please explain that again.","I need a moment.","Please help me."],
-   place:["Where exactly?","Yes, we can meet there.","Can you send me the address?","When should I be there?"],
-   thanks:["You're welcome.","Please.","Thank you too.","No problem."],
-   call:["Yes, I can hear you.","Please speak more slowly.","Please repeat that.","One moment, I am typing."]
- }
+
+
+/* ===== KI-Telefon-Demo ===== */
+const CALL_AI_DEMO = {
+  de: {
+    appointment: [
+      "Ja, das passt für mich.",
+      "Nein, dieser Termin passt leider nicht.",
+      "Welche Uhrzeit genau?",
+      "Kannst du mir Datum und Uhrzeit noch einmal sagen?",
+      "Bitte schick mir den Termin schriftlich.",
+      "Einen Moment bitte, ich prüfe das."
+    ],
+    health: [
+      "Ja, ich habe Schmerzen.",
+      "Nein, im Moment nicht.",
+      "Bitte erklären Sie mir das noch einmal.",
+      "Wo genau meinen Sie?",
+      "Ich brauche einen Moment.",
+      "Bitte stellen Sie mir eine Ja-oder-Nein-Frage."
+    ],
+    yesno: [
+      "Ja.",
+      "Nein.",
+      "Vielleicht.",
+      "Einen Moment bitte.",
+      "Bitte wiederholen.",
+      "Ich muss kurz überlegen."
+    ],
+    choice: [
+      "Die erste Möglichkeit.",
+      "Die zweite Möglichkeit.",
+      "Keine von beiden.",
+      "Kannst du die Möglichkeiten noch einmal nennen?",
+      "Ich brauche einen Moment zum Entscheiden."
+    ],
+    time: [
+      "Ja, diese Uhrzeit passt.",
+      "Nein, diese Uhrzeit passt nicht.",
+      "Geht es etwas später?",
+      "Geht es etwas früher?",
+      "Welche Uhrzeit genau?"
+    ],
+    place: [
+      "Wo genau?",
+      "Ja, dort passt es.",
+      "Bitte schick mir die Adresse.",
+      "Wann soll ich dort sein?",
+      "Kannst du mir den Ort noch einmal sagen?"
+    ],
+    generic: [
+      "Ja.",
+      "Nein.",
+      "Bitte wiederholen.",
+      "Einen Moment bitte, ich schreibe gerade.",
+      "Kannst du das bitte genauer erklären?",
+      "Danke."
+    ]
+  },
+  en: {
+    appointment: [
+      "Yes, that works for me.",
+      "No, that appointment does not work for me.",
+      "What time exactly?",
+      "Can you repeat the date and time?",
+      "Please send me the appointment in writing.",
+      "One moment please, I will check."
+    ],
+    health: [
+      "Yes, I am in pain.",
+      "No, not at the moment.",
+      "Please explain that again.",
+      "Where exactly do you mean?",
+      "I need a moment.",
+      "Please ask me a yes-or-no question."
+    ],
+    yesno: [
+      "Yes.",
+      "No.",
+      "Maybe.",
+      "One moment please.",
+      "Please repeat that.",
+      "I need a moment to think."
+    ],
+    choice: [
+      "The first option.",
+      "The second option.",
+      "Neither.",
+      "Can you repeat the options?",
+      "I need a moment to decide."
+    ],
+    time: [
+      "Yes, that time works.",
+      "No, that time does not work.",
+      "Could it be a little later?",
+      "Could it be a little earlier?",
+      "What time exactly?"
+    ],
+    place: [
+      "Where exactly?",
+      "Yes, that place works.",
+      "Please send me the address.",
+      "When should I be there?",
+      "Can you repeat the location?"
+    ],
+    generic: [
+      "Yes.",
+      "No.",
+      "Please repeat that.",
+      "One moment please, I am typing.",
+      "Could you explain that in more detail?",
+      "Thank you."
+    ]
+  }
 };
 
-function detectCallTopic(raw){
- const s=(raw||"").toLowerCase();
- const sets={
-   greeting:["hallo","servus","grüß","guten morgen","guten tag","wie geht","hello","hi","good morning","how are"],
-   appointment:["termin","datum","uhrzeit","treffen","morgen","montag","dienstag","mittwoch","donnerstag","freitag","samstag","sonntag","appointment","meeting","date","time","tomorrow"],
-   food:["essen","trinken","kaffee","wasser","hunger","durst","frühstück","mittagessen","abendessen","eat","drink","coffee","water","hungry","thirsty","lunch","dinner"],
-   health:["schmerz","weh","arzt","medizin","tablette","pflege","krankenhaus","gesund","pain","doctor","medicine","hospital","health"],
-   place:["wo ","adresse","ort","straße","fahren","kommen","where","address","place","street","come"],
-   thanks:["danke","vielen dank","thank you","thanks"],
-   call:["hörst","verstehst","laut","leise","wiederholen","telefon","hear me","understand","repeat","phone","call"]
- };
- for(const [topic,words] of Object.entries(sets)){
-   if(words.some(w=>s.includes(w))) return topic;
- }
- if(/[?]$/.test(s) || /\b(was|wie|warum|wann|wer|welche|kannst|könntest|möchtest|willst|do you|can you|what|how|why|when|who|would you)\b/.test(s)) return "question";
- return "generic";
+function detectCallIntent(raw){
+  const s=(raw||"").toLowerCase().trim();
+
+  const contains=(arr)=>arr.some(w=>s.includes(w));
+
+  if(contains(["termin","appointment","treffen","meeting","datum","date"])) return "appointment";
+  if(contains(["schmerz","arzt","ärzt","krankenhaus","medizin","untersuch","pain","doctor","hospital","medicine","health"])) return "health";
+  if(contains(["uhr","uhrzeit","wann","time","when","clock"])) return "time";
+  if(contains(["wo ","adresse","ort","straße","where","address","location","place"])) return "place";
+  if(contains(["oder","erste","zweite","welche","option","choice","first","second","either"])) return "choice";
+
+  const yesNoQuestion =
+    /\b(kannst|könntest|möchtest|willst|hast|bist|ist|soll|passt|geht|kommst|brauchst|do you|can you|could you|would you|are you|is it|does|will you)\b/.test(s);
+  if(yesNoQuestion) return "yesno";
+
+  return "generic";
 }
 
-function showSmartReplies(raw){
- const topic=detectCallTopic(raw);
- const packs=CALL_REPLIES[currentLang]||CALL_REPLIES.en;
- const replies=packs[topic]||packs.generic;
- const area=qs("#phoneSmartReplies");
- area.innerHTML="";
- replies.forEach(sentence=>{
-   const b=document.createElement("button");
-   b.type="button";
-   b.className="phrase-button";
-   b.textContent=sentence;
-   b.addEventListener("click",()=>speak(sentence));
-   area.appendChild(b);
- });
+function renderLiveAiReplies(){
+  const input=qs("#callerSpeech");
+  const area=qs("#liveAiReplies");
+  if(!input || !area) return;
+
+  const lang=(typeof currentLang!=="undefined" ? currentLang : "de");
+  const packs=CALL_AI_DEMO[lang] || CALL_AI_DEMO.en;
+  const intent=detectCallIntent(input.value);
+  const replies=packs[intent] || packs.generic;
+
+  area.innerHTML="";
+  replies.forEach(sentence=>{
+    const b=document.createElement("button");
+    b.type="button";
+    b.textContent=sentence;
+    b.addEventListener("click",()=>{
+      speak(sentence);
+      const st=qs("#callStatus");
+      if(st) st.textContent=(lang==="de" ? "🔊 Antwort wird gesprochen" : "🔊 Speaking reply");
+    });
+    area.appendChild(b);
+  });
 }
 
-let callRecognition=null;
-let callListening=false;
-
-function createCallRecognition(){
- const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!Recognition) return null;
- const r=new Recognition();
- r.continuous=true;
- r.interimResults=true;
- const langMap={de:"de-AT",en:"en-US",fr:"fr-FR",es:"es-ES",it:"it-IT",nl:"nl-NL",pl:"pl-PL",cs:"cs-CZ",sk:"sk-SK",hu:"hu-HU",sl:"sl-SI",hr:"hr-HR",ro:"ro-RO",uk:"uk-UA",tr:"tr-TR"};
- r.lang=langMap[currentLang]||currentLang;
- r.onresult=(event)=>{
-   let finalText="", interim="";
-   for(let i=event.resultIndex;i<event.results.length;i++){
-     const part=event.results[i][0].transcript;
-     if(event.results[i].isFinal) finalText+=part+" ";
-     else interim+=part;
-   }
-   if(finalText){
-     heardText.value=(heardText.value+" "+finalText).trim();
-     showSmartReplies(heardText.value);
-   } else if(interim){
-     showSmartReplies(interim);
-   }
- };
- r.onerror=(e)=>{
-   status.textContent=currentLang==="de"
-     ?"Mithören ist hier nicht verfügbar oder das Mikrofon wurde nicht freigegeben."
-     :"Listening is unavailable or microphone permission was not granted.";
- };
- r.onend=()=>{
-   if(callListening){
-     try{r.start()}catch(e){}
-   }else{
-     qs("#listenButton").classList.remove("listening");
-   }
- };
- return r;
+if(qs("#analyzeCallerButton")){
+  qs("#analyzeCallerButton").addEventListener("click", renderLiveAiReplies);
 }
-
-qs("#listenButton").onclick=()=>{
- callRecognition=createCallRecognition();
- if(!callRecognition){
-   status.textContent=currentLang==="de"
-     ?"Dieser Browser unterstützt die automatische Spracherkennung nicht. Du kannst oben eintippen, was die andere Person gesagt hat, und dann auf „Passende Antworten anzeigen“ drücken."
-     :"This browser does not support automatic speech recognition. Type what the other person said and press “Show matching replies”.";
-   return;
- }
- callListening=true;
- qs("#listenButton").classList.add("listening");
- try{
-   callRecognition.start();
-   status.textContent=currentLang==="de"?"🎧 Tonguebox hört zu und sucht passende Antworten.":"🎧 Tonguebox is listening and suggesting replies.";
- }catch(e){}
-};
-
-qs("#stopListenButton").onclick=()=>{
- callListening=false;
- qs("#listenButton").classList.remove("listening");
- if(callRecognition){try{callRecognition.stop()}catch(e){}}
- status.textContent=currentLang==="de"?"⏹ Mithören gestoppt.":"⏹ Listening stopped.";
-};
-
-qs("#analyzeButton").onclick=()=>showSmartReplies(heardText.value);
-heardText.addEventListener("input",()=>showSmartReplies(heardText.value));
-
-
+if(qs("#callerSpeech")){
+  qs("#callerSpeech").addEventListener("input", ()=>{
+    clearTimeout(window.__callDemoTimer);
+    window.__callDemoTimer=setTimeout(renderLiveAiReplies,250);
+  });
+}
 if(qs("#phoneSpeakButton")){
- qs("#phoneSpeakButton").onclick=()=>speak(phoneText.value);
- qs("#phoneStopButton").onclick=()=>{speechSynthesis.cancel();status.textContent=ui(currentLang).stopped};
- qs("#phoneClearButton").onclick=()=>{phoneText.value="";status.textContent=ui(currentLang).deleted};
+  qs("#phoneSpeakButton").addEventListener("click", ()=>{
+    speak(phoneText.value);
+  });
 }
+if(qs("#demoCallButton")){
+  qs("#demoCallButton").addEventListener("click", ()=>{
+    const st=qs("#callStatus");
+    if(st) st.textContent=(typeof currentLang!=="undefined" && currentLang==="de")
+      ? "🟢 Demo-Anruf aktiv"
+      : "🟢 Demo call active";
+    const input=qs("#callerSpeech");
+    if(input && !input.value.trim()){
+      input.value=(typeof currentLang!=="undefined" && currentLang==="de")
+        ? "Passt dir morgen um 10 Uhr ein Termin?"
+        : "Does an appointment tomorrow at 10 work for you?";
+      renderLiveAiReplies();
+    }
+  });
+}
+if(qs("#hangupButton")){
+  qs("#hangupButton").addEventListener("click", ()=>{
+    speechSynthesis.cancel();
+    const st=qs("#callStatus");
+    if(st) st.textContent=(typeof currentLang!=="undefined" && currentLang==="de")
+      ? "🔴 Demo-Anruf beendet"
+      : "🔴 Demo call ended";
+  });
+}
+
+if(qs("#callerSpeech")) renderLiveAiReplies();
+
 qs("#languageSelect").onchange=e=>{currentLang=e.target.value;applyLanguage()};
 applyLanguage();
 </script>
