@@ -1,1 +1,467 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Tonguebox – Sprich mit deinen Augen</title>
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;padding:12px;font-family:Arial,Helvetica,sans-serif;background:#eef2f5;color:#17212b}
+main{max-width:1000px;margin:auto}
+.logo-area{text-align:center;margin:10px 0 12px}
+.tonguebox-logo{width:140px;max-width:40vw;height:auto;display:block;margin:0 auto;border-radius:22px}
+h1{text-align:center;font-size:2.5rem;margin:5px 0}
+.subtitle{text-align:center;font-size:1.3rem;margin:0 0 18px}
+.language-box{background:#fff;border-radius:18px;padding:16px;margin-bottom:18px;box-shadow:0 3px 10px rgba(0,0,0,.08)}
+.language-box label{display:block;font-weight:700;font-size:1.2rem;margin-bottom:8px}
+button,textarea,select{font-family:inherit}
+button{cursor:pointer}
+select{width:100%;min-height:72px;padding:14px;font-size:1.2rem;border:3px solid #555;border-radius:15px;background:white}
+.accordion{margin-bottom:18px;border-radius:20px;overflow:hidden;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.08)}
+.accordion-toggle{width:100%;min-height:115px;display:flex;align-items:center;justify-content:space-between;gap:15px;padding:22px;border:none;background:#087f8c;color:white;font-size:1.5rem;font-weight:bold;text-align:left}
+.accordion-toggle.open{background:#065f69}
+.accordion-left{display:flex;align-items:center;gap:18px}
+.accordion-icon{font-size:2.3rem}
+.accordion-arrow{font-size:2rem;transition:transform .2s ease}
+.accordion-toggle.open .accordion-arrow{transform:rotate(180deg)}
+.accordion-content{display:none;padding:20px;background:white}
+.accordion-content.open{display:block}
+.yes-no{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.yes,.no{min-height:150px;border:none;border-radius:20px;color:white;font-size:2.5rem;font-weight:bold}
+.yes{background:#198754}.no{background:#c62828}
+textarea{width:100%;min-height:175px;padding:18px;border:3px solid #555;border-radius:16px;font-size:1.5rem}
+.big-button{width:100%;min-height:100px;margin-top:16px;padding:18px;border:none;border-radius:16px;background:#0066cc;color:white;font-size:1.5rem;font-weight:bold}
+.action-grid,.phrase-grid,.topic-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:15px}
+.action-grid button,.phrase-button,.topic-button{min-height:90px;padding:16px;border:none;border-radius:16px;color:white;font-size:1.15rem;font-weight:bold}
+.action-grid button{background:#0066cc}
+.phrase-button{background:#5b3cc4}
+.topic-button{background:#8b2fc9;min-height:110px;font-size:1.25rem}
+.topic-button.active{outline:6px solid #ffd400}
+.suggestion-area{margin-top:25px;padding-top:20px;border-top:3px solid #ddd}
+.suggestion-heading{font-size:1.35rem;margin-bottom:15px;font-weight:bold}
+.saved-button{background:#7349c6}
+.delete-button{width:100%;min-height:65px;margin-top:8px;border:none;border-radius:14px;background:#b71c1c;color:white;font-size:1rem;font-weight:bold}
+button:focus-visible,textarea:focus-visible,select:focus-visible{outline:7px solid #ffd400;outline-offset:5px}
 
+.listening {
+  background:#198754 !important;
+}
+#heardText {
+  margin-top:16px;
+  min-height:130px;
+}
+
+.phone-note{margin:0 0 16px;padding:14px 16px;border-radius:14px;background:#f3f6f8;border:2px solid #cfd8dc;font-size:1.05rem;line-height:1.45}
+#status{padding:15px;margin-top:15px;font-size:1.1rem;font-weight:bold;text-align:center}
+@media(max-width:650px){
+body{padding:8px}h1{font-size:2rem}.accordion-toggle{min-height:125px;padding:18px}
+.phrase-grid,.topic-grid{grid-template-columns:1fr}.yes,.no{min-height:135px;font-size:2.2rem}
+}
+</style>
+</head>
+<body>
+<main>
+<div class="logo-area">
+<img src="./Tonguebox.png" alt="Tonguebox Logo" class="tonguebox-logo">
+</div>
+<h1>Tonguebox</h1>
+<p class="subtitle" id="subtitle"></p>
+
+<div class="language-box">
+<label for="languageSelect" id="languageLabel"></label>
+<select id="languageSelect" aria-label="Sprache auswählen">
+<option value="de">🇩🇪 Deutsch</option>
+<option value="en">🇬🇧 English</option>
+<option value="fr">🇫🇷 Français</option>
+<option value="es">🇪🇸 Español</option>
+<option value="it">🇮🇹 Italiano</option>
+<option value="nl">🇳🇱 Nederlands</option>
+<option value="pl">🇵🇱 Polski</option>
+<option value="cs">🇨🇿 Čeština</option>
+<option value="sk">🇸🇰 Slovenčina</option>
+<option value="hu">🇭🇺 Magyar</option>
+<option value="sl">🇸🇮 Slovenščina</option>
+<option value="hr">🇭🇷 Hrvatski</option>
+<option value="ro">🇷🇴 Română</option>
+<option value="uk">🇺🇦 Українська</option>
+<option value="tr">🇹🇷 Türkçe</option>
+</select>
+</div>
+
+<section class="accordion">
+<button class="accordion-toggle" data-target="yesno"><span class="accordion-left"><span class="accordion-icon">✅</span><span data-i18n="yesNo"></span></span><span class="accordion-arrow">▼</span></button>
+<div id="yesno" class="accordion-content"><div class="yes-no"><button class="yes" id="yesButton"></button><button class="no" id="noButton"></button></div></div>
+</section>
+
+<section class="accordion">
+<button class="accordion-toggle" data-target="textbereich"><span class="accordion-left"><span class="accordion-icon">💬</span><span data-i18n="speakText"></span></span><span class="accordion-arrow">▼</span></button>
+<div id="textbereich" class="accordion-content">
+<textarea id="speechText"></textarea>
+<button id="speakButton" class="big-button"></button>
+<div class="action-grid"><button id="stopButton"></button><button id="clearButton"></button><button id="saveButton"></button></div>
+</div>
+</section>
+
+<section class="accordion">
+<button class="accordion-toggle" data-target="phrases"><span class="accordion-left"><span class="accordion-icon">🧠</span><span data-i18n="suggestions"></span></span><span class="accordion-arrow">▼</span></button>
+<div id="phrases" class="accordion-content">
+<div class="topic-grid" id="topicGrid"></div>
+<div class="suggestion-area"><div id="suggestionHeading" class="suggestion-heading"></div><div id="phraseSuggestions" class="phrase-grid"></div></div>
+</div>
+</section>
+
+<section class="accordion">
+<button class="accordion-toggle" data-target="home"><span class="accordion-left"><span class="accordion-icon">🏠</span><span data-i18n="home"></span></span><span class="accordion-arrow">▼</span></button>
+<div id="home" class="accordion-content"><div id="homePhrases" class="phrase-grid"></div></div>
+</section>
+
+<section class="accordion">
+<button class="accordion-toggle" data-target="hospital"><span class="accordion-left"><span class="accordion-icon">🏥</span><span data-i18n="hospital"></span></span><span class="accordion-arrow">▼</span></button>
+<div id="hospital" class="accordion-content"><div id="hospitalPhrases" class="phrase-grid"></div></div>
+</section>
+
+<section class="accordion">
+<button class="accordion-toggle" data-target="food"><span class="accordion-left"><span class="accordion-icon">🍽️</span><span data-i18n="food"></span></span><span class="accordion-arrow">▼</span></button>
+<div id="food" class="accordion-content"><div id="foodPhrases" class="phrase-grid"></div></div>
+</section>
+
+<section class="accordion">
+<button class="accordion-toggle" data-target="phone"><span class="accordion-left"><span class="accordion-icon">📞</span><span data-i18n="phone"></span></span><span class="accordion-arrow">▼</span></button>
+<div id="phone" class="accordion-content">
+  <div class="phone-panel">
+    <p class="phone-note" id="phoneNote">
+      Tonguebox kann – wenn der Browser Spracherkennung unterstützt – Gesprochenes über das Mikrofon erkennen
+      und dazu passende Schnellantworten vorschlagen.
+    </p>
+
+    <div class="suggestion-heading" id="listenHeading">🎧 Was sagt die andere Person?</div>
+
+    <div class="action-grid">
+      <button id="listenButton">🎧 Mithören & Vorschläge</button>
+      <button id="stopListenButton">⏹ Mithören stoppen</button>
+    </div>
+
+    <textarea id="heardText" placeholder="Erkannter Text erscheint hier. Du kannst ihn auch selbst eingeben."></textarea>
+    <button id="analyzeButton" class="big-button">🧠 Passende Antworten anzeigen</button>
+
+    <div class="suggestion-area">
+      <div class="suggestion-heading" id="phoneQuickHeading">⚡ Passende Schnellantworten</div>
+      <div id="phoneSmartReplies" class="phrase-grid"></div>
+    </div>
+
+    <div class="suggestion-area">
+      <div class="suggestion-heading" id="myPhoneReplyHeading">✍️ Eigene Antwort</div>
+      <textarea id="phoneText" placeholder="Eigene Antwort eingeben ..."></textarea>
+      <button id="phoneSpeakButton" class="big-button">📞 Antwort sprechen</button>
+      <div class="action-grid">
+        <button id="phoneStopButton">⏹ Stoppen</button>
+        <button id="phoneClearButton">🗑 Text löschen</button>
+      </div>
+    </div>
+
+    <div class="suggestion-area">
+      <div class="suggestion-heading" id="phoneQuickFixedHeading">☎️ Allgemeine Telefonsätze</div>
+      <div id="phonePhrases" class="phrase-grid"></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section class="accordion">
+<button class="accordion-toggle" data-target="voice"><span class="accordion-left"><span class="accordion-icon">🎙️</span><span data-i18n="voice"></span></span><span class="accordion-arrow">▼</span></button>
+<div id="voice" class="accordion-content"><select id="voiceSelect"></select></div>
+</section>
+
+<section class="accordion">
+<button class="accordion-toggle" data-target="saved"><span class="accordion-left"><span class="accordion-icon">❤️</span><span data-i18n="saved"></span></span><span class="accordion-arrow">▼</span></button>
+<div id="saved" class="accordion-content"><div id="savedSentences" class="phrase-grid"></div></div>
+</section>
+
+<div id="status" role="status" aria-live="polite"></div>
+</main>
+
+<script>
+const UI={
+de:["Sprich mit deinen Augen","🌍 Sprache auswählen","Ja / Nein","JA","NEIN","Text sprechen","Hier deinen Text schreiben ...","🔊 Vorlesen","⏹ Stoppen","🗑 Text löschen","💾 Satz speichern","Phrasenvorschläge","Zuhause","Krankenhaus","Essen & Trinken","Telefon","Stimme auswählen","Meine Sätze","Wähle ein Thema aus.","– passende Sätze","Bereit.","💾 Satz gespeichert.","Dieser Satz ist bereits gespeichert.","Bitte zuerst einen Satz eingeben.","🗑 Text gelöscht.","⏹ Sprachausgabe gestoppt.","🔊 Tonguebox spricht.","Noch keine eigenen Sätze gespeichert.","🗑 Löschen"],
+en:["Speak with your eyes","🌍 Select language","Yes / No","YES","NO","Speak text","Type your text here ...","🔊 Speak","⏹ Stop","🗑 Clear text","💾 Save sentence","Phrase suggestions","Home","Hospital","Food & Drink","Phone","Select voice","My sentences","Choose a topic.","– matching sentences","Ready.","💾 Sentence saved.","This sentence is already saved.","Please enter a sentence first.","🗑 Text cleared.","⏹ Speech stopped.","🔊 Tonguebox is speaking.","No saved sentences yet.","🗑 Delete"],
+fr:["Parlez avec vos yeux","🌍 Choisir la langue","Oui / Non","OUI","NON","Lire le texte","Écrivez votre texte ici ...","🔊 Lire","⏹ Arrêter","🗑 Effacer","💾 Enregistrer","Suggestions de phrases","Maison","Hôpital","Manger & Boire","Téléphone","Choisir la voix","Mes phrases","Choisissez un thème.","– phrases adaptées","Prêt.","💾 Phrase enregistrée.","Cette phrase est déjà enregistrée.","Veuillez d'abord saisir une phrase.","🗑 Texte effacé.","⏹ Lecture arrêtée.","🔊 Tonguebox parle.","Aucune phrase enregistrée.","🗑 Supprimer"],
+es:["Habla con tus ojos","🌍 Seleccionar idioma","Sí / No","SÍ","NO","Hablar texto","Escribe tu texto aquí ...","🔊 Hablar","⏹ Detener","🗑 Borrar texto","💾 Guardar frase","Sugerencias de frases","Casa","Hospital","Comida y bebida","Teléfono","Seleccionar voz","Mis frases","Elige un tema.","– frases adecuadas","Listo.","💾 Frase guardada.","Esta frase ya está guardada.","Primero escribe una frase.","🗑 Texto borrado.","⏹ Voz detenida.","🔊 Tonguebox está hablando.","Aún no hay frases guardadas.","🗑 Eliminar"],
+it:["Parla con i tuoi occhi","🌍 Seleziona lingua","Sì / No","SÌ","NO","Leggi testo","Scrivi qui il tuo testo ...","🔊 Leggi","⏹ Stop","🗑 Cancella testo","💾 Salva frase","Suggerimenti di frasi","Casa","Ospedale","Cibo e bevande","Telefono","Seleziona voce","Le mie frasi","Scegli un argomento.","– frasi adatte","Pronto.","💾 Frase salvata.","Questa frase è già salvata.","Inserisci prima una frase.","🗑 Testo cancellato.","⏹ Voce interrotta.","🔊 Tonguebox sta parlando.","Nessuna frase salvata.","🗑 Elimina"],
+nl:["Spreek met je ogen","🌍 Taal kiezen","Ja / Nee","JA","NEE","Tekst uitspreken","Typ hier je tekst ...","🔊 Voorlezen","⏹ Stoppen","🗑 Tekst wissen","💾 Zin opslaan","Zinsuggesties","Thuis","Ziekenhuis","Eten & Drinken","Telefoon","Stem kiezen","Mijn zinnen","Kies een onderwerp.","– passende zinnen","Klaar.","💾 Zin opgeslagen.","Deze zin is al opgeslagen.","Voer eerst een zin in.","🗑 Tekst gewist.","⏹ Spraak gestopt.","🔊 Tonguebox spreekt.","Nog geen zinnen opgeslagen.","🗑 Verwijderen"],
+pl:["Mów oczami","🌍 Wybierz język","Tak / Nie","TAK","NIE","Odczytaj tekst","Wpisz tutaj tekst ...","🔊 Odczytaj","⏹ Zatrzymaj","🗑 Wyczyść tekst","💾 Zapisz zdanie","Propozycje zwrotów","Dom","Szpital","Jedzenie i picie","Telefon","Wybierz głos","Moje zdania","Wybierz temat.","– pasujące zdania","Gotowe.","💾 Zdanie zapisane.","To zdanie jest już zapisane.","Najpierw wpisz zdanie.","🗑 Tekst usunięty.","⏹ Mowa zatrzymana.","🔊 Tonguebox mówi.","Brak zapisanych zdań.","🗑 Usuń"],
+cs:["Mluvte očima","🌍 Vyberte jazyk","Ano / Ne","ANO","NE","Přečíst text","Napište sem text ...","🔊 Přečíst","⏹ Zastavit","🗑 Smazat text","💾 Uložit větu","Návrhy frází","Domov","Nemocnice","Jídlo a pití","Telefon","Vybrat hlas","Moje věty","Vyberte téma.","– vhodné věty","Připraveno.","💾 Věta uložena.","Tato věta je již uložena.","Nejprve zadejte větu.","🗑 Text smazán.","⏹ Řeč zastavena.","🔊 Tonguebox mluví.","Žádné uložené věty.","🗑 Smazat"],
+sk:["Hovorte očami","🌍 Vyberte jazyk","Áno / Nie","ÁNO","NIE","Prečítať text","Napíšte sem text ...","🔊 Prečítať","⏹ Zastaviť","🗑 Vymazať text","💾 Uložiť vetu","Návrhy fráz","Domov","Nemocnica","Jedlo a pitie","Telefón","Vybrať hlas","Moje vety","Vyberte tému.","– vhodné vety","Pripravené.","💾 Veta uložená.","Táto veta je už uložená.","Najprv zadajte vetu.","🗑 Text vymazaný.","⏹ Reč zastavená.","🔊 Tonguebox hovorí.","Žiadne uložené vety.","🗑 Vymazať"],
+hu:["Beszélj a szemeddel","🌍 Nyelv kiválasztása","Igen / Nem","IGEN","NEM","Szöveg felolvasása","Írd ide a szöveget ...","🔊 Felolvasás","⏹ Leállítás","🗑 Szöveg törlése","💾 Mondat mentése","Mondatjavaslatok","Otthon","Kórház","Evés és ivás","Telefon","Hang kiválasztása","Mondataim","Válassz témát.","– megfelelő mondatok","Kész.","💾 Mondat elmentve.","Ez a mondat már el van mentve.","Először írj be egy mondatot.","🗑 Szöveg törölve.","⏹ Beszéd leállítva.","🔊 Tonguebox beszél.","Még nincs mentett mondat.","🗑 Törlés"],
+sl:["Govori z očmi","🌍 Izberi jezik","Da / Ne","DA","NE","Preberi besedilo","Tukaj vnesi besedilo ...","🔊 Preberi","⏹ Ustavi","🗑 Izbriši besedilo","💾 Shrani stavek","Predlogi stavkov","Doma","Bolnišnica","Hrana in pijača","Telefon","Izberi glas","Moji stavki","Izberi temo.","– ustrezni stavki","Pripravljeno.","💾 Stavek shranjen.","Ta stavek je že shranjen.","Najprej vnesi stavek.","🗑 Besedilo izbrisano.","⏹ Govor ustavljen.","🔊 Tonguebox govori.","Ni shranjenih stavkov.","🗑 Izbriši"],
+hr:["Govori očima","🌍 Odaberi jezik","Da / Ne","DA","NE","Izgovori tekst","Ovdje upiši tekst ...","🔊 Izgovori","⏹ Zaustavi","🗑 Izbriši tekst","💾 Spremi rečenicu","Prijedlozi fraza","Kod kuće","Bolnica","Hrana i piće","Telefon","Odaberi glas","Moje rečenice","Odaberi temu.","– odgovarajuće rečenice","Spremno.","💾 Rečenica spremljena.","Ova rečenica je već spremljena.","Najprije upiši rečenicu.","🗑 Tekst izbrisan.","⏹ Govor zaustavljen.","🔊 Tonguebox govori.","Nema spremljenih rečenica.","🗑 Izbriši"],
+ro:["Vorbește cu ochii","🌍 Selectează limba","Da / Nu","DA","NU","Citește textul","Scrie textul aici ...","🔊 Citește","⏹ Oprește","🗑 Șterge textul","💾 Salvează propoziția","Sugestii de fraze","Acasă","Spital","Mâncare și băutură","Telefon","Selectează vocea","Propozițiile mele","Alege un subiect.","– propoziții potrivite","Gata.","💾 Propoziție salvată.","Această propoziție este deja salvată.","Mai întâi scrie o propoziție.","🗑 Text șters.","⏹ Voce oprită.","🔊 Tonguebox vorbește.","Nu există propoziții salvate.","🗑 Șterge"],
+uk:["Говоріть очима","🌍 Оберіть мову","Так / Ні","ТАК","НІ","Озвучити текст","Введіть текст тут ...","🔊 Озвучити","⏹ Зупинити","🗑 Очистити текст","💾 Зберегти фразу","Підказки фраз","Дім","Лікарня","Їжа та напої","Телефон","Обрати голос","Мої фрази","Оберіть тему.","– відповідні фрази","Готово.","💾 Фразу збережено.","Цю фразу вже збережено.","Спочатку введіть фразу.","🗑 Текст очищено.","⏹ Мовлення зупинено.","🔊 Tonguebox говорить.","Збережених фраз ще немає.","🗑 Видалити"],
+tr:["Gözlerinle konuş","🌍 Dil seç","Evet / Hayır","EVET","HAYIR","Metni seslendir","Metninizi buraya yazın ...","🔊 Seslendir","⏹ Durdur","🗑 Metni sil","💾 Cümleyi kaydet","Cümle önerileri","Ev","Hastane","Yeme & İçme","Telefon","Ses seç","Cümlelerim","Bir konu seçin.","– uygun cümleler","Hazır.","💾 Cümle kaydedildi.","Bu cümle zaten kayıtlı.","Önce bir cümle girin.","🗑 Metin silindi.","⏹ Konuşma durduruldu.","🔊 Tonguebox konuşuyor.","Henüz kayıtlı cümle yok.","🗑 Sil"]
+};
+const K=["subtitle","language","yesNo","yes","no","speakText","placeholder","speak","stop","clear","save","suggestions","home","hospital","food","phone","voice","saved","chooseTopic","matching","ready","savedOk","duplicate","empty","deleted","stopped","speaking","noneSaved","delete"];
+function ui(lang){const a=UI[lang]||UI.de;return Object.fromEntries(K.map((k,i)=>[k,a[i]]));}
+
+const PHRASES={
+de:{topics:[["☕ Kaffee","Ich möchte einen Kaffee.","Bitte mit Milch.","Bitte ohne Milch.","Bitte mit Zucker."],["🥤 Trinken","Ich möchte etwas trinken.","Ich habe Durst.","Ich möchte Wasser."],["🍽️ Essen","Ich möchte etwas essen.","Ich habe Hunger.","Ich bin fertig."],["🏥 Schmerzen","Ich habe Schmerzen.","Die Schmerzen sind stark.","Bitte helfen Sie mir."],["🚻 WC","Ich muss auf die Toilette.","Bitte helfen Sie mir zur Toilette."],["🆘 Hilfe","Ich brauche Hilfe.","Kannst du mir bitte helfen?"],["♿ Rollstuhl","Ich brauche meinen Rollstuhl.","Bitte ändern Sie meine Position."]],home:["Hallo.","Wie geht es dir?","Kannst du mir bitte helfen?","Ich möchte etwas trinken.","Ich möchte mich ausruhen.","Danke."],hospital:["Ich kann nicht sprechen und kommuniziere über dieses Gerät.","Bitte geben Sie mir Zeit zum Antworten.","Ich brauche Hilfe.","Ich habe Schmerzen.","Bitte erklären Sie mir, was Sie machen."],food:["Ich möchte etwas essen.","Ich möchte etwas trinken.","Ich habe Hunger.","Ich habe Durst.","Ich bin fertig."],phone:["Ich kommuniziere über eine Sprachausgabe.","Bitte warten Sie, während ich meine Antwort schreibe.","Bitte sprechen Sie langsamer.","Bitte wiederholen Sie das."]},
+en:{topics:[["☕ Coffee","I would like a coffee.","With milk, please.","Without milk, please.","With sugar, please."],["🥤 Drink","I would like something to drink.","I am thirsty.","I would like water."],["🍽️ Food","I would like something to eat.","I am hungry.","I am finished."],["🏥 Pain","I am in pain.","The pain is severe.","Please help me."],["🚻 Toilet","I need to use the toilet.","Please help me to the toilet."],["🆘 Help","I need help.","Can you please help me?"],["♿ Wheelchair","I need my wheelchair.","Please change my position."]],home:["Hello.","How are you?","Can you please help me?","I would like something to drink.","I would like to rest.","Thank you."],hospital:["I cannot speak and communicate using this device.","Please give me time to answer.","I need help.","I am in pain.","Please explain what you are doing."],food:["I would like something to eat.","I would like something to drink.","I am hungry.","I am thirsty.","I am finished."],phone:["I communicate using speech output.","Please wait while I write my answer.","Please speak more slowly.","Please repeat that."]}
+};
+const genericTranslations={
+fr:["Bonjour.","Comment allez-vous ?","Pouvez-vous m'aider ?","Je voudrais boire quelque chose.","Je voudrais me reposer.","Merci."],
+es:["Hola.","¿Cómo estás?","¿Puedes ayudarme?","Quiero beber algo.","Quiero descansar.","Gracias."],
+it:["Ciao.","Come stai?","Puoi aiutarmi?","Vorrei bere qualcosa.","Vorrei riposare.","Grazie."],
+nl:["Hallo.","Hoe gaat het?","Kun je me helpen?","Ik wil iets drinken.","Ik wil rusten.","Dank je."],
+pl:["Cześć.","Jak się masz?","Czy możesz mi pomóc?","Chcę się napić.","Chcę odpocząć.","Dziękuję."],
+cs:["Ahoj.","Jak se máš?","Můžeš mi pomoci?","Chci se napít.","Chci si odpočinout.","Děkuji."],
+sk:["Ahoj.","Ako sa máš?","Môžeš mi pomôcť?","Chcem sa napiť.","Chcem si oddýchnuť.","Ďakujem."],
+hu:["Szia.","Hogy vagy?","Tudsz segíteni?","Szeretnék inni valamit.","Szeretnék pihenni.","Köszönöm."],
+sl:["Živjo.","Kako si?","Mi lahko pomagaš?","Rad bi nekaj pil.","Rad bi počival.","Hvala."],
+hr:["Bok.","Kako si?","Možeš li mi pomoći?","Želim nešto popiti.","Želim se odmoriti.","Hvala."],
+ro:["Salut.","Ce mai faci?","Mă poți ajuta?","Aș dori ceva de băut.","Aș dori să mă odihnesc.","Mulțumesc."],
+uk:["Привіт.","Як справи?","Можете мені допомогти?","Я хочу щось випити.","Я хочу відпочити.","Дякую."],
+tr:["Merhaba.","Nasılsın?","Bana yardım eder misin?","Bir şey içmek istiyorum.","Dinlenmek istiyorum.","Teşekkür ederim."]
+};
+
+function phraseData(lang){
+ if(PHRASES[lang]) return PHRASES[lang];
+ const h=genericTranslations[lang]||PHRASES.en.home;
+ return {topics:PHRASES.en.topics,home:h,hospital:PHRASES.en.hospital,food:PHRASES.en.food,phone:PHRASES.en.phone};
+}
+
+let currentLang=localStorage.getItem("tongueboxLanguage")||"de";
+if(!UI[currentLang]) currentLang="de";
+let voices=[];
+const qs=s=>document.querySelector(s), qsa=s=>document.querySelectorAll(s);
+const status=qs("#status"), textField=qs("#speechText"), voiceSelect=qs("#voiceSelect"), phoneText=qs("#phoneText"), heardText=qs("#heardText");
+
+function applyLanguage(){
+ const t=ui(currentLang), d=phraseData(currentLang);
+ document.documentElement.lang=currentLang;
+ localStorage.setItem("tongueboxLanguage",currentLang);
+ qs("#languageSelect").value=currentLang;
+ qs("#subtitle").textContent=t.subtitle; qs("#languageLabel").textContent=t.language;
+ qsa("[data-i18n]").forEach(el=>el.textContent=t[el.dataset.i18n]);
+ qs("#yesButton").textContent=t.yes; qs("#noButton").textContent=t.no;
+ textField.placeholder=t.placeholder; qs("#speakButton").textContent=t.speak;
+ qs("#stopButton").textContent=t.stop; qs("#clearButton").textContent=t.clear; qs("#saveButton").textContent=t.save;
+ status.textContent=t.ready; qs("#suggestionHeading").textContent=t.chooseTopic; qs("#phraseSuggestions").innerHTML="";
+ if(qs("#phoneNote")){
+   const ptxt = {
+     de:{
+       note:"Tonguebox kann – wenn der Browser Spracherkennung unterstützt – Gesprochenes über das Mikrofon erkennen und dazu passende Schnellantworten vorschlagen.",
+       listen:"🎧 Was sagt die andere Person?", start:"🎧 Mithören & Vorschläge", stopListen:"⏹ Mithören stoppen",
+       heard:"Erkannter Text erscheint hier. Du kannst ihn auch selbst eingeben.", analyze:"🧠 Passende Antworten anzeigen",
+       smart:"⚡ Passende Schnellantworten", own:"✍️ Eigene Antwort", ownph:"Eigene Antwort eingeben ...",
+       speak:"📞 Antwort sprechen", fixed:"☎️ Allgemeine Telefonsätze"
+     },
+     en:{
+       note:"If your browser supports speech recognition, Tonguebox can listen through the microphone and suggest quick replies that match what was said.",
+       listen:"🎧 What is the other person saying?", start:"🎧 Listen & suggest replies", stopListen:"⏹ Stop listening",
+       heard:"Recognized speech appears here. You can also type it yourself.", analyze:"🧠 Show matching replies",
+       smart:"⚡ Matching quick replies", own:"✍️ My reply", ownph:"Type your own reply ...",
+       speak:"📞 Speak reply", fixed:"☎️ General phone phrases"
+     }
+   };
+   const p=ptxt[currentLang]||ptxt.en;
+   qs("#phoneNote").textContent=p.note;
+   qs("#listenHeading").textContent=p.listen;
+   qs("#listenButton").textContent=p.start;
+   qs("#stopListenButton").textContent=p.stopListen;
+   heardText.placeholder=p.heard;
+   qs("#analyzeButton").textContent=p.analyze;
+   qs("#phoneQuickHeading").textContent=p.smart;
+   qs("#myPhoneReplyHeading").textContent=p.own;
+   phoneText.placeholder=p.ownph;
+   qs("#phoneSpeakButton").textContent=p.speak;
+   qs("#phoneStopButton").textContent=t.stop;
+   qs("#phoneClearButton").textContent=t.clear;
+   qs("#phoneQuickFixedHeading").textContent=p.fixed;
+ }
+ renderTopics(d.topics); renderGroup("homePhrases",d.home); renderGroup("hospitalPhrases",d.hospital); renderGroup("foodPhrases",d.food); renderGroup("phonePhrases",d.phone);
+ loadVoices(); showSavedSentences();
+}
+function renderGroup(id,arr){
+ const area=qs("#"+id);area.innerHTML="";
+ arr.forEach(s=>{const b=document.createElement("button");b.className="phrase-button";b.type="button";b.textContent=s;b.onclick=()=>speak(s);area.appendChild(b);});
+}
+function renderTopics(topics){
+ const grid=qs("#topicGrid");grid.innerHTML="";
+ topics.forEach(arr=>{const b=document.createElement("button");b.className="topic-button";b.type="button";b.textContent=arr[0];
+ b.onclick=()=>{qsa(".topic-button").forEach(x=>x.classList.remove("active"));b.classList.add("active");showSuggestions(arr)};grid.appendChild(b);});
+}
+function showSuggestions(arr){
+ const t=ui(currentLang),area=qs("#phraseSuggestions");qs("#suggestionHeading").textContent=arr[0]+" "+t.matching;area.innerHTML="";
+ arr.slice(1).forEach(s=>{const b=document.createElement("button");b.className="phrase-button";b.type="button";b.textContent=s;b.onclick=()=>speak(s);area.appendChild(b);});
+}
+qsa(".accordion-toggle").forEach(button=>button.addEventListener("click",()=>{
+ const target=qs("#"+button.dataset.target), section=button.closest(".accordion"), wasOpen=target.classList.contains("open");
+ qsa(".accordion-content").forEach(x=>x.classList.remove("open"));qsa(".accordion-toggle").forEach(x=>{x.classList.remove("open");x.setAttribute("aria-expanded","false")});
+ if(!wasOpen){target.classList.add("open");button.classList.add("open");button.setAttribute("aria-expanded","true");setTimeout(()=>section.scrollIntoView({behavior:"smooth",block:"center"}),180);}
+}));
+function loadVoices(){
+ voices=speechSynthesis.getVoices();voiceSelect.innerHTML="";
+ if(!voices.length){const o=document.createElement("option");o.textContent="Stimmen werden geladen ...";voiceSelect.appendChild(o);return}
+ let filtered=voices.filter(v=>v.lang.toLowerCase().startsWith(currentLang.toLowerCase()));
+ if(!filtered.length) filtered=voices;
+ filtered.forEach(v=>{const o=document.createElement("option");o.value=v.voiceURI;o.textContent=v.name+" – "+v.lang;voiceSelect.appendChild(o)});
+ const saved=localStorage.getItem("tongueboxVoice");if(saved&&filtered.some(v=>v.voiceURI===saved))voiceSelect.value=saved;
+}
+speechSynthesis.onvoiceschanged=loadVoices;setTimeout(loadVoices,300);setTimeout(loadVoices,1200);
+voiceSelect.onchange=()=>localStorage.setItem("tongueboxVoice",voiceSelect.value);
+function speak(text){
+ const t=ui(currentLang);if(!text||!text.trim()){status.textContent=t.empty;return}
+ speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);const selected=voices.find(v=>v.voiceURI===voiceSelect.value);
+ if(selected){u.voice=selected;u.lang=selected.lang}else u.lang=currentLang;
+ speechSynthesis.speak(u);status.textContent=t.speaking;
+}
+qs("#yesButton").onclick=()=>speak(ui(currentLang).yes);qs("#noButton").onclick=()=>speak(ui(currentLang).no);
+qs("#speakButton").onclick=()=>speak(textField.value);
+qs("#stopButton").onclick=()=>{speechSynthesis.cancel();status.textContent=ui(currentLang).stopped};
+qs("#clearButton").onclick=()=>{textField.value="";status.textContent=ui(currentLang).deleted};
+function getSaved(){try{return JSON.parse(localStorage.getItem("tongueboxSentences")||"[]")}catch(e){return[]}}
+qs("#saveButton").onclick=()=>{const t=ui(currentLang),s=textField.value.trim();if(!s){status.textContent=t.empty;return}
+ const list=getSaved();if(!list.includes(s)){list.push(s);localStorage.setItem("tongueboxSentences",JSON.stringify(list));status.textContent=t.savedOk}else status.textContent=t.duplicate;showSavedSentences();}
+function showSavedSentences(){
+ const t=ui(currentLang),area=qs("#savedSentences"),list=getSaved();area.innerHTML="";
+ if(!list.length){const p=document.createElement("p");p.textContent=t.noneSaved;area.appendChild(p);return}
+ list.forEach((s,i)=>{const w=document.createElement("div"),b=document.createElement("button"),d=document.createElement("button");
+ b.className="phrase-button saved-button";b.textContent=s;b.onclick=()=>speak(s);d.className="delete-button";d.textContent=t.delete;
+ d.onclick=()=>{const x=getSaved();x.splice(i,1);localStorage.setItem("tongueboxSentences",JSON.stringify(x));showSavedSentences()};w.append(b,d);area.appendChild(w);});
+}
+
+const CALL_REPLIES = {
+ de:{
+   generic:["Ja.","Nein.","Einen Moment bitte, ich schreibe gerade.","Bitte wiederholen.","Bitte sprich etwas langsamer.","Das habe ich verstanden."],
+   greeting:["Hallo!","Mir geht es gut, danke.","Danke, und dir?","Schön, von dir zu hören."],
+   appointment:["Ja, das passt für mich.","Nein, dieser Termin passt leider nicht.","Welche Uhrzeit genau?","Kannst du mir das Datum noch einmal sagen?"],
+   question:["Einen Moment bitte, ich schreibe meine Antwort.","Kannst du die Frage bitte wiederholen?","Ja.","Nein.","Das muss ich kurz überlegen."],
+   food:["Ja, gerne.","Nein, danke.","Ich möchte etwas trinken.","Ich möchte etwas essen.","Was gibt es genau?"],
+   health:["Ja, ich habe Schmerzen.","Nein, im Moment nicht.","Bitte erklären Sie mir das noch einmal.","Ich brauche einen Moment.","Bitte helfen Sie mir."],
+   place:["Wo genau?","Ja, dort können wir uns treffen.","Kannst du mir die Adresse schicken?","Wann soll ich dort sein?"],
+   thanks:["Gerne.","Bitte.","Danke dir auch.","Kein Problem."],
+   call:["Ja, ich höre dich.","Bitte sprich langsamer.","Bitte wiederholen.","Einen Moment, ich schreibe gerade."]
+ },
+ en:{
+   generic:["Yes.","No.","One moment please, I am typing.","Please repeat that.","Please speak a little more slowly.","I understood that."],
+   greeting:["Hello!","I am fine, thank you.","Thank you, and you?","Nice to hear from you."],
+   appointment:["Yes, that works for me.","No, that time does not work for me.","What time exactly?","Can you tell me the date again?"],
+   question:["One moment please, I am typing my answer.","Could you repeat the question?","Yes.","No.","I need a moment to think."],
+   food:["Yes, please.","No, thank you.","I would like something to drink.","I would like something to eat.","What exactly is available?"],
+   health:["Yes, I am in pain.","No, not at the moment.","Please explain that again.","I need a moment.","Please help me."],
+   place:["Where exactly?","Yes, we can meet there.","Can you send me the address?","When should I be there?"],
+   thanks:["You're welcome.","Please.","Thank you too.","No problem."],
+   call:["Yes, I can hear you.","Please speak more slowly.","Please repeat that.","One moment, I am typing."]
+ }
+};
+
+function detectCallTopic(raw){
+ const s=(raw||"").toLowerCase();
+ const sets={
+   greeting:["hallo","servus","grüß","guten morgen","guten tag","wie geht","hello","hi","good morning","how are"],
+   appointment:["termin","datum","uhrzeit","treffen","morgen","montag","dienstag","mittwoch","donnerstag","freitag","samstag","sonntag","appointment","meeting","date","time","tomorrow"],
+   food:["essen","trinken","kaffee","wasser","hunger","durst","frühstück","mittagessen","abendessen","eat","drink","coffee","water","hungry","thirsty","lunch","dinner"],
+   health:["schmerz","weh","arzt","medizin","tablette","pflege","krankenhaus","gesund","pain","doctor","medicine","hospital","health"],
+   place:["wo ","adresse","ort","straße","fahren","kommen","where","address","place","street","come"],
+   thanks:["danke","vielen dank","thank you","thanks"],
+   call:["hörst","verstehst","laut","leise","wiederholen","telefon","hear me","understand","repeat","phone","call"]
+ };
+ for(const [topic,words] of Object.entries(sets)){
+   if(words.some(w=>s.includes(w))) return topic;
+ }
+ if(/[?]$/.test(s) || /\b(was|wie|warum|wann|wer|welche|kannst|könntest|möchtest|willst|do you|can you|what|how|why|when|who|would you)\b/.test(s)) return "question";
+ return "generic";
+}
+
+function showSmartReplies(raw){
+ const topic=detectCallTopic(raw);
+ const packs=CALL_REPLIES[currentLang]||CALL_REPLIES.en;
+ const replies=packs[topic]||packs.generic;
+ const area=qs("#phoneSmartReplies");
+ area.innerHTML="";
+ replies.forEach(sentence=>{
+   const b=document.createElement("button");
+   b.type="button";
+   b.className="phrase-button";
+   b.textContent=sentence;
+   b.addEventListener("click",()=>speak(sentence));
+   area.appendChild(b);
+ });
+}
+
+let callRecognition=null;
+let callListening=false;
+
+function createCallRecognition(){
+ const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!Recognition) return null;
+ const r=new Recognition();
+ r.continuous=true;
+ r.interimResults=true;
+ const langMap={de:"de-AT",en:"en-US",fr:"fr-FR",es:"es-ES",it:"it-IT",nl:"nl-NL",pl:"pl-PL",cs:"cs-CZ",sk:"sk-SK",hu:"hu-HU",sl:"sl-SI",hr:"hr-HR",ro:"ro-RO",uk:"uk-UA",tr:"tr-TR"};
+ r.lang=langMap[currentLang]||currentLang;
+ r.onresult=(event)=>{
+   let finalText="", interim="";
+   for(let i=event.resultIndex;i<event.results.length;i++){
+     const part=event.results[i][0].transcript;
+     if(event.results[i].isFinal) finalText+=part+" ";
+     else interim+=part;
+   }
+   if(finalText){
+     heardText.value=(heardText.value+" "+finalText).trim();
+     showSmartReplies(heardText.value);
+   } else if(interim){
+     showSmartReplies(interim);
+   }
+ };
+ r.onerror=(e)=>{
+   status.textContent=currentLang==="de"
+     ?"Mithören ist hier nicht verfügbar oder das Mikrofon wurde nicht freigegeben."
+     :"Listening is unavailable or microphone permission was not granted.";
+ };
+ r.onend=()=>{
+   if(callListening){
+     try{r.start()}catch(e){}
+   }else{
+     qs("#listenButton").classList.remove("listening");
+   }
+ };
+ return r;
+}
+
+qs("#listenButton").onclick=()=>{
+ callRecognition=createCallRecognition();
+ if(!callRecognition){
+   status.textContent=currentLang==="de"
+     ?"Dieser Browser unterstützt die automatische Spracherkennung nicht. Du kannst oben eintippen, was die andere Person gesagt hat, und dann auf „Passende Antworten anzeigen“ drücken."
+     :"This browser does not support automatic speech recognition. Type what the other person said and press “Show matching replies”.";
+   return;
+ }
+ callListening=true;
+ qs("#listenButton").classList.add("listening");
+ try{
+   callRecognition.start();
+   status.textContent=currentLang==="de"?"🎧 Tonguebox hört zu und sucht passende Antworten.":"🎧 Tonguebox is listening and suggesting replies.";
+ }catch(e){}
+};
+
+qs("#stopListenButton").onclick=()=>{
+ callListening=false;
+ qs("#listenButton").classList.remove("listening");
+ if(callRecognition){try{callRecognition.stop()}catch(e){}}
+ status.textContent=currentLang==="de"?"⏹ Mithören gestoppt.":"⏹ Listening stopped.";
+};
+
+qs("#analyzeButton").onclick=()=>showSmartReplies(heardText.value);
+heardText.addEventListener("input",()=>showSmartReplies(heardText.value));
+
+
+if(qs("#phoneSpeakButton")){
+ qs("#phoneSpeakButton").onclick=()=>speak(phoneText.value);
+ qs("#phoneStopButton").onclick=()=>{speechSynthesis.cancel();status.textContent=ui(currentLang).stopped};
+ qs("#phoneClearButton").onclick=()=>{phoneText.value="";status.textContent=ui(currentLang).deleted};
+}
+qs("#languageSelect").onchange=e=>{currentLang=e.target.value;applyLanguage()};
+applyLanguage();
+</script>
+</body>
+</html>
