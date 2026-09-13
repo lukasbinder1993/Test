@@ -12,7 +12,7 @@
   --help:#6f42c1; --bg:transparent; --card:transparent; --text:#10232a; --focus:#ffd600;
 }
 *{box-sizing:border-box}
-body{margin:0;background:transparent;color:var(--text)}
+body{margin:0;background:transparent;color:#10232a}
 main{max-width:820px;margin:auto;padding:12px}
 h1{text-align:center;margin:8px 0 2px;font-size:1.8rem}
 .subtitle{text-align:center;margin:0 0 12px;font-weight:750}
@@ -60,11 +60,29 @@ select{
   button{min-height:108px;font-size:1.25rem}
   .saved-row{grid-template-columns:1fr}.saved-row .delete{width:100%}
 }
-@media(prefers-color-scheme:dark){
-  :root{--bg:transparent;--card:transparent;--text:#eef7f8}
+
   textarea,select{background:#101517;color:#eef7f8}
   .status,.transcript{background:transparent}.badge{background:#28434a}
 }
+
+/* Lesbarkeit auf transparentem Webseiten-Hintergrund */
+main, h1, .subtitle, .small, .status, .transcript, .panel-inner, label {
+  color:#10232a !important;
+}
+.status, .transcript {
+  background:rgba(255,255,255,.92) !important;
+}
+textarea, select {
+  background:rgba(255,255,255,.96) !important;
+  color:#10232a !important;
+}
+.accordion {
+  background:transparent !important;
+}
+.panel {
+  background:transparent !important;
+}
+
 </style>
 </head>
 <body>
