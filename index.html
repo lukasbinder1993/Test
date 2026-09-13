@@ -4,1114 +4,471 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#087f8c">
-<title>Tonguebox – Automatische Gesprächsantworten</title>
-
+<title>Tonguebox – Universal Auto Reply</title>
 <style>
 :root{
   font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  --primary:#087f8c;
-  --primary-dark:#075e68;
-  --ok:#198754;
-  --no:#c62828;
-  --warn:#b26a00;
-  --help:#6f42c1;
-  --bg:#f4f7f8;
-  --card:#ffffff;
-  --text:#10232a;
-  --focus:#ffd600;
+  --primary:#087f8c; --ok:#198754; --no:#c62828; --warn:#b26a00;
+  --help:#6f42c1; --bg:transparent; --card:transparent; --text:#10232a; --focus:#ffd600;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-}
-main{
-  max-width:820px;
-  margin:auto;
-  padding:14px;
-}
-h1{
-  text-align:center;
-  margin:8px 0 3px;
-  font-size:2rem;
-}
-.subtitle{
-  text-align:center;
-  margin:0 0 16px;
-  font-size:1.05rem;
-  font-weight:700;
-}
+body{margin:0;background:transparent;color:var(--text)}
+main{max-width:820px;margin:auto;padding:12px}
+h1{text-align:center;margin:8px 0 2px;font-size:1.8rem}
+.subtitle{text-align:center;margin:0 0 12px;font-weight:750}
 .status{
-  padding:16px;
-  margin:12px 0 16px;
-  border:3px solid var(--primary);
-  border-radius:18px;
-  background:#eef7f8;
-  text-align:center;
-  font-size:1.15rem;
-  font-weight:850;
+  margin:12px 0 16px;padding:14px;border:3px solid var(--primary);border-radius:18px;
+  background:transparent;text-align:center;font-size:1.05rem;font-weight:850
 }
-button,textarea{
-  font:inherit;
-}
+button,textarea,select{font:inherit}
 button{
-  width:100%;
-  min-height:94px;
-  border:0;
-  border-radius:18px;
-  padding:15px;
-  background:var(--primary);
-  color:white;
-  font-size:1.25rem;
-  font-weight:850;
-  cursor:pointer;
-  touch-action:manipulation;
+  width:100%;min-height:98px;border:0;border-radius:18px;padding:14px;
+  background:var(--primary);color:#fff;font-size:1.22rem;font-weight:850;cursor:pointer
 }
-button:active{transform:scale(.99)}
-button:focus-visible,
-textarea:focus-visible{
-  outline:7px solid var(--focus);
-  outline-offset:4px;
+button:focus-visible,textarea:focus-visible,select:focus-visible{
+  outline:7px solid var(--focus);outline-offset:4px
 }
 textarea{
-  width:100%;
-  min-height:125px;
-  border:3px solid #78909c;
-  border-radius:18px;
-  padding:16px;
-  font-size:1.2rem;
-  background:white;
-  color:var(--text);
-  resize:vertical;
+  width:100%;min-height:120px;border:3px solid #78909c;border-radius:18px;
+  padding:14px;font-size:1.18rem;background:#fff;color:var(--text)
 }
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-}
-.toolbar{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-}
-.accordion{
-  margin:15px 0;
-  border:3px solid var(--primary);
-  border-radius:22px;
-  overflow:hidden;
-  background:var(--card);
-}
-.accordion-toggle{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:18px;
-  min-height:108px;
-  border-radius:0;
-  text-align:left;
-  padding:20px;
-}
-.arrow{
-  font-size:1.6rem;
-  flex:0 0 auto;
-}
-.panel{
-  display:none;
-}
-.panel.open{
-  display:block;
-}
-.panel-inner{
-  padding:16px;
-}
-.listen-on{
-  background:var(--ok)!important;
-}
-.stop{
-  background:#455a64;
-}
-.reply{
-  min-height:104px;
-}
-.reply.yes{background:var(--ok)}
-.reply.no{background:var(--no)}
-.reply.warn{background:var(--warn)}
-.reply.help{background:var(--help)}
-.reply.neutral{background:#0b7189}
-#replyGrid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-}
-.transcript-box{
-  padding:14px;
-  border:2px solid #b0bec5;
-  border-radius:16px;
-  background:#f8fbfc;
-  font-size:1.15rem;
-  line-height:1.5;
-  min-height:90px;
-}
-.badges{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-}
-.badge{
-  display:inline-block;
-  padding:8px 11px;
-  border-radius:999px;
-  background:#e7f5f7;
-  font-weight:800;
-}
-.history-item{
-  margin:10px 0;
-  padding:12px;
-  border-radius:14px;
-  background:#f2f5f6;
-  line-height:1.45;
-}
-#panic{
-  background:#ad1457;
-}
-.small{
-  font-size:.98rem;
-  line-height:1.45;
-  font-weight:650;
-}
-@media(max-width:650px){
-  main{padding:10px}
-  h1{font-size:1.65rem}
-  button{min-height:104px;font-size:1.28rem}
-  #replyGrid,.grid,.toolbar{grid-template-columns:1fr}
-  .accordion-toggle{min-height:116px}
-}
-@media(prefers-color-scheme:dark){
-  :root{
-    --bg:#101517;
-    --card:#182226;
-    --text:#eef7f8;
-  }
-  textarea{background:#101517;color:#eef7f8}
-  .status,.transcript-box{background:#22343b}
-  .history-item{background:#26363d}
-  .badge{background:#28434a}
-}
-
-/* Einfacher Telefonmodus */
-.secondary-section{display:none}
-#autoPanel .panel-inner{padding:14px}
-#replyGrid{grid-template-columns:1fr 1fr}
-@media(max-width:650px){
-  #replyGrid{grid-template-columns:1fr 1fr}
-  #replyGrid button{min-height:112px;font-size:1.2rem}
-}
-
-
-/* Antworten immer sichtbar: weniger Blickbewegungen */
-button[aria-controls="replyPanel"]{display:none}
-#replyPanel{display:block!important}
-
-
 select{
-  width:100%;
-  min-height:78px;
-  border:3px solid #78909c;
-  border-radius:18px;
-  padding:12px;
-  font-size:1.1rem;
-  background:white;
-  color:var(--text);
+  width:100%;min-height:76px;border:3px solid #78909c;border-radius:18px;
+  padding:12px;background:#fff;color:var(--text);font-size:1.05rem
 }
-.topic-button,.saved-button,.phrase-button{
-  min-height:92px;
+.accordion{margin:14px 0;border:3px solid var(--primary);border-radius:22px;overflow:hidden;background:transparent}
+.accordion-toggle{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  min-height:108px;border-radius:0;text-align:left;padding:18px
 }
-.saved-row{
-  display:grid;
-  grid-template-columns:1fr auto;
-  gap:10px;
-  margin:10px 0;
-}
-.saved-row .delete-button{
-  width:auto;
-  min-width:88px;
-  background:#c62828;
-}
-#topicPhrases{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
+.arrow{font-size:1.5rem;flex:0 0 auto}
+.panel{display:none}.panel.open{display:block}.panel-inner{padding:14px}
+.toolbar,.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#replyGrid,#topicPhrases{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.reply{min-height:112px}
+.reply.yes{background:var(--ok)} .reply.no{background:var(--no)}
+.reply.warn{background:var(--warn)} .reply.help{background:var(--help)}
+.stop{background:#455a64}.danger{background:#ad1457}
+.transcript{min-height:82px;padding:14px;border:2px solid #b0bec5;border-radius:16px;background:transparent;font-size:1.1rem}
+.small{font-size:.96rem;line-height:1.4;font-weight:650}
+.saved-row{display:grid;grid-template-columns:1fr auto;gap:10px;margin:10px 0}
+.saved-row .delete{width:auto;min-width:94px;background:var(--no)}
+.hidden{display:none!important}
+.badge{display:inline-block;padding:7px 10px;border-radius:999px;background:#e7f5f7;margin:4px;font-weight:800}
 @media(max-width:650px){
-  #topicPhrases{grid-template-columns:1fr}
-  .saved-row{grid-template-columns:1fr}
-  .saved-row .delete-button{width:100%}
+  .toolbar,.grid,#replyGrid,#topicPhrases{grid-template-columns:1fr}
+  button{min-height:108px;font-size:1.25rem}
+  .saved-row{grid-template-columns:1fr}.saved-row .delete{width:100%}
 }
 @media(prefers-color-scheme:dark){
-  select{background:#101517;color:#eef7f8}
+  :root{--bg:transparent;--card:transparent;--text:#eef7f8}
+  textarea,select{background:#101517;color:#eef7f8}
+  .status,.transcript{background:transparent}.badge{background:#28434a}
 }
-
 </style>
 </head>
-
 <body>
 <main>
+  <h1>🧠 Tonguebox Universal</h1>
+  <p class="subtitle">Person spricht → Antworten erscheinen → auswählen → Tonguebox spricht</p>
 
-<h1>🧠 Tonguebox Auto Reply</h1>
-<p class="subtitle">Andere Person spricht → Tonguebox erkennt die Aussage → passende Antworten erscheinen automatisch</p>
+  <div id="status" class="status">Bereit.</div>
 
-<div id="status" class="status">Bereit. Starte die automatische Erkennung.</div>
-
-<section class="accordion">
-  <button class="accordion-toggle" aria-expanded="true" aria-controls="autoPanel">
-    <span>🎧 Zuhören</span>
-    <span class="arrow">▼</span>
-  </button>
-  <div id="autoPanel" class="panel open">
-    <div class="panel-inner">
-      <div class="toolbar">
-        <button id="startListen">🎧 START</button>
-        <button id="stopListen" class="stop">⏹ STOPP</button>
-      </div>
-      <p class="small">
-        START drücken. Wenn Sprache erkannt wird, erscheinen passende Antworten automatisch.
-      </p>
-      <div id="liveTranscript" class="transcript-box">Noch nichts erkannt.</div>
-    </div>
-  </div>
-</section>
-
-<section class="accordion">
-  <button class="accordion-toggle" aria-expanded="false" aria-controls="replyPanel">
-    <span>⚡ Antworten</span>
-    <span class="arrow">▶</span>
-  </button>
-  <div id="replyPanel" class="panel">
-    <div class="panel-inner">
-      <div id="replyGrid"></div>
-    </div>
-  </div>
-</section>
-
-<section class="accordion secondary-section">
-  <button class="accordion-toggle" aria-expanded="false" aria-controls="contextPanel">
-    <span>🧩 Erkannter Gesprächskontext</span>
-    <span class="arrow">▶</span>
-  </button>
-  <div id="contextPanel" class="panel">
-    <div class="panel-inner">
-      <div id="contextBadges" class="badges"></div>
-    </div>
-  </div>
-</section>
-
-<section class="accordion">
-  <button class="accordion-toggle" aria-expanded="false" aria-controls="manualPanel">
-    <span>✍️ Selbst schreiben</span>
-    <span class="arrow">▶</span>
-  </button>
-  <div id="manualPanel" class="panel">
-    <div class="panel-inner">
-      <textarea id="manualReply" placeholder="Nur wenn keine vorgeschlagene Antwort passt …"></textarea>
-      <div class="toolbar" style="margin-top:12px">
-        <button id="speakManual">🔊 Sprechen</button>
-        <button id="clearManual" class="stop">🗑 Löschen</button>
+  <section class="accordion">
+    <button class="accordion-toggle" aria-expanded="true" aria-controls="listenPanel">
+      <span>🎧 Automatisch zuhören</span><span class="arrow">▼</span>
+    </button>
+    <div id="listenPanel" class="panel open">
+      <div class="panel-inner">
+        <div class="toolbar">
+          <button id="startBtn">🎧 START</button>
+          <button id="stopBtn" class="stop">⏹ STOPP</button>
+        </div>
+        <p id="modeInfo" class="small"></p>
+        <div id="transcript" class="transcript">Noch nichts erkannt.</div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="accordion secondary-section">
-  <button class="accordion-toggle" aria-expanded="false" aria-controls="historyPanel">
-    <span>🕘 Gesprächsverlauf</span>
-    <span class="arrow">▶</span>
-  </button>
-  <div id="historyPanel" class="panel">
-    <div class="panel-inner">
-      <div id="history"></div>
-      <button id="clearHistory" class="stop">🗑 Verlauf löschen</button>
+  <section class="accordion">
+    <button class="accordion-toggle" aria-expanded="true" aria-controls="replyPanel">
+      <span>⚡ Antworten</span><span class="arrow">▼</span>
+    </button>
+    <div id="replyPanel" class="panel open">
+      <div class="panel-inner">
+        <div id="replyGrid"></div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="accordion">
-  <button class="accordion-toggle" aria-expanded="false" aria-controls="helpPanel">
-    <span>🆘 Soforthilfe</span>
-    <span class="arrow">▶</span>
-  </button>
-  <div id="helpPanel" class="panel">
-    <div class="panel-inner">
-      <button id="panic">🆘 Bitte warten – ich kommuniziere mit Augensteuerung.</button>
+  <section class="accordion">
+    <button class="accordion-toggle" aria-expanded="false" aria-controls="topicsPanel">
+      <span>🗂️ Themen</span><span class="arrow">▶</span>
+    </button>
+    <div id="topicsPanel" class="panel">
+      <div class="panel-inner">
+        <div id="topicGrid" class="grid"></div>
+        <div id="topicPhrases" style="margin-top:12px"></div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-
-<section class="accordion">
-  <button class="accordion-toggle" aria-expanded="false" aria-controls="topicsPanel">
-    <span>🗂️ Themen</span>
-    <span class="arrow">▶</span>
-  </button>
-  <div id="topicsPanel" class="panel">
-    <div class="panel-inner">
-      <div id="topicGrid" class="grid"></div>
-      <div id="topicPhrases" style="margin-top:14px"></div>
+  <section class="accordion">
+    <button class="accordion-toggle" aria-expanded="false" aria-controls="savedPanel">
+      <span>💬 Meine Sätze</span><span class="arrow">▶</span>
+    </button>
+    <div id="savedPanel" class="panel">
+      <div class="panel-inner">
+        <textarea id="saveInput" placeholder="Persönlichen Satz eingeben …"></textarea>
+        <button id="saveBtn" style="margin-top:12px">💾 Satz speichern</button>
+        <div id="savedList" style="margin-top:12px"></div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="accordion">
-  <button class="accordion-toggle" aria-expanded="false" aria-controls="savedPanel">
-    <span>💬 Meine Sätze</span>
-    <span class="arrow">▶</span>
-  </button>
-  <div id="savedPanel" class="panel">
-    <div class="panel-inner">
-      <textarea id="saveInput" placeholder="Persönlichen Satz eingeben …"></textarea>
-      <button id="savePhraseButton" style="margin-top:12px">💾 Satz speichern</button>
-      <div id="savedPhrases" style="margin-top:14px"></div>
+  <section class="accordion">
+    <button class="accordion-toggle" aria-expanded="false" aria-controls="voicePanel">
+      <span>🗣️ Stimme</span><span class="arrow">▶</span>
+    </button>
+    <div id="voicePanel" class="panel">
+      <div class="panel-inner">
+        <select id="voiceSelect"></select>
+        <button id="voiceTest" style="margin-top:12px">🔊 Stimme testen</button>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="accordion">
-  <button class="accordion-toggle" aria-expanded="false" aria-controls="voicePanel">
-    <span>🗣️ Stimme</span>
-    <span class="arrow">▶</span>
-  </button>
-  <div id="voicePanel" class="panel">
-    <div class="panel-inner">
-      <label for="voiceSelect" class="small"><strong>Stimme auswählen</strong></label>
-      <select id="voiceSelect"></select>
-      <button id="voiceTest" style="margin-top:12px">🔊 Stimme testen</button>
+  <section class="accordion">
+    <button class="accordion-toggle" aria-expanded="false" aria-controls="manualPanel">
+      <span>✍️ Selbst schreiben</span><span class="arrow">▶</span>
+    </button>
+    <div id="manualPanel" class="panel">
+      <div class="panel-inner">
+        <textarea id="manualText" placeholder="Eigene Antwort …"></textarea>
+        <button id="manualSpeak" style="margin-top:12px">🔊 Sprechen</button>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
+  <section class="accordion">
+    <button class="accordion-toggle" aria-expanded="false" aria-controls="helpPanel">
+      <span>🆘 Soforthilfe</span><span class="arrow">▶</span>
+    </button>
+    <div id="helpPanel" class="panel">
+      <div class="panel-inner">
+        <button id="panic" class="danger">🆘 Bitte warten – ich kommuniziere mit Augensteuerung.</button>
+      </div>
+    </div>
+  </section>
 </main>
 
 <script>
 const $ = s => document.querySelector(s);
-
 const statusBox = $("#status");
-const liveTranscript = $("#liveTranscript");
+const transcriptBox = $("#transcript");
 const replyGrid = $("#replyGrid");
-const contextBadges = $("#contextBadges");
-const historyBox = $("#history");
-const manualReply = $("#manualReply");
-
-let recognition = null;
-let listening = false;
-let speaking = false;
-let restartTimer = null;
-
-let conversation = {
-  entities: {},
-  turns: []
-};
+let listening = false, speaking = false;
+let recognition = null, recorder = null, stream = null, recordTimer = null;
+let whisper = null, whisperLoading = false;
+let selectedMode = "none";
 
 /* ---------- Akkordeon ---------- */
-const toggles = [...document.querySelectorAll(".accordion-toggle")];
-
-function openPanelById(id){
-  toggles.forEach(btn=>{
-    const panelId = btn.getAttribute("aria-controls");
-    const panel = document.getElementById(panelId);
-    const active = panelId === id;
-
-    btn.setAttribute("aria-expanded", active ? "true" : "false");
-    const arrow = btn.querySelector(".arrow");
-    if(arrow) arrow.textContent = active ? "▼" : "▶";
-
-    if(panel) panel.classList.toggle("open", active);
-  });
-
-  const btn = document.querySelector(`[aria-controls="${id}"]`);
-  if(btn){
-    setTimeout(()=>btn.scrollIntoView({behavior:"smooth",block:"start"}),80);
-  }
-}
-
-toggles.forEach(btn=>{
+document.querySelectorAll(".accordion-toggle").forEach(btn=>{
   btn.addEventListener("click",()=>{
     const id = btn.getAttribute("aria-controls");
-    const expanded = btn.getAttribute("aria-expanded")==="true";
-
-    if(expanded){
-      const panel = document.getElementById(id);
-      btn.setAttribute("aria-expanded","false");
-      const arrow = btn.querySelector(".arrow");
-      if(arrow) arrow.textContent="▶";
-      if(panel) panel.classList.remove("open");
-    }else{
-      openPanelById(id);
-    }
+    const p = document.getElementById(id);
+    const isOpen = p.classList.contains("open");
+    p.classList.toggle("open", !isOpen);
+    btn.setAttribute("aria-expanded", String(!isOpen));
+    btn.querySelector(".arrow").textContent = !isOpen ? "▼" : "▶";
   });
 });
 
-/* ---------- Sprachausgabe ---------- */
-function speak(text){
-  text = (text||"").trim();
-  if(!text) return;
-
-  speaking = true;
-
-  if(recognition && listening){
-    try{ recognition.stop(); }catch(e){}
+/* ---------- Browsermodus ---------- */
+function detectMode(){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(SR){
+    selectedMode = "native";
+    $("#modeInfo").textContent = "✅ Direkte Spracherkennung verfügbar.";
+    return;
   }
+  if(navigator.mediaDevices?.getUserMedia && window.MediaRecorder && window.WebAssembly){
+    selectedMode = "whisper";
+    $("#modeInfo").textContent = "✅ Universeller Modus: lokale Whisper-Spracherkennung wird verwendet.";
+    return;
+  }
+  selectedMode = "manual";
+  $("#modeInfo").textContent = "⚠️ Dieser Browser unterstützt keine automatische Erkennung. Manuelle Eingabe bleibt verfügbar.";
+}
+detectMode();
 
+/* ---------- Stimmen ---------- */
+const VOICE_KEY = "tonguebox_voice";
+let voices = [];
+function loadVoices(){
+  voices = speechSynthesis.getVoices();
+  const select = $("#voiceSelect");
+  const saved = localStorage.getItem(VOICE_KEY);
+  select.innerHTML = "";
+  const german = voices.filter(v => (v.lang||"").toLowerCase().startsWith("de"));
+  const list = german.length ? german : voices;
+  list.forEach(v=>{
+    const o = document.createElement("option");
+    o.value = v.name; o.textContent = `${v.name} (${v.lang})`;
+    if(v.name===saved) o.selected = true;
+    select.appendChild(o);
+  });
+}
+speechSynthesis.onvoiceschanged = loadVoices; loadVoices();
+$("#voiceSelect").addEventListener("change",e=>localStorage.setItem(VOICE_KEY,e.target.value));
+
+function speak(text){
+  text=(text||"").trim(); if(!text) return;
+  speaking = true;
+  stopRecognitionOnly();
   speechSynthesis.cancel();
-
   const u = new SpeechSynthesisUtterance(text);
   u.lang = "de-AT";
-
-  u.onstart = ()=>{
-    statusBox.textContent = "🔊 Antwort wird gesprochen.";
-  };
-
+  const vn = $("#voiceSelect").value || localStorage.getItem(VOICE_KEY);
+  const vv = speechSynthesis.getVoices().find(v=>v.name===vn);
+  if(vv) u.voice = vv;
+  u.onstart = ()=>statusBox.textContent="🔊 Tonguebox spricht.";
   u.onend = ()=>{
-    speaking = false;
-    statusBox.textContent = listening
-      ? "🎧 Automatik läuft – ich höre wieder zu."
-      : "Bereit.";
-
-    if(listening){
-      clearTimeout(restartTimer);
-      restartTimer = setTimeout(startRecognitionSafely,700);
-    }
+    speaking=false;
+    if(listening){ statusBox.textContent="🎧 Ich höre wieder zu."; setTimeout(startRecognition,600); }
+    else statusBox.textContent="Bereit.";
   };
-
-  u.onerror = ()=>{
-    speaking = false;
-    if(listening){
-      clearTimeout(restartTimer);
-      restartTimer = setTimeout(startRecognitionSafely,700);
-    }
-  };
-
+  u.onerror = u.onend;
   speechSynthesis.speak(u);
 }
+$("#voiceTest").onclick = ()=>speak("Hallo, das ist meine ausgewählte Stimme.");
 
-/* ---------- Kontext erkennen ---------- */
-function extractEntities(text){
-  const t = text.toLowerCase();
-  const e = {};
-
-  const days = ["montag","dienstag","mittwoch","donnerstag","freitag","samstag","sonntag","heute","morgen","übermorgen"];
-  const day = days.find(d=>t.includes(d));
-  if(day) e.tag = day;
-
-  const time = text.match(/\b(?:[01]?\d|2[0-3])(?:[:.]\d{2})?\s*(?:uhr)?\b/i);
-  if(time) e.zeit = time[0].trim();
-
-  const date = text.match(/\b\d{1,2}\.\s?\d{1,2}\.(?:\s?\d{2,4})?\b/);
-  if(date) e.datum = date[0];
-
-  if(/\b(arzt|ärztin|ärzte|krankenhaus|pflege|ambulanz|medizin|schmerz|untersuch)\b/i.test(text)){
-    e.thema = "Gesundheit";
-  }else if(/\b(termin|treffen|besprechung|vereinbaren)\b/i.test(text)){
-    e.thema = "Termin";
-  }else if(/\b(essen|trinken|kaffee|wasser|tee|mittagessen|abendessen|frühstück)\b/i.test(text)){
-    e.thema = "Essen & Trinken";
-  }else if(/\b(adresse|ort|straße|wo)\b/i.test(text)){
-    e.thema = "Ort";
-  }else if(/\b(kosten|preis|euro|bezahlen|rechnung)\b/i.test(text)){
-    e.thema = "Kosten";
-  }
-
-  return e;
-}
-
+/* ---------- Antwortlogik ---------- */
 function detectIntent(text){
-  const t = text.toLowerCase().trim();
-
-  if(/\b(oder|erste|zweite|welche möglichkeit|auswahl|option)\b/.test(t)) return "choice";
-  if(/\b(wann|uhrzeit|welche zeit|um wie viel|um wieviel)\b/.test(t)) return "time";
-  if(/\b(wo|adresse|welcher ort|welche adresse)\b/.test(t)) return "place";
-  if(/\b(warum|weshalb|wieso)\b/.test(t)) return "why";
-  if(/\b(wie geht|alles gut|geht es dir)\b/.test(t)) return "wellbeing";
-  if(/\b(kannst du|könntest du|möchtest du|willst du|hast du|bist du|passt dir|geht es|kommst du|brauchst du|soll ich|ist das|war das)\b/.test(t)) return "yesno";
-  if(/\b(was|wie|wer|welche|welcher|welches)\b/.test(t)) return "open";
+  const t=text.toLowerCase().trim();
+  if(/\b(oder|erste|zweite|option|auswahl)\b/.test(t)) return "choice";
+  if(/\b(wann|uhrzeit|um wie viel|um wieviel)\b/.test(t)) return "time";
+  if(/\b(wo|adresse|ort)\b/.test(t)) return "place";
+  if(/\b(wie geht|geht es dir|alles gut)\b/.test(t)) return "wellbeing";
+  if(/\b(kannst du|könntest du|möchtest du|willst du|hast du|bist du|passt dir|geht es|kommst du|brauchst du|soll ich|ist das)\b/.test(t)) return "yesno";
+  if(/\b(was|wie|wer|welche|welcher|welches|warum|wieso|weshalb)\b/.test(t)) return "open";
   if(t.endsWith("?")) return "question";
-
   return "statement";
 }
-
-function buildReplies(intent, entities, originalText){
-  let r = [];
-
-  switch(intent){
-    case "yesno":
-      r = [
-        ["✅ Ja.","yes"],
-        ["❌ Nein.","no"],
-        ["🤔 Vielleicht – einen Moment bitte.","warn"],
-        ["🔁 Bitte wiederholen.","help"]
-      ];
-      break;
-
-    case "choice":
-      r = [
-        ["1️⃣ Die erste Möglichkeit.","yes"],
-        ["2️⃣ Die zweite Möglichkeit.","yes"],
-        ["🚫 Keine von beiden.","no"],
-        ["🔁 Bitte nenne die Möglichkeiten noch einmal.","help"]
-      ];
-      break;
-
-    case "time":
-      r = [
-        ["✅ Ja, diese Uhrzeit passt.","yes"],
-        ["❌ Nein, diese Uhrzeit passt nicht.","no"],
-        ["🕐 Geht es etwas später?","warn"],
-        ["🕐 Geht es etwas früher?","warn"]
-      ];
-      break;
-
-    case "place":
-      r = [
-        ["📍 Ja, dort passt es.","yes"],
-        ["❌ Nein, dort geht es für mich nicht.","no"],
-        ["📩 Bitte schick mir die Adresse.","help"],
-        ["🔁 Kannst du den Ort noch einmal sagen?","help"]
-      ];
-      break;
-
-    case "why":
-      r = [
-        ["🤔 Einen Moment, ich formuliere meine Antwort.","warn"],
-        ["💬 Ich erkläre es gleich.","neutral"],
-        ["🔁 Kannst du die Frage genauer stellen?","help"],
-        ["✍️ Ich möchte das lieber schriftlich beantworten.","help"]
-      ];
-      break;
-
-    case "wellbeing":
-      r = [
-        ["😊 Mir geht es gut, danke.","yes"],
-        ["😐 Es geht so.","warn"],
-        ["😟 Mir geht es heute nicht so gut.","no"],
-        ["🙏 Danke fürs Fragen.","neutral"]
-      ];
-      break;
-
-    case "open":
-      r = [
-        ["🤔 Einen Moment, ich überlege.","warn"],
-        ["🔁 Bitte wiederholen.","help"],
-        ["💬 Kannst du das genauer erklären?","help"],
-        ["✍️ Ich schreibe meine Antwort.","neutral"]
-      ];
-      break;
-
-    case "question":
-      r = [
-        ["✅ Ja.","yes"],
-        ["❌ Nein.","no"],
-        ["🤔 Einen Moment bitte.","warn"],
-        ["🔁 Bitte wiederholen.","help"]
-      ];
-      break;
-
-    default:
-      r = [
-        ["✅ Verstanden.","yes"],
-        ["🔁 Bitte wiederholen.","help"],
-        ["🐢 Bitte sprich langsamer.","help"],
-        ["✍️ Einen Moment, ich schreibe.","warn"]
-      ];
+function repliesFor(intent,text){
+  const map={
+    yesno:[["✅ Ja.","yes"],["❌ Nein.","no"],["🤔 Vielleicht.","warn"],["🔁 Bitte wiederholen.","help"]],
+    choice:[["1️⃣ Die erste Möglichkeit.","yes"],["2️⃣ Die zweite Möglichkeit.","yes"],["🚫 Keine von beiden.","no"],["🔁 Bitte noch einmal.","help"]],
+    time:[["✅ Ja, die Uhrzeit passt.","yes"],["❌ Nein, die Uhrzeit passt nicht.","no"],["🕐 Etwas später bitte.","warn"],["🕐 Etwas früher bitte.","warn"]],
+    place:[["📍 Ja, dort passt es.","yes"],["❌ Nein, dort geht es nicht.","no"],["📩 Bitte schick mir die Adresse.","help"],["🔁 Bitte Ort wiederholen.","help"]],
+    wellbeing:[["😊 Mir geht es gut, danke.","yes"],["😐 Es geht so.","warn"],["😟 Mir geht es nicht so gut.","no"],["🙏 Danke fürs Fragen.","yes"]],
+    open:[["🤔 Einen Moment, ich überlege.","warn"],["🔁 Bitte wiederholen.","help"],["💬 Bitte genauer erklären.","help"],["✍️ Ich schreibe meine Antwort.","warn"]],
+    question:[["✅ Ja.","yes"],["❌ Nein.","no"],["🤔 Einen Moment bitte.","warn"],["🔁 Bitte wiederholen.","help"]],
+    statement:[["✅ Verstanden.","yes"],["🔁 Bitte wiederholen.","help"],["🐢 Bitte langsamer.","help"],["✍️ Einen Moment bitte.","warn"]]
+  };
+  let r = map[intent] || map.statement;
+  if(/\b(termin|arzt|ärztin|krankenhaus|ambulanz)\b/i.test(text)){
+    r = r.slice(0,3).concat([["📅 Bitte schick mir die Information schriftlich.","help"]]);
   }
-
-  /* Kontextabhängige Zusatzantwort */
-  if(entities.thema==="Termin"){
-    r[3]=["📅 Bitte schick mir den Termin schriftlich.","help"];
-  }
-
-  if(entities.thema==="Gesundheit"){
-    r[3]=["🩺 Bitte stellen Sie mir eine Ja-oder-Nein-Frage.","help"];
-  }
-
-  if(entities.thema==="Kosten"){
-    r[3]=["💶 Wie viel kostet es genau?","help"];
-  }
-
   return r;
 }
-
-function renderContext(){
-  const e = conversation.entities;
-  const items = [];
-
-  if(e.thema) items.push(`Thema: ${e.thema}`);
-  if(e.tag) items.push(`Tag: ${e.tag}`);
-  if(e.datum) items.push(`Datum: ${e.datum}`);
-  if(e.zeit) items.push(`Zeit: ${e.zeit}`);
-
-  contextBadges.innerHTML = "";
-
-  if(!items.length){
-    contextBadges.textContent = "Noch kein klarer Kontext erkannt.";
-    return;
-  }
-
-  items.forEach(item=>{
-    const span = document.createElement("span");
-    span.className = "badge";
-    span.textContent = item;
-    contextBadges.appendChild(span);
-  });
-}
-
-function addHistory(speaker,text){
-  conversation.turns.push({speaker,text,time:Date.now()});
-  renderHistory();
-}
-
-function renderHistory(){
-  historyBox.innerHTML = "";
-
-  if(!conversation.turns.length){
-    historyBox.textContent="Noch kein Gesprächsverlauf.";
-    return;
-  }
-
-  conversation.turns.slice().reverse().forEach(turn=>{
-    const div=document.createElement("div");
-    div.className="history-item";
-    div.textContent=(turn.speaker==="other" ? "👤 Andere Person: " : "🔊 Ich: ") + turn.text;
-    historyBox.appendChild(div);
-  });
-}
-
-/* ---------- Automatische Analyse ---------- */
-function analyzeSpeech(text){
-  text=(text||"").trim();
-  if(!text) return;
-
-  liveTranscript.textContent=text;
-  addHistory("other",text);
-
-  conversation.entities = {
-    ...conversation.entities,
-    ...extractEntities(text)
-  };
-
-  const intent = detectIntent(text);
-  const replies = buildReplies(intent,conversation.entities,text).slice(0,4);
-
+function analyze(text){
+  text=(text||"").trim(); if(!text) return;
+  transcriptBox.textContent=text;
+  const replies=repliesFor(detectIntent(text),text);
   replyGrid.innerHTML="";
-
   replies.forEach(([label,kind])=>{
     const b=document.createElement("button");
     b.className="reply "+kind;
     b.textContent=label;
-
-    b.addEventListener("click",()=>{
-      const spoken=label.replace(/^[^\p{L}\p{N}]+/u,"").trim();
-      addHistory("me",spoken);
-      speak(spoken);
-    });
-
+    b.onclick=()=>speak(label.replace(/^[^\p{L}\p{N}]+/u,"").trim());
     replyGrid.appendChild(b);
   });
-
-  renderContext();
-
-  statusBox.textContent="✨ Passende Antworten wurden automatisch erzeugt.";
-
+  statusBox.textContent="✨ Antworten bereit.";
 }
 
-/* ---------- Browser-Spracherkennung ---------- */
-function createRecognition(){
+/* ---------- Native SpeechRecognition ---------- */
+function makeNativeRecognition(){
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if(!SR) return null;
-
   const r = new SR();
-  r.lang = "de-AT";
-  r.continuous = true;
-  r.interimResults = true;
-
-  r.onstart = ()=>{
-    statusBox.textContent="🎧 Automatik läuft – Tonguebox hört zu.";
-    $("#startListen").classList.add("listen-on");
+  r.lang="de-AT"; r.continuous=true; r.interimResults=true;
+  r.onstart=()=>statusBox.textContent="🎧 Ich höre zu.";
+  r.onresult=e=>{
+    let interim="", finalText="";
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      const part=e.results[i][0].transcript;
+      if(e.results[i].isFinal) finalText += part+" "; else interim += part;
+    }
+    if(interim) transcriptBox.textContent="… "+interim;
+    if(finalText.trim()) analyze(finalText.trim());
   };
-
-  r.onresult = event=>{
-    let interim="";
-    let finalText="";
-
-    for(let i=event.resultIndex;i<event.results.length;i++){
-      const part=event.results[i][0].transcript;
-
-      if(event.results[i].isFinal){
-        finalText += part + " ";
-      }else{
-        interim += part;
-      }
-    }
-
-    if(interim){
-      liveTranscript.textContent="… "+interim;
-    }
-
-    if(finalText.trim()){
-      analyzeSpeech(finalText.trim());
-    }
+  r.onend=()=>{ if(listening && !speaking) setTimeout(startRecognition,500); };
+  r.onerror=e=>{
+    if(e.error==="not-allowed"){ listening=false; statusBox.textContent="Mikrofonzugriff wurde nicht erlaubt."; }
   };
-
-  r.onerror = event=>{
-    if(event.error==="not-allowed" || event.error==="service-not-allowed"){
-      statusBox.textContent="Mikrofon/Spracherkennung wurde nicht freigegeben.";
-      listening=false;
-      $("#startListen").classList.remove("listen-on");
-      return;
-    }
-
-    if(event.error==="no-speech"){
-      statusBox.textContent="🎧 Ich höre weiter zu.";
-      return;
-    }
-
-    statusBox.textContent="Spracherkennung: "+event.error;
-  };
-
-  r.onend = ()=>{
-    $("#startListen").classList.remove("listen-on");
-
-    if(listening && !speaking){
-      clearTimeout(restartTimer);
-      restartTimer=setTimeout(startRecognitionSafely,600);
-    }
-  };
-
   return r;
 }
 
-function startRecognitionSafely(){
+/* ---------- Whisper-Fallback im Browser ---------- */
+async function loadWhisper(){
+  if(whisper) return whisper;
+  if(whisperLoading) {
+    while(whisperLoading) await new Promise(r=>setTimeout(r,200));
+    return whisper;
+  }
+  whisperLoading=true;
+  statusBox.textContent="🧠 Spracherkennung wird einmalig geladen …";
+  try{
+    const mod = await import("https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2");
+    mod.env.allowLocalModels = false;
+    whisper = await mod.pipeline("automatic-speech-recognition","Xenova/whisper-tiny");
+    statusBox.textContent="✅ Spracherkennung bereit.";
+  }catch(err){
+    console.error(err);
+    statusBox.textContent="⚠️ Lokale Spracherkennung konnte nicht geladen werden.";
+  }finally{
+    whisperLoading=false;
+  }
+  return whisper;
+}
+
+async function blobTo16kFloat32(blob){
+  const arrayBuffer = await blob.arrayBuffer();
+  const AC = window.AudioContext || window.webkitAudioContext;
+  const ctx = new AC();
+  const decoded = await ctx.decodeAudioData(arrayBuffer.slice(0));
+  const data = decoded.getChannelData(0);
+  const srcRate = decoded.sampleRate;
+  if(srcRate===16000){ await ctx.close(); return new Float32Array(data); }
+  const ratio = srcRate/16000;
+  const len = Math.round(data.length/ratio);
+  const out = new Float32Array(len);
+  for(let i=0;i<len;i++){
+    const pos=i*ratio, a=Math.floor(pos), b=Math.min(a+1,data.length-1), f=pos-a;
+    out[i]=data[a]*(1-f)+data[b]*f;
+  }
+  await ctx.close();
+  return out;
+}
+
+async function transcribeBlob(blob){
+  const model = await loadWhisper();
+  if(!model || !blob || blob.size<1000) return;
+  try{
+    statusBox.textContent="🧠 Sprache wird erkannt …";
+    const audio = await blobTo16kFloat32(blob);
+    const result = await model(audio,{language:"german",task:"transcribe"});
+    const text=(result?.text||"").trim();
+    if(text) analyze(text); else statusBox.textContent="🎧 Ich höre weiter zu.";
+  }catch(err){
+    console.error(err);
+    statusBox.textContent="⚠️ Sprache konnte nicht erkannt werden.";
+  }
+}
+
+async function startWhisperChunk(){
   if(!listening || speaking) return;
-
-  if(!recognition){
-    recognition=createRecognition();
-  }
-
-  if(!recognition){
-    statusBox.textContent="Dieser Browser unterstützt die automatische Spracherkennung leider nicht.";
+  try{
+    if(!stream) stream=await navigator.mediaDevices.getUserMedia({
+      audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}
+    });
+    const types=["audio/webm;codecs=opus","audio/webm","audio/ogg;codecs=opus","audio/ogg"];
+    const type=types.find(t=>MediaRecorder.isTypeSupported(t))||"";
+    const chunks=[];
+    recorder=type?new MediaRecorder(stream,{mimeType:type}):new MediaRecorder(stream);
+    recorder.ondataavailable=e=>{ if(e.data?.size) chunks.push(e.data); };
+    recorder.onstop=async()=>{
+      const blob=new Blob(chunks,{type:recorder.mimeType||"audio/webm"});
+      if(listening && !speaking) await transcribeBlob(blob);
+      if(listening && !speaking) setTimeout(startWhisperChunk,250);
+    };
+    recorder.start();
+    statusBox.textContent="🎧 Ich höre zu.";
+    recordTimer=setTimeout(()=>{ if(recorder?.state==="recording") recorder.stop(); },4000);
+  }catch(err){
+    console.error(err);
     listening=false;
-    return;
-  }
-
-  try{
-    recognition.start();
-  }catch(e){
-    /* Browser meldet häufig InvalidStateError, wenn schon aktiv */
+    statusBox.textContent="Mikrofon konnte nicht gestartet werden.";
   }
 }
 
-$("#startListen").addEventListener("click",()=>{
-  listening=true;
-  startRecognitionSafely();
-});
-
-$("#stopListen").addEventListener("click",()=>{
-  listening=false;
-  clearTimeout(restartTimer);
-
-  if(recognition){
-    try{recognition.stop();}catch(e){}
+function startRecognition(){
+  if(!listening || speaking) return;
+  if(selectedMode==="native"){
+    if(!recognition) recognition=makeNativeRecognition();
+    try{ recognition.start(); }catch(e){}
+  }else if(selectedMode==="whisper"){
+    startWhisperChunk();
+  }else{
+    statusBox.textContent="Automatische Erkennung ist in diesem Browser nicht möglich.";
   }
+}
+function stopRecognitionOnly(){
+  clearTimeout(recordTimer);
+  if(recognition){ try{recognition.stop();}catch(e){} }
+  if(recorder?.state==="recording"){ try{recorder.stop();}catch(e){} }
+}
+function stopAll(){
+  listening=false; stopRecognitionOnly();
+  if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; }
+  statusBox.textContent="⏹ Gestoppt.";
+}
+$("#startBtn").onclick=()=>{ listening=true; startRecognition(); };
+$("#stopBtn").onclick=stopAll;
 
-  $("#startListen").classList.remove("listen-on");
-  statusBox.textContent="⏹ Automatik gestoppt.";
-});
-
-$("#speakManual").addEventListener("click",()=>{
-  const text=manualReply.value.trim();
-  if(!text) return;
-  addHistory("me",text);
-  speak(text);
-});
-
-$("#clearManual").addEventListener("click",()=>{
-  manualReply.value="";
-});
-
-$("#clearHistory").addEventListener("click",()=>{
-  conversation={entities:{},turns:[]};
-  liveTranscript.textContent="Noch nichts erkannt.";
-  replyGrid.innerHTML="";
-  renderContext();
-  renderHistory();
-  statusBox.textContent="Gesprächsverlauf gelöscht.";
-});
-
-$("#panic").addEventListener("click",()=>{
-  const text="Bitte warten. Ich kommuniziere mit Augensteuerung und brauche einen kurzen Moment.";
-  addHistory("me",text);
-  speak(text);
-});
-
-
-/* ---------- Themenbasierte Phrasen ---------- */
-const TOPICS = {
-  "☕ Kaffee": [
-    "Ich möchte bitte einen Kaffee.",
-    "Mit Milch bitte.",
-    "Ohne Zucker bitte.",
-    "Nein danke, ich möchte keinen Kaffee."
-  ],
-  "🥤 Trinken": [
-    "Ich möchte bitte etwas trinken.",
-    "Bitte Wasser.",
-    "Bitte langsam.",
-    "Danke, das reicht."
-  ],
-  "🍽️ Essen": [
-    "Ich möchte bitte etwas essen.",
-    "Das schmeckt mir.",
-    "Bitte noch etwas.",
-    "Danke, ich bin fertig."
-  ],
-  "😣 Schmerzen": [
-    "Ich habe Schmerzen.",
-    "Bitte fragen Sie mich mit Ja oder Nein.",
-    "Die Schmerzen sind stärker geworden.",
-    "Ich brauche bitte Hilfe."
-  ],
-  "🏥 Krankenhaus": [
-    "Bitte warten Sie kurz, ich kommuniziere mit Augensteuerung.",
-    "Bitte stellen Sie mir eine Ja-oder-Nein-Frage.",
-    "Ich brauche Hilfe.",
-    "Bitte erklären Sie mir das noch einmal."
-  ],
-  "🏠 Zuhause": [
-    "Bitte hilf mir kurz.",
-    "Ich brauche etwas.",
-    "Alles passt.",
-    "Bitte einen Moment warten."
-  ],
-  "📅 Termin": [
-    "Ja, der Termin passt.",
-    "Nein, der Termin passt leider nicht.",
-    "Geht es etwas später?",
-    "Bitte schicken Sie mir den Termin schriftlich."
-  ],
-  "📞 Telefon": [
-    "Hallo, ich kommuniziere über eine Sprachausgabe.",
-    "Bitte sprechen Sie langsam.",
-    "Bitte wiederholen Sie die Frage.",
-    "Einen Moment bitte, ich wähle meine Antwort."
-  ],
-  "✅ Ja / Nein": [
-    "Ja.",
-    "Nein.",
-    "Vielleicht.",
-    "Ich weiß es noch nicht."
-  ],
-  "🆘 Hilfe": [
-    "Ich brauche bitte Hilfe.",
-    "Bitte warten Sie kurz.",
-    "Bitte holen Sie jemanden.",
-    "Es ist dringend."
-  ]
+/* ---------- Themen ---------- */
+const TOPICS={
+ "☕ Kaffee":["Ich möchte bitte einen Kaffee.","Mit Milch bitte.","Ohne Zucker bitte.","Nein danke."],
+ "🥤 Trinken":["Ich möchte bitte etwas trinken.","Bitte Wasser.","Bitte langsam.","Danke, das reicht."],
+ "🍽️ Essen":["Ich möchte bitte etwas essen.","Bitte noch etwas.","Danke, ich bin fertig.","Das schmeckt mir."],
+ "😣 Schmerzen":["Ich habe Schmerzen.","Die Schmerzen sind stärker.","Bitte stellen Sie Ja-oder-Nein-Fragen.","Ich brauche Hilfe."],
+ "🏥 Krankenhaus":["Bitte warten Sie kurz.","Bitte Ja-oder-Nein-Fragen.","Ich brauche Hilfe.","Bitte noch einmal erklären."],
+ "🏠 Zuhause":["Bitte hilf mir kurz.","Ich brauche etwas.","Alles passt.","Bitte einen Moment warten."],
+ "📅 Termin":["Ja, der Termin passt.","Nein, der Termin passt nicht.","Geht es später?","Bitte schriftlich schicken."],
+ "📞 Telefon":["Hallo, ich kommuniziere mit Sprachausgabe.","Bitte langsam sprechen.","Bitte wiederholen.","Einen Moment bitte."],
+ "✅ Ja / Nein":["Ja.","Nein.","Vielleicht.","Ich weiß es noch nicht."],
+ "🆘 Hilfe":["Ich brauche Hilfe.","Bitte warten.","Bitte holen Sie jemanden.","Es ist dringend."]
 };
-
 function renderTopics(){
-  const grid = document.getElementById("topicGrid");
-  grid.innerHTML = "";
-
+  const g=$("#topicGrid"); g.innerHTML="";
   Object.keys(TOPICS).forEach(topic=>{
-    const b = document.createElement("button");
-    b.className = "topic-button";
-    b.textContent = topic;
-    b.addEventListener("click", ()=>renderTopicPhrases(topic));
-    grid.appendChild(b);
+    const b=document.createElement("button"); b.textContent=topic;
+    b.onclick=()=>{
+      const w=$("#topicPhrases"); w.innerHTML="";
+      TOPICS[topic].forEach(s=>{
+        const x=document.createElement("button"); x.textContent=s; x.onclick=()=>speak(s); w.appendChild(x);
+      });
+    };
+    g.appendChild(b);
   });
-}
-
-function renderTopicPhrases(topic){
-  const wrap = document.getElementById("topicPhrases");
-  wrap.innerHTML = "";
-
-  TOPICS[topic].forEach(sentence=>{
-    const b = document.createElement("button");
-    b.className = "phrase-button";
-    b.textContent = sentence;
-    b.addEventListener("click", ()=>{
-      addHistory("me", sentence);
-      speak(sentence);
-    });
-    wrap.appendChild(b);
-  });
-}
-
-/* ---------- Persönliche Sätze ---------- */
-const SAVED_KEY = "tonguebox_saved_phrases_v1";
-
-function getSavedPhrases(){
-  try{
-    return JSON.parse(localStorage.getItem(SAVED_KEY) || "[]");
-  }catch(e){
-    return [];
-  }
-}
-
-function setSavedPhrases(list){
-  localStorage.setItem(SAVED_KEY, JSON.stringify(list));
-}
-
-function renderSavedPhrases(){
-  const wrap = document.getElementById("savedPhrases");
-  const list = getSavedPhrases();
-  wrap.innerHTML = "";
-
-  if(!list.length){
-    wrap.textContent = "Noch keine persönlichen Sätze gespeichert.";
-    return;
-  }
-
-  list.forEach((sentence,index)=>{
-    const row = document.createElement("div");
-    row.className = "saved-row";
-
-    const speakBtn = document.createElement("button");
-    speakBtn.className = "saved-button";
-    speakBtn.textContent = sentence;
-    speakBtn.addEventListener("click", ()=>{
-      addHistory("me", sentence);
-      speak(sentence);
-    });
-
-    const delBtn = document.createElement("button");
-    delBtn.className = "delete-button";
-    delBtn.textContent = "🗑 Löschen";
-    delBtn.addEventListener("click", ()=>{
-      const current = getSavedPhrases();
-      current.splice(index,1);
-      setSavedPhrases(current);
-      renderSavedPhrases();
-    });
-
-    row.appendChild(speakBtn);
-    row.appendChild(delBtn);
-    wrap.appendChild(row);
-  });
-}
-
-document.getElementById("savePhraseButton").addEventListener("click", ()=>{
-  const input = document.getElementById("saveInput");
-  const sentence = input.value.trim();
-  if(!sentence) return;
-
-  const list = getSavedPhrases();
-  if(!list.includes(sentence)){
-    list.push(sentence);
-    setSavedPhrases(list);
-  }
-
-  input.value = "";
-  renderSavedPhrases();
-});
-
-/* ---------- Stimmen ---------- */
-const VOICE_KEY = "tonguebox_voice_v1";
-let availableVoices = [];
-
-function loadVoices(){
-  availableVoices = speechSynthesis.getVoices();
-  const select = document.getElementById("voiceSelect");
-  const saved = localStorage.getItem(VOICE_KEY);
-
-  select.innerHTML = "";
-
-  availableVoices
-    .filter(v => (v.lang || "").toLowerCase().startsWith("de"))
-    .forEach((voice)=>{
-      const opt = document.createElement("option");
-      opt.value = voice.name;
-      opt.textContent = `${voice.name} (${voice.lang})`;
-      if(saved === voice.name) opt.selected = true;
-      select.appendChild(opt);
-    });
-
-  if(!select.options.length){
-    availableVoices.forEach((voice)=>{
-      const opt = document.createElement("option");
-      opt.value = voice.name;
-      opt.textContent = `${voice.name} (${voice.lang})`;
-      if(saved === voice.name) opt.selected = true;
-      select.appendChild(opt);
-    });
-  }
-}
-
-document.getElementById("voiceSelect").addEventListener("change", e=>{
-  localStorage.setItem(VOICE_KEY, e.target.value);
-});
-
-document.getElementById("voiceTest").addEventListener("click", ()=>{
-  speak("Hallo, das ist meine ausgewählte Stimme.");
-});
-
-/* speak überschreiben, damit gewählte Stimme verwendet wird */
-const originalSpeak = speak;
-speak = function(text){
-  text = (text||"").trim();
-  if(!text) return;
-
-  speaking = true;
-
-  if(recognition && listening){
-    try{ recognition.stop(); }catch(e){}
-  }
-
-  speechSynthesis.cancel();
-
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = "de-AT";
-
-  const selectedName = document.getElementById("voiceSelect")?.value || localStorage.getItem(VOICE_KEY);
-  const selectedVoice = speechSynthesis.getVoices().find(v=>v.name===selectedName);
-  if(selectedVoice) u.voice = selectedVoice;
-
-  u.onstart = ()=>{
-    statusBox.textContent = "🔊 Antwort wird gesprochen.";
-  };
-
-  u.onend = ()=>{
-    speaking = false;
-    statusBox.textContent = listening
-      ? "🎧 Automatik läuft – ich höre wieder zu."
-      : "Bereit.";
-
-    if(listening){
-      clearTimeout(restartTimer);
-      restartTimer = setTimeout(startRecognitionSafely,700);
-    }
-  };
-
-  u.onerror = ()=>{
-    speaking = false;
-    if(listening){
-      clearTimeout(restartTimer);
-      restartTimer = setTimeout(startRecognitionSafely,700);
-    }
-  };
-
-  speechSynthesis.speak(u);
-};
-
-if(typeof speechSynthesis !== "undefined"){
-  loadVoices();
-  speechSynthesis.onvoiceschanged = loadVoices;
 }
 renderTopics();
-renderSavedPhrases();
 
-/* ---------- Startzustand ---------- */
-renderHistory();
-renderContext();
+/* ---------- Eigene Sätze ---------- */
+const SAVE_KEY="tonguebox_saved_phrases";
+function getSaved(){ try{return JSON.parse(localStorage.getItem(SAVE_KEY)||"[]")}catch(e){return[]} }
+function renderSaved(){
+  const w=$("#savedList"), list=getSaved(); w.innerHTML="";
+  if(!list.length){w.textContent="Noch keine Sätze gespeichert.";return}
+  list.forEach((s,i)=>{
+    const row=document.createElement("div"); row.className="saved-row";
+    const b=document.createElement("button"); b.textContent=s; b.onclick=()=>speak(s);
+    const d=document.createElement("button"); d.className="delete"; d.textContent="🗑 Löschen";
+    d.onclick=()=>{const l=getSaved();l.splice(i,1);localStorage.setItem(SAVE_KEY,JSON.stringify(l));renderSaved()};
+    row.append(b,d); w.appendChild(row);
+  });
+}
+$("#saveBtn").onclick=()=>{
+  const v=$("#saveInput").value.trim(); if(!v)return;
+  const l=getSaved(); if(!l.includes(v))l.push(v);
+  localStorage.setItem(SAVE_KEY,JSON.stringify(l)); $("#saveInput").value=""; renderSaved();
+};
+renderSaved();
+
+/* ---------- Manuell + Hilfe ---------- */
+$("#manualSpeak").onclick=()=>speak($("#manualText").value);
+$("#panic").onclick=()=>speak("Bitte warten. Ich kommuniziere mit Augensteuerung und brauche einen kurzen Moment.");
 </script>
 </body>
 </html>
