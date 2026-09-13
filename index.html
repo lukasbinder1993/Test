@@ -50,9 +50,54 @@ button:focus-visible{outline:7px solid #ffd600;outline-offset:4px}
   textarea{background:#101517;color:#eef7f8;border-color:#90a4ae}
   .status{background:#22343b}
 }
+
+/* ===== Blickerfassungsfreundliche Akkordeon-Bereiche ===== */
+.accordion-section{
+  margin:16px 0;
+  border-radius:22px;
+  overflow:hidden;
+  border:3px solid #087f8c;
+  background:white;
+}
+.accordion-toggle{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  width:100%;
+  min-height:104px;
+  padding:20px 22px;
+  border-radius:0;
+  font-size:1.35rem;
+  text-align:left;
+  background:#087f8c;
+  color:white;
+}
+.accordion-toggle .arrow{
+  font-size:1.6rem;
+  flex:0 0 auto;
+}
+.accordion-panel{ display:none; }
+.accordion-panel.open{ display:block; }
+.panel-inner{ padding:18px; }
+@media (max-width:650px){
+  main{padding:12px}
+  .accordion-section{margin:14px 0}
+  .accordion-toggle{
+    min-height:112px;
+    font-size:1.35rem;
+    padding:22px 18px;
+  }
+  .panel-inner{padding:14px}
+}
+@media (prefers-color-scheme:dark){
+  .accordion-section{background:#182226}
+}
+
 </style>
 </head>
 <body>
+
 <main>
   <h1>🧠 Tonguebox Conversation Pilot</h1>
   <p class="subtitle">Experimenteller KI-Telefonassistent für schnelle Kommunikation</p>
@@ -61,46 +106,125 @@ button:focus-visible{outline:7px solid #ffd600;outline-offset:4px}
     <div class="status" id="status">Bereit. Gib ein, was die andere Person gesagt hat.</div>
   </section>
 
-  <section class="card">
-    <h2>👂 Was sagt die andere Person?</h2>
-    <textarea id="heard" placeholder="Beispiel: Passt dir am Montag um 14 Uhr ein Termin beim Arzt?"></textarea>
-    <div class="toolbar" style="margin-top:12px">
-      <button id="analyze">✨ Antworten vorschlagen</button>
-      <button id="clear">🗑 Löschen</button>
+  <section class="accordion-section">
+    <button class="accordion-toggle" aria-expanded="true" aria-controls="panel-heard">
+      <span>👂 Was sagt die andere Person?</span>
+      <span class="arrow">▼</span>
+    </button>
+    <div class="accordion-panel open" id="panel-heard">
+      <div class="panel-inner">
+        <textarea id="heard" placeholder="Beispiel: Passt dir am Montag um 14 Uhr ein Termin beim Arzt?"></textarea>
+        <div class="toolbar" style="margin-top:12px">
+          <button id="analyze">✨ Antworten vorschlagen</button>
+          <button id="clear">🗑 Löschen</button>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="card">
-    <h2>⚡ Ein-Blick-Antworten</h2>
-    <div id="replyGrid"></div>
-  </section>
-
-  <section class="card">
-    <h2>🔮 Was könnte als Nächstes kommen?</h2>
-    <div id="nextGrid" class="grid"></div>
-  </section>
-
-  <section class="card">
-    <h2>🧩 Gesprächskontext</h2>
-    <div id="context" class="memory">Noch kein Kontext erkannt.</div>
-  </section>
-
-  <section class="card">
-    <h2>✍️ Eigene Antwort</h2>
-    <textarea id="own" placeholder="Eigene Antwort eingeben …"></textarea>
-    <div class="toolbar" style="margin-top:12px">
-      <button id="speakOwn">🔊 Sprechen</button>
-      <button id="stop">⏹ Stoppen</button>
+  <section class="accordion-section">
+    <button class="accordion-toggle" aria-expanded="false" aria-controls="panel-replies">
+      <span>⚡ Ein-Blick-Antworten</span>
+      <span class="arrow">▶</span>
+    </button>
+    <div class="accordion-panel" id="panel-replies">
+      <div class="panel-inner">
+        <div id="replyGrid"></div>
+      </div>
     </div>
   </section>
 
-  <section class="card">
-    <button id="panic">🆘 Bitte warten – ich kommuniziere mit Augensteuerung.</button>
+  <section class="accordion-section">
+    <button class="accordion-toggle" aria-expanded="false" aria-controls="panel-next">
+      <span>🔮 Was könnte als Nächstes kommen?</span>
+      <span class="arrow">▶</span>
+    </button>
+    <div class="accordion-panel" id="panel-next">
+      <div class="panel-inner">
+        <div id="nextGrid" class="grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="accordion-section">
+    <button class="accordion-toggle" aria-expanded="false" aria-controls="panel-context">
+      <span>🧩 Gesprächskontext</span>
+      <span class="arrow">▶</span>
+    </button>
+    <div class="accordion-panel" id="panel-context">
+      <div class="panel-inner">
+        <div id="context" class="memory">Noch kein Kontext erkannt.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="accordion-section">
+    <button class="accordion-toggle" aria-expanded="false" aria-controls="panel-own">
+      <span>✍️ Eigene Antwort</span>
+      <span class="arrow">▶</span>
+    </button>
+    <div class="accordion-panel" id="panel-own">
+      <div class="panel-inner">
+        <textarea id="own" placeholder="Eigene Antwort eingeben …"></textarea>
+        <div class="toolbar" style="margin-top:12px">
+          <button id="speakOwn">🔊 Sprechen</button>
+          <button id="stop">⏹ Stoppen</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="accordion-section">
+    <button class="accordion-toggle" aria-expanded="false" aria-controls="panel-help">
+      <span>🆘 Soforthilfe</span>
+      <span class="arrow">▶</span>
+    </button>
+    <div class="accordion-panel" id="panel-help">
+      <div class="panel-inner">
+        <button id="panic">🆘 Bitte warten – ich kommuniziere mit Augensteuerung.</button>
+      </div>
+    </div>
   </section>
 </main>
 
+
 <script>
 const $ = s => document.querySelector(s);
+
+const accordionButtons = [...document.querySelectorAll(".accordion-toggle")];
+
+function openAccordion(button){
+  const panelId = button.getAttribute("aria-controls");
+  accordionButtons.forEach(btn=>{
+    const id = btn.getAttribute("aria-controls");
+    const panel = document.getElementById(id);
+    const active = btn === button;
+    btn.setAttribute("aria-expanded", active ? "true" : "false");
+    const arrow = btn.querySelector(".arrow");
+    if(arrow) arrow.textContent = active ? "▼" : "▶";
+    if(panel) panel.classList.toggle("open", active);
+  });
+
+  setTimeout(()=>{
+    button.scrollIntoView({behavior:"smooth", block:"start"});
+  },80);
+}
+
+accordionButtons.forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    const expanded = btn.getAttribute("aria-expanded") === "true";
+    if(expanded){
+      const panel = document.getElementById(btn.getAttribute("aria-controls"));
+      btn.setAttribute("aria-expanded","false");
+      const arrow = btn.querySelector(".arrow");
+      if(arrow) arrow.textContent = "▶";
+      if(panel) panel.classList.remove("open");
+    }else{
+      openAccordion(btn);
+    }
+  });
+});
+
 const heard = $("#heard");
 const own = $("#own");
 const replyGrid = $("#replyGrid");
@@ -302,6 +426,8 @@ function analyze(){
 
   renderContext();
   status.textContent = "✨ Antwortvorschläge wurden an Frage und Gesprächskontext angepasst.";
+  const replyToggle = document.querySelector('[aria-controls="panel-replies"]');
+  if(replyToggle) openAccordion(replyToggle);
 }
 
 $("#analyze").onclick = analyze;
