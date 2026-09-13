@@ -199,6 +199,60 @@ textarea{
   .history-item{background:#26363d}
   .badge{background:#28434a}
 }
+
+/* Einfacher Telefonmodus */
+.secondary-section{display:none}
+#autoPanel .panel-inner{padding:14px}
+#replyGrid{grid-template-columns:1fr 1fr}
+@media(max-width:650px){
+  #replyGrid{grid-template-columns:1fr 1fr}
+  #replyGrid button{min-height:112px;font-size:1.2rem}
+}
+
+
+/* Antworten immer sichtbar: weniger Blickbewegungen */
+button[aria-controls="replyPanel"]{display:none}
+#replyPanel{display:block!important}
+
+
+select{
+  width:100%;
+  min-height:78px;
+  border:3px solid #78909c;
+  border-radius:18px;
+  padding:12px;
+  font-size:1.1rem;
+  background:white;
+  color:var(--text);
+}
+.topic-button,.saved-button,.phrase-button{
+  min-height:92px;
+}
+.saved-row{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:10px;
+  margin:10px 0;
+}
+.saved-row .delete-button{
+  width:auto;
+  min-width:88px;
+  background:#c62828;
+}
+#topicPhrases{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+@media(max-width:650px){
+  #topicPhrases{grid-template-columns:1fr}
+  .saved-row{grid-template-columns:1fr}
+  .saved-row .delete-button{width:100%}
+}
+@media(prefers-color-scheme:dark){
+  select{background:#101517;color:#eef7f8}
+}
+
 </style>
 </head>
 
@@ -212,17 +266,17 @@ textarea{
 
 <section class="accordion">
   <button class="accordion-toggle" aria-expanded="true" aria-controls="autoPanel">
-    <span>🎧 Automatisch zuhören</span>
+    <span>🎧 Zuhören</span>
     <span class="arrow">▼</span>
   </button>
   <div id="autoPanel" class="panel open">
     <div class="panel-inner">
       <div class="toolbar">
-        <button id="startListen">🎧 Automatik starten</button>
-        <button id="stopListen" class="stop">⏹ Automatik stoppen</button>
+        <button id="startListen">🎧 START</button>
+        <button id="stopListen" class="stop">⏹ STOPP</button>
       </div>
       <p class="small">
-        Sobald Sprache erkannt wird, werden automatisch passende Antwortvorschläge erzeugt.
+        START drücken. Wenn Sprache erkannt wird, erscheinen passende Antworten automatisch.
       </p>
       <div id="liveTranscript" class="transcript-box">Noch nichts erkannt.</div>
     </div>
@@ -231,7 +285,7 @@ textarea{
 
 <section class="accordion">
   <button class="accordion-toggle" aria-expanded="false" aria-controls="replyPanel">
-    <span>⚡ Automatische Antworten</span>
+    <span>⚡ Antworten</span>
     <span class="arrow">▶</span>
   </button>
   <div id="replyPanel" class="panel">
@@ -241,7 +295,7 @@ textarea{
   </div>
 </section>
 
-<section class="accordion">
+<section class="accordion secondary-section">
   <button class="accordion-toggle" aria-expanded="false" aria-controls="contextPanel">
     <span>🧩 Erkannter Gesprächskontext</span>
     <span class="arrow">▶</span>
@@ -255,7 +309,7 @@ textarea{
 
 <section class="accordion">
   <button class="accordion-toggle" aria-expanded="false" aria-controls="manualPanel">
-    <span>✍️ Eigene Antwort</span>
+    <span>✍️ Selbst schreiben</span>
     <span class="arrow">▶</span>
   </button>
   <div id="manualPanel" class="panel">
@@ -269,7 +323,7 @@ textarea{
   </div>
 </section>
 
-<section class="accordion">
+<section class="accordion secondary-section">
   <button class="accordion-toggle" aria-expanded="false" aria-controls="historyPanel">
     <span>🕘 Gesprächsverlauf</span>
     <span class="arrow">▶</span>
@@ -290,6 +344,48 @@ textarea{
   <div id="helpPanel" class="panel">
     <div class="panel-inner">
       <button id="panic">🆘 Bitte warten – ich kommuniziere mit Augensteuerung.</button>
+    </div>
+  </div>
+</section>
+
+
+<section class="accordion">
+  <button class="accordion-toggle" aria-expanded="false" aria-controls="topicsPanel">
+    <span>🗂️ Themen</span>
+    <span class="arrow">▶</span>
+  </button>
+  <div id="topicsPanel" class="panel">
+    <div class="panel-inner">
+      <div id="topicGrid" class="grid"></div>
+      <div id="topicPhrases" style="margin-top:14px"></div>
+    </div>
+  </div>
+</section>
+
+<section class="accordion">
+  <button class="accordion-toggle" aria-expanded="false" aria-controls="savedPanel">
+    <span>💬 Meine Sätze</span>
+    <span class="arrow">▶</span>
+  </button>
+  <div id="savedPanel" class="panel">
+    <div class="panel-inner">
+      <textarea id="saveInput" placeholder="Persönlichen Satz eingeben …"></textarea>
+      <button id="savePhraseButton" style="margin-top:12px">💾 Satz speichern</button>
+      <div id="savedPhrases" style="margin-top:14px"></div>
+    </div>
+  </div>
+</section>
+
+<section class="accordion">
+  <button class="accordion-toggle" aria-expanded="false" aria-controls="voicePanel">
+    <span>🗣️ Stimme</span>
+    <span class="arrow">▶</span>
+  </button>
+  <div id="voicePanel" class="panel">
+    <div class="panel-inner">
+      <label for="voiceSelect" class="small"><strong>Stimme auswählen</strong></label>
+      <select id="voiceSelect"></select>
+      <button id="voiceTest" style="margin-top:12px">🔊 Stimme testen</button>
     </div>
   </div>
 </section>
@@ -603,7 +699,7 @@ function analyzeSpeech(text){
   };
 
   const intent = detectIntent(text);
-  const replies = buildReplies(intent,conversation.entities,text);
+  const replies = buildReplies(intent,conversation.entities,text).slice(0,4);
 
   replyGrid.innerHTML="";
 
@@ -624,7 +720,7 @@ function analyzeSpeech(text){
   renderContext();
 
   statusBox.textContent="✨ Passende Antworten wurden automatisch erzeugt.";
-  openPanelById("replyPanel");
+
 }
 
 /* ---------- Browser-Spracherkennung ---------- */
@@ -755,6 +851,263 @@ $("#panic").addEventListener("click",()=>{
   addHistory("me",text);
   speak(text);
 });
+
+
+/* ---------- Themenbasierte Phrasen ---------- */
+const TOPICS = {
+  "☕ Kaffee": [
+    "Ich möchte bitte einen Kaffee.",
+    "Mit Milch bitte.",
+    "Ohne Zucker bitte.",
+    "Nein danke, ich möchte keinen Kaffee."
+  ],
+  "🥤 Trinken": [
+    "Ich möchte bitte etwas trinken.",
+    "Bitte Wasser.",
+    "Bitte langsam.",
+    "Danke, das reicht."
+  ],
+  "🍽️ Essen": [
+    "Ich möchte bitte etwas essen.",
+    "Das schmeckt mir.",
+    "Bitte noch etwas.",
+    "Danke, ich bin fertig."
+  ],
+  "😣 Schmerzen": [
+    "Ich habe Schmerzen.",
+    "Bitte fragen Sie mich mit Ja oder Nein.",
+    "Die Schmerzen sind stärker geworden.",
+    "Ich brauche bitte Hilfe."
+  ],
+  "🏥 Krankenhaus": [
+    "Bitte warten Sie kurz, ich kommuniziere mit Augensteuerung.",
+    "Bitte stellen Sie mir eine Ja-oder-Nein-Frage.",
+    "Ich brauche Hilfe.",
+    "Bitte erklären Sie mir das noch einmal."
+  ],
+  "🏠 Zuhause": [
+    "Bitte hilf mir kurz.",
+    "Ich brauche etwas.",
+    "Alles passt.",
+    "Bitte einen Moment warten."
+  ],
+  "📅 Termin": [
+    "Ja, der Termin passt.",
+    "Nein, der Termin passt leider nicht.",
+    "Geht es etwas später?",
+    "Bitte schicken Sie mir den Termin schriftlich."
+  ],
+  "📞 Telefon": [
+    "Hallo, ich kommuniziere über eine Sprachausgabe.",
+    "Bitte sprechen Sie langsam.",
+    "Bitte wiederholen Sie die Frage.",
+    "Einen Moment bitte, ich wähle meine Antwort."
+  ],
+  "✅ Ja / Nein": [
+    "Ja.",
+    "Nein.",
+    "Vielleicht.",
+    "Ich weiß es noch nicht."
+  ],
+  "🆘 Hilfe": [
+    "Ich brauche bitte Hilfe.",
+    "Bitte warten Sie kurz.",
+    "Bitte holen Sie jemanden.",
+    "Es ist dringend."
+  ]
+};
+
+function renderTopics(){
+  const grid = document.getElementById("topicGrid");
+  grid.innerHTML = "";
+
+  Object.keys(TOPICS).forEach(topic=>{
+    const b = document.createElement("button");
+    b.className = "topic-button";
+    b.textContent = topic;
+    b.addEventListener("click", ()=>renderTopicPhrases(topic));
+    grid.appendChild(b);
+  });
+}
+
+function renderTopicPhrases(topic){
+  const wrap = document.getElementById("topicPhrases");
+  wrap.innerHTML = "";
+
+  TOPICS[topic].forEach(sentence=>{
+    const b = document.createElement("button");
+    b.className = "phrase-button";
+    b.textContent = sentence;
+    b.addEventListener("click", ()=>{
+      addHistory("me", sentence);
+      speak(sentence);
+    });
+    wrap.appendChild(b);
+  });
+}
+
+/* ---------- Persönliche Sätze ---------- */
+const SAVED_KEY = "tonguebox_saved_phrases_v1";
+
+function getSavedPhrases(){
+  try{
+    return JSON.parse(localStorage.getItem(SAVED_KEY) || "[]");
+  }catch(e){
+    return [];
+  }
+}
+
+function setSavedPhrases(list){
+  localStorage.setItem(SAVED_KEY, JSON.stringify(list));
+}
+
+function renderSavedPhrases(){
+  const wrap = document.getElementById("savedPhrases");
+  const list = getSavedPhrases();
+  wrap.innerHTML = "";
+
+  if(!list.length){
+    wrap.textContent = "Noch keine persönlichen Sätze gespeichert.";
+    return;
+  }
+
+  list.forEach((sentence,index)=>{
+    const row = document.createElement("div");
+    row.className = "saved-row";
+
+    const speakBtn = document.createElement("button");
+    speakBtn.className = "saved-button";
+    speakBtn.textContent = sentence;
+    speakBtn.addEventListener("click", ()=>{
+      addHistory("me", sentence);
+      speak(sentence);
+    });
+
+    const delBtn = document.createElement("button");
+    delBtn.className = "delete-button";
+    delBtn.textContent = "🗑 Löschen";
+    delBtn.addEventListener("click", ()=>{
+      const current = getSavedPhrases();
+      current.splice(index,1);
+      setSavedPhrases(current);
+      renderSavedPhrases();
+    });
+
+    row.appendChild(speakBtn);
+    row.appendChild(delBtn);
+    wrap.appendChild(row);
+  });
+}
+
+document.getElementById("savePhraseButton").addEventListener("click", ()=>{
+  const input = document.getElementById("saveInput");
+  const sentence = input.value.trim();
+  if(!sentence) return;
+
+  const list = getSavedPhrases();
+  if(!list.includes(sentence)){
+    list.push(sentence);
+    setSavedPhrases(list);
+  }
+
+  input.value = "";
+  renderSavedPhrases();
+});
+
+/* ---------- Stimmen ---------- */
+const VOICE_KEY = "tonguebox_voice_v1";
+let availableVoices = [];
+
+function loadVoices(){
+  availableVoices = speechSynthesis.getVoices();
+  const select = document.getElementById("voiceSelect");
+  const saved = localStorage.getItem(VOICE_KEY);
+
+  select.innerHTML = "";
+
+  availableVoices
+    .filter(v => (v.lang || "").toLowerCase().startsWith("de"))
+    .forEach((voice)=>{
+      const opt = document.createElement("option");
+      opt.value = voice.name;
+      opt.textContent = `${voice.name} (${voice.lang})`;
+      if(saved === voice.name) opt.selected = true;
+      select.appendChild(opt);
+    });
+
+  if(!select.options.length){
+    availableVoices.forEach((voice)=>{
+      const opt = document.createElement("option");
+      opt.value = voice.name;
+      opt.textContent = `${voice.name} (${voice.lang})`;
+      if(saved === voice.name) opt.selected = true;
+      select.appendChild(opt);
+    });
+  }
+}
+
+document.getElementById("voiceSelect").addEventListener("change", e=>{
+  localStorage.setItem(VOICE_KEY, e.target.value);
+});
+
+document.getElementById("voiceTest").addEventListener("click", ()=>{
+  speak("Hallo, das ist meine ausgewählte Stimme.");
+});
+
+/* speak überschreiben, damit gewählte Stimme verwendet wird */
+const originalSpeak = speak;
+speak = function(text){
+  text = (text||"").trim();
+  if(!text) return;
+
+  speaking = true;
+
+  if(recognition && listening){
+    try{ recognition.stop(); }catch(e){}
+  }
+
+  speechSynthesis.cancel();
+
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "de-AT";
+
+  const selectedName = document.getElementById("voiceSelect")?.value || localStorage.getItem(VOICE_KEY);
+  const selectedVoice = speechSynthesis.getVoices().find(v=>v.name===selectedName);
+  if(selectedVoice) u.voice = selectedVoice;
+
+  u.onstart = ()=>{
+    statusBox.textContent = "🔊 Antwort wird gesprochen.";
+  };
+
+  u.onend = ()=>{
+    speaking = false;
+    statusBox.textContent = listening
+      ? "🎧 Automatik läuft – ich höre wieder zu."
+      : "Bereit.";
+
+    if(listening){
+      clearTimeout(restartTimer);
+      restartTimer = setTimeout(startRecognitionSafely,700);
+    }
+  };
+
+  u.onerror = ()=>{
+    speaking = false;
+    if(listening){
+      clearTimeout(restartTimer);
+      restartTimer = setTimeout(startRecognitionSafely,700);
+    }
+  };
+
+  speechSynthesis.speak(u);
+};
+
+if(typeof speechSynthesis !== "undefined"){
+  loadVoices();
+  speechSynthesis.onvoiceschanged = loadVoices;
+}
+renderTopics();
+renderSavedPhrases();
 
 /* ---------- Startzustand ---------- */
 renderHistory();
