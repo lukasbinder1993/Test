@@ -46,9 +46,32 @@ textarea{
   button{min-height:108px;font-size:21px}
   .grid,#smartAnswers,.quickline{grid-template-columns:1fr 1fr}
 }
+
+#lockScreen{
+ position:fixed;inset:0;z-index:9999;background:#fff;display:flex;
+ align-items:center;justify-content:center;padding:18px
+}
+.lockBox{width:min(620px,100%);text-align:center;border:4px solid var(--p);
+ border-radius:24px;padding:22px;background:#fff}
+.lockBox h2{font-size:30px;margin:4px 0 10px}
+.lockBox input{
+ width:100%;min-height:78px;border:3px solid var(--line);border-radius:16px;
+ padding:14px;font-size:24px;text-align:center;margin:14px 0
+}
+.lockError{min-height:28px;font-size:18px;font-weight:800;color:var(--no);margin-top:10px}
 </style>
 </head>
 <body>
+<div id="lockScreen">
+ <div class="lockBox">
+   <h2>🔒 Tonguebox Test</h2>
+   <div class="sub">Passwort eingeben</div>
+   <input id="passwordInput" type="password" autocomplete="current-password"
+          aria-label="Passwort" placeholder="Passwort">
+   <button id="unlockButton">🔓 Tonguebox öffnen</button>
+   <div id="lockError" class="lockError" aria-live="polite"></div>
+ </div>
+</div>
 <div class="app">
   <h1>🧠 Tonguebox Smart</h1>
   <div class="sub">weniger suchen · schneller antworten · lernt mit</div>
@@ -109,6 +132,33 @@ textarea{
 <script>
 (()=>{
 "use strict";
+
+/* Einfacher TEST-Passwortschutz.
+   WICHTIG: Das ist kein sicherer serverseitiger Schutz.
+   Passwort hier ändern: */
+const TEST_PASSWORD = "Tonguebox2026";
+
+function unlockTonguebox(){
+ const input=document.getElementById("passwordInput");
+ const error=document.getElementById("lockError");
+ if(input.value===TEST_PASSWORD){
+   sessionStorage.setItem("tonguebox_test_unlocked","1");
+   document.getElementById("lockScreen").style.display="none";
+   error.textContent="";
+ }else{
+   error.textContent="Passwort nicht richtig.";
+   input.value="";
+   input.focus();
+ }
+}
+document.getElementById("unlockButton").addEventListener("click",unlockTonguebox);
+document.getElementById("passwordInput").addEventListener("keydown",e=>{
+ if(e.key==="Enter")unlockTonguebox();
+});
+if(sessionStorage.getItem("tonguebox_test_unlocked")==="1"){
+ document.getElementById("lockScreen").style.display="none";
+}
+
 const $=s=>document.querySelector(s);
 const LEARN="tonguebox_smart_learning_v1";
 const CTX="tonguebox_smart_context_v1";
