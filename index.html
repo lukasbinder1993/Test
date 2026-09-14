@@ -59,6 +59,17 @@ textarea{
  padding:14px;font-size:24px;text-align:center;margin:14px 0
 }
 .lockError{min-height:28px;font-size:18px;font-weight:800;color:var(--no);margin-top:10px}
+
+button{min-height:118px!important;font-size:22px!important}
+.grid,#smartAnswers,.quickline{gap:16px!important}
+#smartAnswers button{min-height:138px!important}
+.eyeHint{font-size:16px;font-weight:800;text-align:center;color:#51666d;margin:8px 0}
+@media(max-width:600px){
+ .app{padding:8px!important}
+ .quickline,#smartAnswers{grid-template-columns:1fr 1fr!important}
+ #smartAnswers button{min-height:142px!important;font-size:22px!important}
+ .acc-head{min-height:105px!important}
+}
 </style>
 </head>
 <body>
@@ -88,7 +99,8 @@ textarea{
   </div>
 
   <div class="card">
-    <div style="font-size:22px;font-weight:900;margin-bottom:10px">⚡ Beste Antworten</div>
+    <div style="font-size:22px;font-weight:900;margin-bottom:4px">🧠 Beste Antworten für jetzt</div>
+    <div class="eyeHint" id="aiHint">Frage, Tageszeit, Situation und Nutzung werden berücksichtigt.</div>
     <div id="smartAnswers"></div>
   </div>
 
@@ -218,7 +230,11 @@ function isYesNo(q){
 
 function smartLocal(q){
   const t=norm(q);
-  if(isYesNo(q)) return ["Ja.","Nein.","Vielleicht.","Bitte wiederholen."];
+  if(isYesNo(q)){
+    const h=document.getElementById("aiHint"); if(h)h.textContent="Ja/Nein-Frage erkannt – Ja und Nein stehen sofort bereit.";
+    return ["Ja.","Nein.","Vielleicht.","Bitte wiederholen."];
+  }
+  const h=document.getElementById("aiHint"); if(h)h.textContent="Tonguebox kombiniert Frage, Situation, Tageszeit und dein gelerntes Verhalten.";
 
   if(/\b(kaffee)\b/.test(t))
     return ["Ja, bitte einen Kaffee.","Nein danke.","Mit Milch bitte.","Ohne Zucker bitte."];
@@ -236,6 +252,14 @@ function smartLocal(q){
     return ["Mir geht es gut.","Es geht so.","Mir geht es nicht gut.","Ich brauche kurz Hilfe."];
   if(/\b(hilfe|helfen)\b/.test(t))
     return ["Ja, bitte hilf mir.","Nein danke.","Einen Moment bitte.","Ich sage gleich, was ich brauche."];
+  if(/\b(toilette|wc|klo)\b/.test(t))
+    return ["Ich muss auf die Toilette.","Noch nicht.","Bitte hilf mir dabei.","Einen Moment bitte."];
+  if(/\b(kalt|warm|heiss|temperatur)\b/.test(t))
+    return ["Mir ist zu warm.","Mir ist zu kalt.","So passt es.","Bitte Temperatur ändern."];
+  if(/\b(mude|schlafen|bett)\b/.test(t))
+    return ["Ich bin müde.","Ich möchte ins Bett.","Noch nicht.","Ich brauche eine Pause."];
+  if(/\b(termin|arzt|besprechung)\b/.test(t))
+    return ["Der Termin passt.","Der Termin passt nicht.","Bitte später.","Bitte schriftlich schicken."];
 
   const learned=learnedRank(q);
   const base=[
@@ -352,7 +376,19 @@ document.querySelector(".acc-head").onclick=()=>{
 
 updateContextButtons();
 renderMoment();
-renderAnswers("");
+(function(){
+ const start=[...learnedRank(),...momentPool(),"Ja.","Nein.","Einen Moment bitte.","Ich brauche Hilfe."]
+   .filter((x,i,a)=>a.indexOf(x)===i).slice(0,4);
+ const box=$("#smartAnswers"); box.innerHTML="";
+ start.forEach(s=>{
+   const b=document.createElement("button"); b.textContent=s;
+   if(s==="Ja.")b.className="yes"; if(s==="Nein.")b.className="no";
+   b.onclick=()=>{remember(s);speak(s);setTimeout(renderMoment,250)};
+   box.appendChild(b);
+ });
+ const h=document.getElementById("aiHint");
+ if(h)h.textContent="Automatische Startvorschläge passend zu Tageszeit, Situation und deiner Nutzung.";
+})();
 setInterval(renderMoment,60000);
 })();
 </script>
