@@ -126,41 +126,6 @@ textarea{min-height:100px}
   #answers button{min-height:145px}
 }
 
-/* Für die systemeigene iPhone-Blickerfassung:
-   nur große Auswahlflächen – keine eigene Verweildauer. */
-.eye-mode-bar{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:10px;
-  margin:12px 0 16px;
-}
-#eyeModeButton{
-  min-height:100px;
-  background:#218838;
-}
-body.eye-mode button{
-  min-height:128px;
-}
-body.eye-mode .acc-head{
-  min-height:128px;
-}
-body.eye-mode #answers button{
-  min-height:155px;
-}
-body.eye-mode button,
-body.eye-mode textarea,
-body.eye-mode input{
-  scroll-margin-top:18px;
-}
-body.eye-mode button:focus-visible{
-  outline:7px solid var(--yellow);
-  outline-offset:3px;
-}
-@media(max-width:600px){
-  body.eye-mode .grid{grid-template-columns:1fr 1fr!important}
-  body.eye-mode button{font-size:22px!important;min-height:132px!important}
-  body.eye-mode #answers button{min-height:160px!important}
-}
 </style>
 </head>
 <body>
@@ -170,12 +135,6 @@ body.eye-mode button:focus-visible{
   <div class="subtitle">Einfach · schnell · für Blickerfassung</div>
 
   <div class="card status" id="status">Bereit.</div>
-
-  <div class="eye-mode-bar">
-    <button id="eyeModeButton" class="active" aria-pressed="true">
-      👁 Blickmodus EIN
-    </button>
-  </div>
 
   <section class="acc open">
     <button class="acc-head" aria-expanded="true">
@@ -430,32 +389,6 @@ document.querySelectorAll(".acc-head").forEach(function(button){
 byId("resetButton").addEventListener("click", function(){
   try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
   
-/* Blickmodus verändert nur die Größe der Bedienelemente.
-   Auswahl und Verweildauer werden vollständig vom iPhone-System gesteuert. */
-var EYE_KEY = "tonguebox_eye_mode_v1";
-var eyeMode = true;
-
-try{
-  var savedEye = localStorage.getItem(EYE_KEY);
-  if(savedEye === "0") eyeMode = false;
-}catch(e){}
-
-function updateEyeMode(){
-  var btn = byId("eyeModeButton");
-  document.body.classList.toggle("eye-mode", eyeMode);
-  btn.setAttribute("aria-pressed", String(eyeMode));
-  btn.textContent = eyeMode ? "👁 Große Blickflächen EIN" : "👁 Große Blickflächen AUS";
-  try{ localStorage.setItem(EYE_KEY, eyeMode ? "1" : "0"); }catch(e){}
-}
-
-byId("eyeModeButton").addEventListener("click", function(){
-  eyeMode = !eyeMode;
-  updateEyeMode();
-  setStatus(eyeMode ? "👁 Große Blickflächen eingeschaltet." : "Normale Buttongröße.");
-});
-
-updateEyeMode();
-
 renderAnswers(["Ja.","Nein.","Einen Moment bitte.","Ich brauche Hilfe."]);
   renderMoment();
   setStatus("🗑 Gelerntes wurde zurückgesetzt.");
