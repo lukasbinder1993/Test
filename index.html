@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Tonguebox Smart</title>
+<style>
+:root{
+  --p:#087f8c;--txt:#10242a;--yes:#218838;--no:#c62828;--warn:#b76500;
+  --focus:#ffd400;--card:#fff;--line:#c8d8dc
+}
+*{box-sizing:border-box}
+body{margin:0;background:transparent;color:var(--txt);font-family:Arial,Helvetica,sans-serif}
+.app{max-width:720px;margin:auto;padding:10px}
+h1{text-align:center;font-size:30px;margin:8px 0 2px}
+.sub{text-align:center;font-weight:700;margin:0 0 12px;color:#51666d}
+.card{background:var(--card);border:3px solid var(--p);border-radius:20px;padding:12px;margin:12px 0}
+.status{text-align:center;font-size:18px;font-weight:900}
+button,textarea{font:inherit}
+button{
+  width:100%;min-height:100px;border:0;border-radius:18px;padding:14px;
+  background:var(--p);color:white;font-size:21px;font-weight:900;cursor:pointer;
+  touch-action:manipulation
+}
+button:focus-visible,textarea:focus-visible{outline:7px solid var(--focus);outline-offset:3px}
+.yes{background:var(--yes)} .no{background:var(--no)} .warn{background:var(--warn)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#smartAnswers{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+textarea{
+  width:100%;min-height:95px;border:3px solid var(--line);border-radius:16px;
+  padding:14px;font-size:20px;color:var(--txt);background:white
+}
+.small{font-size:15px;font-weight:700;color:#5b7076;margin-top:8px}
+.acc{margin:12px 0}
+.acc-head{
+  display:flex;align-items:center;justify-content:space-between;text-align:left;
+  min-height:88px
+}
+.acc-panel{display:none;margin-top:10px}
+.acc.open .acc-panel{display:block}
+.acc.open .arrow{transform:rotate(180deg)}
+.arrow{font-size:28px}
+.quickline{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:600px){
+  .app{padding:8px}
+  button{min-height:108px;font-size:21px}
+  .grid,#smartAnswers,.quickline{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>🧠 Tonguebox Smart</h1>
+  <div class="sub">weniger suchen · schneller antworten · lernt mit</div>
+
+  <div class="card status" id="status">Bereit.</div>
+
+  <div class="quickline">
+    <button id="listen">🎧 Zuhören</button>
+    <button id="stop" class="warn">⏹ Stopp</button>
+  </div>
+
+  <div class="card">
+    <div id="heard" style="font-size:21px;font-weight:900;min-height:55px">Noch keine Frage erkannt.</div>
+  </div>
+
+  <div class="card">
+    <div style="font-size:22px;font-weight:900;margin-bottom:10px">⚡ Beste Antworten</div>
+    <div id="smartAnswers"></div>
+  </div>
+
+  <section class="acc">
+    <button class="acc-head" type="button" aria-expanded="false">
+      <span>💬 Mehr Möglichkeiten</span><span class="arrow">⌄</span>
+    </button>
+    <div class="acc-panel">
+      <div class="card">
+        <textarea id="manual" placeholder="Frage oder eigenen Satz eingeben …"></textarea>
+        <div class="grid" style="margin-top:10px">
+          <button id="analyse">🧠 Frage analysieren</button>
+          <button id="speakOwn">🔊 Selbst sprechen</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="font-size:21px;font-weight:900;margin-bottom:10px">🕒 Vorschläge für jetzt</div>
+        <div id="momentPhrases" class="grid"></div>
+      </div>
+
+      <div class="card">
+        <div style="font-size:21px;font-weight:900;margin-bottom:10px">📍 Situation</div>
+        <div id="contexts" class="grid">
+          <button data-c="auto">🧠 Automatisch</button>
+          <button data-c="arbeit">💼 Arbeit</button>
+          <button data-c="krankenhaus">🏥 Krankenhaus</button>
+          <button data-c="zuhause">🏠 Zuhause</button>
+          <button data-c="freizeit">🌤️ Freizeit</button>
+          <button data-c="telefon">📞 Telefon</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <button id="reset" class="warn">🗑 Lernen zurücksetzen</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(()=>{
+"use strict";
+const $=s=>document.querySelector(s);
+const LEARN="tonguebox_smart_learning_v1";
+const CTX="tonguebox_smart_context_v1";
+let selectedContext=localStorage.getItem(CTX)||"auto";
+let listening=false, rec=null, lastQuestion="";
+
+function norm(s){
+  return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .replace(/[!?.,;:]/g," ").replace(/\s+/g," ").trim();
+}
+function getData(){try{return JSON.parse(localStorage.getItem(LEARN)||"[]")}catch(e){return[]}}
+function saveData(d){localStorage.setItem(LEARN,JSON.stringify(d.slice(-500)))}
+function part(){
+  const h=new Date().getHours();
+  if(h<6)return"Nacht"; if(h<10)return"Morgen"; if(h<12)return"Vormittag";
+  if(h<14)return"Mittag"; if(h<18)return"Nachmittag"; if(h<22)return"Abend"; return"Nacht";
+}
+function autoContext(){
+  const d=new Date(),day=d.getDay(),h=d.getHours();
+  if(day>=1&&day<=5&&h>=7&&h<17)return"arbeit";
+  if(day===0||day===6)return"freizeit";
+  return"zuhause";
+}
+function context(){return selectedContext==="auto"?autoContext():selectedContext}
+
+function remember(sentence,question=""){
+  const d=getData(),p=part(),c=context(),day=new Date().getDay();
+  let hit=d.find(x=>x.s===sentence&&x.p===p&&x.c===c&&x.day===day);
+  if(hit)hit.n=(hit.n||0)+1;
+  else d.push({s:sentence,q:norm(question),p,c,day,n:1});
+  saveData(d);
+}
+
+function learnedRank(question=""){
+  const p=part(),c=context(),day=new Date().getDay(),q=norm(question),scores={};
+  getData().forEach(x=>{
+    let score=(x.n||1);
+    if(x.c===c)score+=6;
+    if(x.p===p)score+=4;
+    if(x.day===day)score+=2;
+    if(q&&x.q){
+      const qa=q.split(" ").filter(w=>w.length>3);
+      const xb=x.q.split(" ");
+      score+=qa.filter(w=>xb.includes(w)).length*5;
+    }
+    scores[x.s]=(scores[x.s]||0)+score;
+  });
+  return Object.entries(scores).sort((a,b)=>b[1]-a[1]).map(x=>x[0]);
+}
+
+function isYesNo(q){
+  const t=norm(q);
+  if(/^(wer|wie|was|wann|wo|wohin|woher|warum|wieso|weshalb|welche|welcher|welches|wieviel|wie viel)\b/.test(t))return false;
+  if(/\b oder \b/.test(t)&&!/\bja oder nein\b/.test(t))return false;
+  return /^(bist|bin|sind|ist|hast|hat|haben|kannst|kann|konntest|willst|will|mochtest|magst|soll|sollst|darf|darfst|musst|muss|kommst|kommt|gehst|geht|brauchst|braucht|passt|stimmt|kennst|weisst|wohnst|arbeitest)\b/.test(t);
+}
+
+function smartLocal(q){
+  const t=norm(q);
+  if(isYesNo(q)) return ["Ja.","Nein.","Vielleicht.","Bitte wiederholen."];
+
+  if(/\b(kaffee)\b/.test(t))
+    return ["Ja, bitte einen Kaffee.","Nein danke.","Mit Milch bitte.","Ohne Zucker bitte."];
+  if(/\b(trinken|durst|wasser|saft)\b/.test(t))
+    return ["Bitte Wasser.","Ja, bitte.","Nein danke.","Etwas anderes bitte."];
+  if(/\b(essen|hunger|mittagessen|abendessen)\b/.test(t))
+    return ["Ja, ich möchte etwas essen.","Nein danke.","Bitte noch etwas.","Ich bin fertig."];
+  if(/\b(schmerz|weh|tut es weh)\b/.test(t))
+    return ["Ja, ich habe Schmerzen.","Nein, keine Schmerzen.","Es ist stärker geworden.","Bitte hilf mir."];
+  if(/\b(wann|uhr|zeit)\b/.test(t))
+    return ["Die Zeit passt.","Bitte später.","Bitte früher.","Bitte sag mir die Uhrzeit noch einmal."];
+  if(/\b(wo|wohin|ort|adresse)\b/.test(t))
+    return ["Ja, dort passt es.","Bitte schick mir die Adresse.","Ich möchte woanders hin.","Bitte wiederholen."];
+  if(/\b(wie geht|geht es dir|alles gut)\b/.test(t))
+    return ["Mir geht es gut.","Es geht so.","Mir geht es nicht gut.","Ich brauche kurz Hilfe."];
+  if(/\b(hilfe|helfen)\b/.test(t))
+    return ["Ja, bitte hilf mir.","Nein danke.","Einen Moment bitte.","Ich sage gleich, was ich brauche."];
+
+  const learned=learnedRank(q);
+  const base=[
+    "Ja.","Nein.","Einen Moment bitte.","Bitte wiederholen.",
+    "Bitte langsamer sprechen.","Bitte anders formulieren."
+  ];
+  return [...learned,...base].filter((x,i,a)=>a.indexOf(x)===i).slice(0,4);
+}
+
+function renderAnswers(q){
+  lastQuestion=q||"";
+  const arr=smartLocal(q);
+  const box=$("#smartAnswers"); box.innerHTML="";
+  arr.slice(0,4).forEach((s,i)=>{
+    const b=document.createElement("button");
+    b.textContent=s;
+    if(isYesNo(q)&&i===0)b.className="yes";
+    if(isYesNo(q)&&i===1)b.className="no";
+    if(i===2)b.classList.add("warn");
+    b.onclick=()=>{remember(s,q);speak(s);setTimeout(()=>renderMoment(),250)};
+    box.appendChild(b);
+  });
+  $("#status").textContent=isYesNo(q)?"✅ Ja/Nein-Frage erkannt.":"🧠 Passende Antworten bereit.";
+}
+
+function momentPool(){
+  const c=context(),p=part();
+  const contextSets={
+    arbeit:["Guten Morgen!","Was steht heute an?","Wann ist der nächste Termin?","Bitte schick mir das schriftlich.","Ich brauche kurz Hilfe.","Ich brauche eine Pause."],
+    krankenhaus:["Bitte stellen Sie mir eine Ja-oder-Nein-Frage.","Ich habe Schmerzen.","Ich brauche Hilfe.","Ich möchte etwas trinken.","Bitte langsam sprechen.","Ich muss auf die Toilette."],
+    zuhause:["Ich möchte etwas trinken.","Ich möchte etwas essen.","Ich möchte einen Kaffee.","Bitte hilf mir kurz.","Ich brauche eine Pause.","Alles passt."],
+    freizeit:["Was machen wir heute?","Ja, gerne.","Nein danke.","Ich möchte etwas trinken.","Ich möchte noch bleiben.","Ich möchte nach Hause."],
+    telefon:["Bitte sprechen Sie langsam.","Bitte wiederholen Sie die Frage.","Einen Moment bitte.","Ja.","Nein.","Bitte schicken Sie mir das schriftlich."]
+  };
+  const timeSets={
+    Morgen:["Guten Morgen!","Ich möchte einen Kaffee.","Was steht heute an?"],
+    Mittag:["Ich möchte etwas essen.","Ich möchte etwas trinken.","Danke, ich bin fertig."],
+    Nachmittag:["Ich möchte einen Kaffee.","Was steht heute noch an?","Ich brauche eine Pause."],
+    Abend:["Guten Abend!","Ich bin müde.","Danke für heute."],
+    Nacht:["Ich brauche Hilfe.","Ich möchte etwas trinken.","Ich kann nicht schlafen."]
+  };
+  return [...learnedRank(),...(contextSets[c]||[]),...(timeSets[p]||[]),"Ja.","Nein.","Einen Moment bitte."]
+    .filter((x,i,a)=>a.indexOf(x)===i);
+}
+function renderMoment(){
+  const box=$("#momentPhrases");box.innerHTML="";
+  momentPool().slice(0,8).forEach((s,i)=>{
+    const b=document.createElement("button");
+    b.textContent=(i===0&&learnedRank()[0]===s?"⭐ ":"")+s;
+    b.onclick=()=>{remember(s);speak(s);setTimeout(renderMoment,250)};
+    box.appendChild(b);
+  });
+}
+
+function speak(t){
+  if(!t)return;
+  if(rec)try{rec.stop()}catch(e){}
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t);u.lang="de-AT";
+  u.onend=()=>{if(listening)setTimeout(startListening,500)};
+  speechSynthesis.speak(u);
+}
+
+function SR(){return window.SpeechRecognition||window.webkitSpeechRecognition||null}
+function buildRec(){
+  const C=SR(); if(!C)return null;
+  const r=new C();r.lang="de-AT";r.continuous=true;r.interimResults=true;
+  r.onresult=e=>{
+    let fin="",inter="";
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      const t=e.results[i][0].transcript||"";
+      e.results[i].isFinal?fin+=t+" ":inter+=t;
+    }
+    if(inter.trim())$("#heard").textContent="… "+inter.trim();
+    if(fin.trim()){
+      $("#heard").textContent=fin.trim();
+      $("#manual").value=fin.trim();
+      renderAnswers(fin.trim());
+    }
+  };
+  r.onerror=e=>$("#status").textContent=e.error==="not-allowed"?"Bitte Mikrofon erlauben.":"Spracherkennung: "+e.error;
+  r.onend=()=>{if(listening)setTimeout(startListening,500)};
+  return r;
+}
+function startListening(){
+  if(!listening)return;
+  if(!SR()){
+    $("#status").textContent="Dieser Browser unterstützt automatische Spracherkennung nicht. Bitte Frage eingeben.";
+    return;
+  }
+  if(!rec)rec=buildRec();
+  try{rec.start();$("#status").textContent="🎧 Ich höre zu."}catch(e){}
+}
+
+$("#listen").onclick=()=>{listening=true;startListening()};
+$("#stop").onclick=()=>{listening=false;if(rec)try{rec.stop()}catch(e){};$("#status").textContent="⏹ Gestoppt."};
+$("#analyse").onclick=()=>{const q=$("#manual").value.trim();if(q){$("#heard").textContent=q;renderAnswers(q)}};
+$("#speakOwn").onclick=()=>{const t=$("#manual").value.trim();if(t){remember(t);speak(t)}};
+$("#reset").onclick=()=>{localStorage.removeItem(LEARN);$("#status").textContent="🗑 Das Gelernte wurde zurückgesetzt.";renderMoment();renderAnswers(lastQuestion)};
+
+document.querySelectorAll("[data-c]").forEach(b=>{
+  b.onclick=()=>{selectedContext=b.dataset.c;localStorage.setItem(CTX,selectedContext);renderMoment();updateContextButtons()};
+});
+function updateContextButtons(){
+  document.querySelectorAll("[data-c]").forEach(b=>{
+    b.style.outline=b.dataset.c===selectedContext?"6px solid var(--focus)":"";
+  });
+}
+document.querySelector(".acc-head").onclick=()=>{
+  const s=document.querySelector(".acc");
+  const open=s.classList.toggle("open");
+  document.querySelector(".acc-head").setAttribute("aria-expanded",String(open));
+};
+
+updateContextButtons();
+renderMoment();
+renderAnswers("");
+setInterval(renderMoment,60000);
+})();
+</script>
+</body>
+</html>
