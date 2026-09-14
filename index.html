@@ -91,13 +91,27 @@ textarea{min-height:100px}
   color:#53676d;
   margin:8px 0;
 }
-.acc-panel{display:none;margin-top:12px}
-.acc.open .acc-panel{display:block}
+.acc{
+  margin:14px 0;
+}
 .acc-head{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  min-height:105px;
+  min-height:108px;
+  text-align:left;
+  padding:18px 20px;
+}
+.acc-panel{
+  display:none;
+  margin-top:10px;
+}
+.acc.open .acc-panel{
+  display:block;
+}
+.acc.open .acc-head{
+  border-radius:18px;
+  outline:4px solid rgba(255,212,0,.35);
 }
 #answers button{min-height:140px}
 #lockScreen{
@@ -151,46 +165,72 @@ textarea{min-height:100px}
 </div>
 
 <main class="app">
-  <h1>🧠 Tonguebox Smart</h1>
+  <h1>🧠 Tonguebox</h1>
   <div class="subtitle">Einfach · schnell · für Blickerfassung</div>
 
   <div class="card status" id="status">Bereit.</div>
 
-  <div class="card">
-    <div style="font-size:22px;font-weight:800;margin-bottom:10px">⚡ Schnell antworten</div>
-    <div class="grid" id="answers"></div>
-  </div>
+  <section class="acc open">
+    <button class="acc-head" aria-expanded="true">
+      <span>⚡ Schnell antworten</span><span>⌄</span>
+    </button>
+    <div class="acc-panel">
+      <div id="answers" class="grid"></div>
+    </div>
+  </section>
 
   <section class="acc">
-    <button class="acc-head" id="moreButton" aria-expanded="false">
-      <span>💬 Mehr Möglichkeiten</span><span>⌄</span>
+    <button class="acc-head" aria-expanded="false">
+      <span>🧠 Frage beantworten</span><span>⌄</span>
     </button>
-    <div class="acc-panel" id="morePanel">
-
+    <div class="acc-panel">
       <div class="card">
-        <div style="font-size:21px;font-weight:800;margin-bottom:8px">🧠 Frage eingeben</div>
-        <textarea id="question" placeholder="Zum Beispiel: Möchtest du einen Kaffee?"></textarea>
-        <button id="analyseButton" style="margin-top:12px">🧠 Antworten vorschlagen</button>
+        <textarea id="question" placeholder="Frage eingeben …"></textarea>
+        <button id="analyseButton" style="margin-top:12px">🧠 Antworten zeigen</button>
       </div>
+    </div>
+  </section>
 
+  <section class="acc">
+    <button class="acc-head" aria-expanded="false">
+      <span>🔊 Eigener Satz</span><span>⌄</span>
+    </button>
+    <div class="acc-panel">
       <div class="card">
-        <div style="font-size:21px;font-weight:800;margin-bottom:8px">🔊 Eigenen Satz sprechen</div>
         <textarea id="ownText" placeholder="Eigenen Satz schreiben …"></textarea>
         <button id="speakButton" style="margin-top:12px">🔊 Sprechen</button>
       </div>
+    </div>
+  </section>
 
-      <div class="card">
-        <div style="font-size:21px;font-weight:800;margin-bottom:8px">🕒 Vorschläge für jetzt</div>
-        <div class="grid" id="momentPhrases"></div>
-      </div>
+  <section class="acc">
+    <button class="acc-head" aria-expanded="false">
+      <span>🕒 Vorschläge für jetzt</span><span>⌄</span>
+    </button>
+    <div class="acc-panel">
+      <div id="momentPhrases" class="grid"></div>
+    </div>
+  </section>
 
+  <section class="acc">
+    <button class="acc-head" aria-expanded="false">
+      <span>🎧 Zuhören testen</span><span>⌄</span>
+    </button>
+    <div class="acc-panel">
       <div class="card">
-        <button id="listenButton">🎧 Zuhören testen</button>
+        <button id="listenButton">🎧 Zuhören</button>
         <div class="small" id="listenInfo">
-          Falls der Browser Spracherkennung unterstützt, kann Tonguebox zuhören.
+          Wenn dein Browser Spracherkennung unterstützt, kann Tonguebox zuhören.
         </div>
       </div>
+    </div>
+  </section>
 
+  <section class="acc">
+    <button class="acc-head" aria-expanded="false">
+      <span>⚙️ Einstellungen</span><span>⌄</span>
+    </button>
+    <div class="acc-panel">
       <div class="card">
         <button id="resetButton" class="warn">🗑 Gelerntes zurücksetzen</button>
       </div>
@@ -383,10 +423,25 @@ byId("speakButton").addEventListener("click", function(){
   speak(byId("ownText").value.trim());
 });
 
-byId("moreButton").addEventListener("click", function(){
-  var section = document.querySelector(".acc");
-  var open = section.classList.toggle("open");
-  byId("moreButton").setAttribute("aria-expanded", String(open));
+document.querySelectorAll(".acc-head").forEach(function(button){
+  button.addEventListener("click", function(){
+    var section = button.closest(".acc");
+    var willOpen = !section.classList.contains("open");
+
+    document.querySelectorAll(".acc").forEach(function(item){
+      item.classList.remove("open");
+      var head = item.querySelector(".acc-head");
+      if(head) head.setAttribute("aria-expanded","false");
+    });
+
+    if(willOpen){
+      section.classList.add("open");
+      button.setAttribute("aria-expanded","true");
+      setTimeout(function(){
+        button.scrollIntoView({behavior:"smooth", block:"start"});
+      },80);
+    }
+  });
 });
 
 byId("resetButton").addEventListener("click", function(){
