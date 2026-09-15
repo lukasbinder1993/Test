@@ -1,13 +1,65 @@
 <!doctype html>
 <html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Tonguebox – KI</title><style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:#10232a;background:#fff;font-size:20px}main{max-width:720px;margin:auto;padding:14px 12px 60px}h1{text-align:center;font-size:44px;margin:8px 0}.sub,.status{text-align:center;font-weight:700}.note{border:2px solid #087f8c;background:#eefafb;border-radius:18px;padding:14px;text-align:center;font-weight:700;margin:12px 0}.top,.answers,.quick{display:grid;grid-template-columns:1fr 1fr;gap:12px}.big,.answer,.full,.quick button,.acc-head{border:0;border-radius:20px;font-weight:800;font-size:23px;min-height:90px;padding:14px}.start,.answer,.full{background:#087f8c;color:#fff}.stop,.quick button{background:#edf2f3;color:#10232a}.answer{min-height:115px}.question{border:2px solid #cfd8dc;background:#f4f8f9;border-radius:18px;padding:14px;min-height:76px;margin:14px 0}.question small{display:block;font-size:15px;font-weight:700}.status{min-height:30px;margin:10px}.error{color:#9b1c1c}.acc{border:2px solid #cfd8dc;border-radius:20px;overflow:hidden;margin:14px 0}.acc-head{width:100%;background:#eaf5f6;text-align:left;display:flex;justify-content:space-between;align-items:center}.panel{display:none;padding:14px}.panel.open{display:block}textarea{width:100%;min-height:125px;border:3px solid #cfd8dc;border-radius:18px;padding:14px;font:inherit;font-size:22px}.full{width:100%;margin-top:12px}button:focus-visible,textarea:focus-visible{outline:7px solid #ffd400;outline-offset:3px}@media(max-width:480px){.big,.acc-head{min-height:96px}.answer{min-height:120px;font-size:21px}}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:#10232a;background:#fff;font-size:20px}main{max-width:720px;margin:auto;padding:14px 12px 60px}h1{text-align:center;font-size:44px;margin:8px 0}.sub,.status{text-align:center;font-weight:700}.note{border:2px solid #087f8c;background:#eefafb;border-radius:18px;padding:14px;text-align:center;font-weight:700;margin:12px 0}.top,.answers,.quick{display:grid;grid-template-columns:1fr 1fr;gap:12px}.big,.answer,.full,.quick button,.acc-head{border:0;border-radius:20px;font-weight:800;font-size:23px;min-height:90px;padding:14px}.start,.answer,.full{background:#087f8c;color:#fff}.stop,.quick button{background:#edf2f3;color:#10232a}.answer{min-height:115px}.question{border:2px solid #cfd8dc;background:#f4f8f9;border-radius:18px;padding:14px;min-height:76px;margin:14px 0}.question small{display:block;font-size:15px;font-weight:700}.status{min-height:30px;margin:10px}.error{color:#9b1c1c}.acc{border:2px solid #cfd8dc;border-radius:20px;overflow:hidden;margin:14px 0}.acc-head{width:100%;background:#eaf5f6;text-align:left;display:flex;justify-content:space-between;align-items:center}.panel{display:none;padding:14px}.panel.open{display:block}textarea{width:100%;min-height:125px;border:3px solid #cfd8dc;border-radius:18px;padding:14px;font:inherit;font-size:22px}.full{width:100%;margin-top:12px}button:focus-visible,textarea:focus-visible{outline:7px solid #ffd400;outline-offset:3px}/* Blickerfassung / iPhone: große, klar getrennte Ziele */
+button{
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+}
+.top{gap:18px}
+.answers{gap:18px}
+.big{
+  min-height:112px;
+  font-size:26px;
+}
+.answer{
+  min-height:132px;
+  font-size:25px;
+  padding:20px 16px;
+}
+.acc{margin:20px 0}
+.acc-head{
+  min-height:112px;
+  font-size:26px;
+  padding:20px;
+}
+.quick{gap:16px}
+.quick button{
+  min-height:112px;
+  font-size:24px;
+  padding:18px 12px;
+}
+.full{
+  min-height:106px;
+  font-size:25px;
+}
+button:focus,
+button:focus-visible,
+textarea:focus,
+textarea:focus-visible{
+  outline:7px solid #ffd400;
+  outline-offset:4px;
+}
+@media(max-width:600px){
+  main{padding:12px 12px 70px}
+  .top{grid-template-columns:1fr 1fr;gap:14px}
+  .answers{grid-template-columns:1fr;gap:16px}
+  .answer{min-height:118px;font-size:24px}
+  .quick{grid-template-columns:1fr 1fr;gap:14px}
+  .quick button{min-height:108px}
+  .big,.acc-head{min-height:108px}
+}
+@media(max-width:390px){
+  .top{grid-template-columns:1fr}
+  .quick{grid-template-columns:1fr}
+  .big,.answer,.quick button,.acc-head,.full{min-height:104px}
+}
 </style></head><body><main>
 <h1>🧠 Tonguebox</h1><p class="sub">Sprich mit deinen Augen</p>
 <div class="note">✨ KI-generierte Antwortvorschläge<br>Internetverbindung erforderlich</div>
-<div class="top"><button class="big start" id="listen">🎧 Zuhören</button><button class="big stop" id="stop">⏹ Stopp</button></div>
-<div class="question"><small>Erkannte Frage</small><span id="question">Noch keine Frage erkannt.</span></div><div class="status" id="status">Bereit.</div>
-<h2>⚡ KI-Antworten</h2><div class="answers" id="answers"></div>
+<div class="top"><button class="big start" id="listen" aria-label="Zuhören starten">🎧 Zuhören</button><button class="big stop" id="stop" aria-label="Zuhören stoppen">⏹ Stopp</button></div>
+<div class="question"><small>Erkannte Frage</small><span id="question">Noch keine Frage erkannt.</span></div><div class="status" id="status" role="status" aria-live="polite">Bereit.</div>
+<h2>⚡ KI-Antworten</h2><div class="answers" id="answers" role="group" aria-label="KI Antwortvorschläge"></div>
 <div class="acc"><button class="acc-head" aria-expanded="false" data-panel="manual">✍️ Selbst schreiben <span>⌄</span></button><div class="panel" id="manual"><textarea id="text" placeholder="Frage oder eigenen Satz eingeben"></textarea><button class="full" id="ask">✨ KI-Antworten erzeugen</button><button class="full" id="sayOwn">🔊 Meinen Text sprechen</button></div></div>
 <div class="acc"><button class="acc-head" aria-expanded="false" data-panel="quick">💬 Sofort-Kommunikation <span>⌄</span></button><div class="panel" id="quick"><div class="quick"><button data-say="Ja.">✅ Ja</button><button data-say="Nein.">❌ Nein</button><button data-say="Einen Moment bitte.">⏳ Moment</button><button data-say="Bitte wiederholen.">🔁 Wiederholen</button><button data-say="Bitte langsamer sprechen.">🐢 Langsamer</button><button data-say="Ich brauche bitte Hilfe.">🙏 Hilfe</button></div></div></div>
 </main><script>
